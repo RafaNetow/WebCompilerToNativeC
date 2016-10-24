@@ -1,0 +1,6 @@
+c:\users\sequeiros\documents\visual studio 2015\Projects\WebCompilerToNativeC\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.exe.config
+C:\Users\Sequeiros\Documents\Visual Studio 2015\Projects\WebCompilerToNativeC\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.exe
+C:\Users\Sequeiros\Documents\Visual Studio 2015\Projects\WebCompilerToNativeC\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.pdb
+C:\Users\Sequeiros\Documents\Visual Studio 2015\Projects\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.csprojResolveAssemblyReference.cache
+C:\Users\Sequeiros\Documents\Visual Studio 2015\Projects\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.exe
+C:\Users\Sequeiros\Documents\Visual Studio 2015\Projects\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.pdb
