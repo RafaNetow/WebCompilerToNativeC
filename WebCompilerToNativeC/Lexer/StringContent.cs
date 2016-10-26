@@ -10,12 +10,12 @@ namespace WebCompilerToNativeC.Lexer
     {
         private int _row;
         private int _column;
-        private string _input;
+        public string Input;
         private int _currentIndex;
 
         public StringContent(string input)
         {
-            _input = _input;
+            this.Input= input;
             _currentIndex = 0;
             _row = 0;
             _column = 0;
@@ -23,11 +23,11 @@ namespace WebCompilerToNativeC.Lexer
 
         public Symbol NextSymbol()
         {
-            if (_currentIndex >= _input.Length)
+            if (_currentIndex >= Input.Length)
             {
                 return new Symbol {Row = _row, Column = _column, CSymbol = '\0' };
             }
-            var currentSym = new Symbol {Row = _row, Column = _column, CSymbol = _input[_currentIndex++]};
+            var currentSym = new Symbol {Row = _row, Column = _column, CSymbol = Input[_currentIndex++]};
             if (currentSym.CSymbol.Equals('\n'))
             {
                 _column = 0;

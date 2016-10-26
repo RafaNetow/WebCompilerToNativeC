@@ -11,7 +11,7 @@ namespace WebCompilerToNativeC.Lexer
         public Dictionary<string, TokenTypes> Operators;
         public Dictionary<string, TokenTypes> ReserverWords;
         public Dictionary<string, TokenTypes> SpecialOperators;
-        public List<char> SpecialSymbols;
+        public List<char> SpecialSymbols = new List<char>();
 
 
         public ReserverdWords()
@@ -29,7 +29,7 @@ namespace WebCompilerToNativeC.Lexer
 
        private void InitSpecialSymbols()
        {
-            SpecialSymbols.Add('>');
+            
             SpecialSymbols.Add('>');
             SpecialSymbols.Add('<');
             SpecialSymbols.Add('=');
@@ -48,6 +48,7 @@ namespace WebCompilerToNativeC.Lexer
        private void InitReservdWords()
        {
            ReserverWords.Add("int", TokenTypes.RwInt);
+           ReserverWords.Add("#include",TokenTypes.RwInclude);
            ReserverWords.Add("float", TokenTypes.RwFloat);
            ReserverWords.Add("char", TokenTypes.RwChar);
            ReserverWords.Add("bool", TokenTypes.RwBool);
@@ -62,6 +63,9 @@ namespace WebCompilerToNativeC.Lexer
            ReserverWords.Add("switch", TokenTypes.RwSwitch);
            ReserverWords.Add("break", TokenTypes.RwBreak);
            ReserverWords.Add("continue", TokenTypes.RwContinue);
+           ReserverWords.Add("true",TokenTypes.True);
+           ReserverWords.Add("false", TokenTypes.False);
+
 
         }
 
@@ -78,19 +82,21 @@ namespace WebCompilerToNativeC.Lexer
             SpecialOperators.Add("<<", TokenTypes.LeftShift);
             SpecialOperators.Add(">>", TokenTypes.LeftShift);
             SpecialOperators.Add("+=", TokenTypes.AddAndAssignment);
-            SpecialOperators.Add("+=", TokenTypes.SubAndAssignment);
+            SpecialOperators.Add("-=", TokenTypes.SubAndAssignment);
             SpecialOperators.Add("*=", TokenTypes.MulAndAssignment);
             SpecialOperators.Add("/=", TokenTypes.DivAndAssignment);
             SpecialOperators.Add("%=", TokenTypes.ModulAndAssignment);
             SpecialOperators.Add("&=", TokenTypes.BitwiseAndAndAssignment);
             SpecialOperators.Add("^=", TokenTypes.BitwiseExclusiveOrAndAssignment);
             SpecialOperators.Add("|=", TokenTypes.BitwiseInclusiveOrAndAssignment);
+            SpecialOperators.Add("->", TokenTypes.reference);
 
         }
 
        private void InitOperatorsDictionary()
        {
             Operators.Add("/", TokenTypes.Div);
+         
             Operators.Add("+",TokenTypes.Sum);
             Operators.Add("*",TokenTypes.Mul);
             Operators.Add("-",TokenTypes.Sub);
@@ -107,8 +113,14 @@ namespace WebCompilerToNativeC.Lexer
             Operators.Add("|",TokenTypes.OrBinary);
             Operators.Add("^",TokenTypes.XorBinary);
             Operators.Add("~", TokenTypes.ComplementBinary);
-            Operators.Add("*", TokenTypes.Pointer);
-           
+            Operators.Add(".", TokenTypes.Point);
+            Operators.Add(",", TokenTypes.Comma);
+            Operators.Add("{",TokenTypes.Lbrace);
+            Operators.Add("}", TokenTypes.Rbrace);
+
+            Operators.Add(";", TokenTypes.Eos);
+            
+
 
 
 

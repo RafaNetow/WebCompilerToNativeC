@@ -4,3 +4,9 @@ C:\Users\Sequeiros\Documents\Visual Studio 2015\Projects\WebCompilerToNativeC\We
 C:\Users\Sequeiros\Documents\Visual Studio 2015\Projects\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.csprojResolveAssemblyReference.cache
 C:\Users\Sequeiros\Documents\Visual Studio 2015\Projects\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.exe
 C:\Users\Sequeiros\Documents\Visual Studio 2015\Projects\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.pdb
+C:\Users\v-rsequeiros\Desktop\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.exe.config
+C:\Users\v-rsequeiros\Desktop\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.csprojResolveAssemblyReference.cache
+C:\Users\v-rsequeiros\Desktop\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.exe
+C:\Users\v-rsequeiros\Desktop\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.pdb
+C:\Users\v-rsequeiros\Desktop\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.exe
+C:\Users\v-rsequeiros\Desktop\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.pdb

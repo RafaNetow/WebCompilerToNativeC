@@ -62,6 +62,18 @@ namespace WebCompilerToNativeC.Lexer
         RwContinue,
         RwSwitch,
         RwFor,
-        RwBreak
+        RwBreak,
+        DecimalLiteral,
+        FloatLiteral,
+        Eos,
+        RwInclude,
+        Point,
+        Comma,
+        reference,
+        Lbrace,
+        Rbrace,
+        True,
+        False,
+        DateLiteral
     }
 }

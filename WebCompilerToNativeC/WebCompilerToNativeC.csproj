@@ -46,6 +46,7 @@
     <Compile Include="Hanlders\HanldersFiles.cs" />
     <Compile Include="Lexer\Lexeme.cs" />
     <Compile Include="Lexer\Lexer.cs" />
+    <Compile Include="Lexer\LexerException.cs" />
     <Compile Include="Lexer\ReserverdWords.cs" />
     <Compile Include="Lexer\StringContent.cs" />
     <Compile Include="Lexer\Symbol.cs" />
