@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Net.Configuration;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -23,13 +24,30 @@ namespace WebCompilerToNativeC.Lexer
             CMode = false;
             _currentSymbol = content.NextSymbol();
         }
+        public bool OnlyHexInString(string test)
+        { 
+             return System.Text.RegularExpressions.Regex.IsMatch(test, @"\A\b(0[xX])?[0-9a-fA-F]+\b\Z"); 
+       }
 
-        public void MapperToLexeme(Lexeme currentLexeme )
+        public bool IsNumberOctal(string number)
+        {
+              return System.Text.RegularExpressions.Regex.IsMatch(number, @"\A\b^[1 - 7][0 - 7] *$");  /*^[1 - 7][0 - 7] *$*/
+        }
+    public void MapperToLexeme(Lexeme currentLexeme )
         {
             currentLexeme.Column = _currentSymbol.Column;
             currentLexeme.Row = _currentSymbol.Row;
             currentLexeme.Value += _currentSymbol.CSymbol;
             _currentSymbol = Conent.NextSymbol();
+
+        }
+
+        public void MoveRowAndColumnOfLexeme(Lexeme currentLexeme)
+        {
+            currentLexeme.Column = _currentSymbol.Column;
+            currentLexeme.Row = _currentSymbol.Row;
+            _currentSymbol = Conent.NextSymbol();
+
 
         }
 
@@ -69,7 +87,7 @@ namespace WebCompilerToNativeC.Lexer
                        
                             _currentSymbol = Conent.NextSymbol();
                         }
-                       else if (char.IsLetter(_currentSymbol.CSymbol))
+                       else if (char.IsLetter(_currentSymbol.CSymbol) || _currentSymbol.CSymbol == '_')
                         {
                             state = 1;
                             MapperToLexeme(currentLexeme);
@@ -77,7 +95,12 @@ namespace WebCompilerToNativeC.Lexer
                         else if (char.IsDigit(_currentSymbol.CSymbol))
                         {
                             state = 2;
-                            MapperToLexeme(currentLexeme);
+                            if (_currentSymbol.CSymbol == '0')
+                            {//state to octal and hex
+                                MapperToLexeme(currentLexeme);
+                                state = 19;
+                            }
+                           
 
                         }
                         else if (_currentSymbol.CSymbol == '\"')
@@ -213,13 +236,18 @@ namespace WebCompilerToNativeC.Lexer
                     case 5:
                         if (rWords.SpecialSymbols.Contains(currentLexeme.Value[0]))
                         {
-                            MapperToLexeme(currentLexeme);
+                          //  MapperToLexeme(currentLexeme);
+                            currentLexeme.Value += _currentSymbol.CSymbol;
+                            currentLexeme.Column = _currentSymbol.Column;
+                            currentLexeme.Row = _currentSymbol.Row;
 
                             if (rWords.SpecialOperators.ContainsKey(currentLexeme.Value))
                             {
+                                _currentSymbol = Conent.NextSymbol();
                                 return MapperToTokenWithLexeme(rWords.SpecialOperators[currentLexeme.Value],
                                     currentLexeme);
                             }
+                            currentLexeme.Value = currentLexeme.Value[0].ToString();
                             return MapperToTokenWithLexeme(rWords.Operators[currentLexeme.Value[0].ToString()],
                                 currentLexeme);
                         }
@@ -334,6 +362,11 @@ namespace WebCompilerToNativeC.Lexer
                             _currentSymbol = Conent.NextSymbol();
                             currentLexeme.Value = "";
                         }
+                        else if (_currentSymbol.CSymbol == '\0')
+                        {
+                            throw new LexerException(
+                              $"Symbol {_currentSymbol.CSymbol} not recognized at Row:{_currentSymbol.Row} Col: {_currentSymbol.Column}");
+                        }
                         else { 
                         _currentSymbol = Conent.NextSymbol();
                         state = 12;
@@ -427,9 +460,42 @@ namespace WebCompilerToNativeC.Lexer
                             throw new LexerException(
                                 $"Symbol {_currentSymbol.CSymbol} bad format:{_currentSymbol.Row} Col: {_currentSymbol.Column}");
                         }
-                        //   string date[] = currentLexeme.
-                        break;
+                    //   string date[] = currentLexeme.
 
+                    //BugHexadecimal
+                    case 19:
+                        if (_currentSymbol.CSymbol == 'x')
+                        {
+                            state = 21;
+                            MapperToLexeme(currentLexeme);
+                        }else if (char.IsDigit(_currentSymbol.CSymbol))
+                        {
+                            MapperToLexeme(currentLexeme);
+                        }
+                        else
+                        {
+                            return MapperToTokenWithLexeme(TokenTypes.OctalLietral, currentLexeme);
+                        }
+
+
+
+                        break;
+                    case 21:
+                        if (char.IsLetterOrDigit(_currentSymbol.CSymbol))
+                        {
+                            MapperToLexeme(currentLexeme);
+                        }
+                        else
+                        {
+                            if (OnlyHexInString(currentLexeme.Value))
+                            {
+                                return MapperToTokenWithLexeme(TokenTypes.HexadecimalLiteral, currentLexeme);
+
+                            }
+                            throw new LexerException(
+                                $"A number hex doesnt support the symbol {_currentSymbol.CSymbol}  Row:{_currentSymbol.Row} Col: {_currentSymbol.Column}");
+                        }
+                        break;
                     //state when string have scape operator
                     case 20:
                         MapperToLexeme(currentLexeme);

@@ -21,7 +21,7 @@ namespace WebCompilerToNativeC
             while (currentToken.Type != TokenTypes.Eof)
             {
                 string s =
-                    $" Token : {currentToken.Type}, Lexeme : {currentToken.Lexeme},Row : {currentToken.Row}, Column : {currentToken.Column} ";
+                    $" Token : {currentToken.Type}  Lexeme : {currentToken.Lexeme}  Row : {currentToken.Row}   Column : {currentToken.Column} ";
                 Console.WriteLine(s);
                
                 currentToken = lexer.GetNextToken();

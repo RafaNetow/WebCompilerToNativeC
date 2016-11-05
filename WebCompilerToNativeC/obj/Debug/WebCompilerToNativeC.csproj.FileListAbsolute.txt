@@ -10,3 +10,9 @@ C:\Users\v-rsequeiros\Desktop\Proyectos\WebCompilerToNativeC\WebCompilerToNative
 C:\Users\v-rsequeiros\Desktop\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.pdb
 C:\Users\v-rsequeiros\Desktop\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.exe
 C:\Users\v-rsequeiros\Desktop\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.pdb
+C:\Users\Sequeiros\Documents\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.exe.config
+C:\Users\Sequeiros\Documents\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.exe
+C:\Users\Sequeiros\Documents\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.pdb
+C:\Users\Sequeiros\Documents\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.csprojResolveAssemblyReference.cache
+C:\Users\Sequeiros\Documents\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.exe
+C:\Users\Sequeiros\Documents\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.pdb
