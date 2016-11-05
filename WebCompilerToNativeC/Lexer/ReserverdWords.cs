@@ -12,6 +12,7 @@ namespace WebCompilerToNativeC.Lexer
         public Dictionary<string, TokenTypes> ReserverWords;
         public Dictionary<string, TokenTypes> SpecialOperators;
         public List<char> SpecialSymbols = new List<char>();
+        public  List<string>DataTypes = new List<string>();
 
 
         public ReserverdWords()
@@ -24,6 +25,20 @@ namespace WebCompilerToNativeC.Lexer
             InitReservdWords();
             InitSpecialOperator();
             InitSpecialSymbols();
+            InitDataTypes();
+
+        }
+
+       private void InitDataTypes()
+       {
+           DataTypes.Add("int");
+           DataTypes.Add("float");
+           DataTypes.Add("char");
+           DataTypes.Add("bool");
+           DataTypes.Add("string");
+           DataTypes.Add("date");
+
+
 
         }
 
