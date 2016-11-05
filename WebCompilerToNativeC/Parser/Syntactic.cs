@@ -65,13 +65,102 @@ namespace WebCompilerToNativeC.Parser
             {
                 throw new SyntacticException("Expected some Id", _currentToken.Row, _currentToken.Column);
             }
-            
+           
         }
 
         public void TypeOfDeclaration()
         {
             if (CompareTokenType(TokenTypes.Asiggnation))
                 ValueForId();
+           else if (CompareTokenType(TokenTypes.OpenBracket))
+           {
+               IsArrayDeclaration();
+           }
+           else if (CompareTokenType(TokenTypes.Eos))
+           {
+               ConsumeNextToken();
+           }
+            else if (CompareTokenType(TokenTypes.LParenthesis))
+            {
+                ConsumeNextToken();
+                ParameterList();
+
+
+
+            }
+
+        }
+
+        private void ParameterList()
+        {
+         //   if(CompareTokenType(Token))
+
+        }
+
+        private void IsArrayDeclaration()
+        { ConsumeNextToken();
+            SizeForArray();
+            ConsumeNextToken();
+            if (CompareTokenType(TokenTypes.OpenBracket))
+                BidArray();
+            if (CompareTokenType(TokenTypes.Asiggnation))
+                OptionalInitOfArray();
+            if (CompareTokenType(TokenTypes.Eos))
+                ConsumeNextToken();
+            else
+            {
+                
+            }
+        }
+
+        private void OptionalInitOfArray()
+        {
+            ConsumeNextToken();
+            if (CompareTokenType(TokenTypes.Lbrace))
+            {
+                ListOfExpressions();
+                if (CompareTokenType(TokenTypes.Rbrace))
+                    ConsumeNextToken();
+            }
+            else
+            {
+                throw new SyntacticException("Expected a  ;", _currentToken.Row, _currentToken.Column);
+            }
+        }
+
+        private void BidArray()
+        {
+            SizeBidArray();
+            if (CompareTokenType(TokenTypes.CloseBracket))
+                ConsumeNextToken();
+            else
+                throw new SyntacticException("Expected a CloseBracket", _currentToken.Row, _currentToken.Column);
+        }
+
+        private void SizeBidArray()
+        {
+            if (CompareTokenType(TokenTypes.Id) ||
+                CompareTokenType(TokenTypes.NumericalLiteral) ||
+                CompareTokenType(TokenTypes.HexadecimalLiteral) ||
+                CompareTokenType(TokenTypes.OctalLietral))
+                ConsumeNextToken();
+            else
+               throw new SyntacticException("Do not can initializer an array with the type of identifeir", _currentToken.Row, _currentToken.Column);
+        
+    }
+
+        private void SizeForArray()
+        {
+            if(CompareTokenType(TokenTypes.Id) || 
+                CompareTokenType(TokenTypes.NumericalLiteral) ||
+                CompareTokenType(TokenTypes.HexadecimalLiteral) ||
+                CompareTokenType(TokenTypes.OctalLietral)) 
+                ConsumeNextToken();
+            else if (CompareTokenType(TokenTypes.RParenthesis)) { }
+          
+            else   
+                throw  new SyntacticException("Un Expected Token, Array do not support this type",_currentToken.Row, _currentToken.Column);
+               
 
         }
 
