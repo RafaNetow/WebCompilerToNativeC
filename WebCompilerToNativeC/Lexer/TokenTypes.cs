@@ -76,6 +76,8 @@ namespace WebCompilerToNativeC.Lexer
         False,
         DateLiteral,
         OctalLietral,
-        HexadecimalLiteral
+        HexadecimalLiteral,
+        CharLiteral,
+        BooleanLiteral
     }
 }

@@ -11,6 +11,7 @@ namespace WebCompilerToNativeC.Lexer
         public Dictionary<string, TokenTypes> Operators;
         public Dictionary<string, TokenTypes> ReserverWords;
         public Dictionary<string, TokenTypes> SpecialOperators;
+       public Dictionary<TokenTypes, TokenTypes> RelationalOperators;
         public List<char> SpecialSymbols = new List<char>();
         public  List<string>DataTypes = new List<string>();
 
@@ -26,6 +27,33 @@ namespace WebCompilerToNativeC.Lexer
             InitSpecialOperator();
             InitSpecialSymbols();
             InitDataTypes();
+            InitalRelationalOperators();
+
+        }
+
+       public void InitalRelationalOperators()
+        {
+            
+            ;
+            RelationalOperators.Add(TokenTypes.IfEqual, TokenTypes.IfEqual);
+            RelationalOperators.Add(TokenTypes.UnEqual, TokenTypes.UnEqual);
+            RelationalOperators.Add(TokenTypes.GreaterThanOrEqual, TokenTypes.GreaterThanOrEqual);
+            RelationalOperators.Add(TokenTypes.LessThanOrEqual, TokenTypes.LessThanOrEqual);
+            RelationalOperators.Add(TokenTypes.And, TokenTypes.And);
+            RelationalOperators.Add(TokenTypes.Or, TokenTypes.Or);
+            RelationalOperators.Add(TokenTypes.LeftShift, TokenTypes.LeftShift);
+            RelationalOperators.Add(TokenTypes.LeftShift, TokenTypes.LeftShift);
+            RelationalOperators.Add(TokenTypes.AddAndAssignment, TokenTypes.AddAndAssignment);
+            RelationalOperators.Add(TokenTypes.SubAndAssignment, TokenTypes.SubAndAssignment);
+            RelationalOperators.Add(TokenTypes.MulAndAssignment, TokenTypes.MulAndAssignment);
+            RelationalOperators.Add(TokenTypes.DivAndAssignment, TokenTypes.DivAndAssignment);
+            RelationalOperators.Add(TokenTypes.ModulAndAssignment, TokenTypes.ModulAndAssignment);
+            RelationalOperators.Add(TokenTypes.BitwiseAndAndAssignment, TokenTypes.BitwiseAndAndAssignment);
+            RelationalOperators.Add(TokenTypes.BitwiseExclusiveOrAndAssignment, TokenTypes.BitwiseExclusiveOrAndAssignment);
+            RelationalOperators.Add(TokenTypes.BitwiseInclusiveOrAndAssignment, TokenTypes.BitwiseInclusiveOrAndAssignment);
+           
+
+
 
         }
 
