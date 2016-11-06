@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace WebCompilerToNativeC.Parser
         private Token _currentToken;
         public ReserverdWords RWords = new ReserverdWords();
        public HandlerToSyntactic  Hanlder = new HandlerToSyntactic();
+        //To verify when dnt get the token expected
+        public Result result;
 
         public Syntactic( Lexer.Lexer lexer)
         {
@@ -30,9 +33,12 @@ namespace WebCompilerToNativeC.Parser
         }
         /***************************/
 
-        public void Parser()
+        public void ListOfSentences()
         {
             Sentence();
+            if(!CompareTokenType(TokenTypes.Eof))
+                ListOfSentences();
+
         }
 
         public void Sentence()
@@ -43,6 +49,88 @@ namespace WebCompilerToNativeC.Parser
                 Declaretion();
                 GeneralDeclration();
             }
+
+            else if (CompareTokenType(TokenTypes.Eos))
+            {
+                ConsumeNextToken();
+            }
+            else if (CompareTokenType(TokenTypes.IfEqual))
+            {
+                If();
+            }
+            else if (CompareTokenType(TokenTypes.RwWhile))
+                While();
+
+            else if (CompareTokenType(TokenTypes.RwFor))
+                ForLoop();
+            
+        }
+
+        private void ForLoop()
+        {
+           ConsumeNextToken();
+            if (CompareTokenType(TokenTypes.LParenthesis))
+            {
+                
+            } 
+
+        }
+
+        private void While()
+        {
+            Expression();
+            BlockForLoop();
+
+        }
+
+        private void BlockForLoop()
+        {
+            
+            if (CompareTokenType(TokenTypes.Lbrace))
+            {
+                ListOfSentences();
+                if (CompareTokenType(TokenTypes.Rbrace))
+                    ConsumeNextToken();
+            }
+            else
+            {
+                Hanlder.DefaultError(_currentToken);
+            }
+                
+
+        }
+
+        private void If()
+        {
+            ConsumeNextToken();
+            Expression();
+            BlockForIf();
+
+        }
+
+        private void BlockForIf()
+        {
+            if (CompareTokenType(TokenTypes.Lbrace))
+            {
+                ListOfSentences();
+               if( CompareTokenType(TokenTypes.Rbrace))
+                    ConsumeNextToken();
+               if(CompareTokenType(TokenTypes.RwElse))
+                    Else();
+
+            }
+            else
+            {
+                Sentence();
+                if(CompareTokenType(TokenTypes.RwElse))
+                Else();
+            }
+
+        }
+
+        private void Else()
+        {
+            BlockForIf();
         }
 
         public void Declaretion()
@@ -148,7 +236,7 @@ namespace WebCompilerToNativeC.Parser
 
         private void ChooseIdType()
         {
-            Result result;
+             
             //Revisar si esta parte del codigo va a funcionar
             ConsumeNextToken();
             if (CompareTokenType(TokenTypes.AndBinary))

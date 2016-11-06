@@ -108,6 +108,7 @@ namespace WebCompilerToNativeC.Lexer
            ReserverWords.Add("continue", TokenTypes.RwContinue);
            ReserverWords.Add("true",TokenTypes.True);
            ReserverWords.Add("false", TokenTypes.False);
+           ReserverWords.Add("else",TokenTypes.RwElse);
 
 
         }
