@@ -23,7 +23,7 @@ namespace WebCompilerToNativeC.Parser
        }
 
         //When dnt found any production that could be allowed
-       public Exception defaultError(Token currentToken)
+       public Exception DefaultError(Token currentToken)
        {
             return new  SyntacticException("UnExpected Symbol",currentToken.Row,currentToken.Column);
     }

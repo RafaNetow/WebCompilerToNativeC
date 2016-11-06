@@ -90,6 +90,10 @@ namespace WebCompilerToNativeC.Parser
 
 
             }
+            else
+            {
+                Hanlder.DefaultError(_currentToken);
+            }
 
         }
 
@@ -106,6 +110,14 @@ namespace WebCompilerToNativeC.Parser
             if (RWords.DataTypes.Contains(_currentToken.Lexeme))
             {
                 ChooseIdType();
+                if (CompareTokenType(TokenTypes.Comma))
+                {
+                    OptionalListOfParams();
+                }
+                else
+                {
+                    
+                }
             }
             else
             {
@@ -115,9 +127,28 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
+        private void OptionalListOfParams()
+        {
+           ConsumeNextToken();
+            if (RWords.DataTypes.Contains(_currentToken.Lexeme))
+            {
+                ChooseIdType();
+                if (CompareTokenType(TokenTypes.Comma))
+                {
+                    OptionalListOfParams();
+                }
+                else
+                {
+
+                }
+            }
+            Hanlder.DefaultError(_currentToken);
+
+        }
+
         private void ChooseIdType()
         {
-            Result result
+            Result result;
             //Revisar si esta parte del codigo va a funcionar
             ConsumeNextToken();
             if (CompareTokenType(TokenTypes.AndBinary))
@@ -147,6 +178,10 @@ namespace WebCompilerToNativeC.Parser
             }else if (CompareTokenType(TokenTypes.Id))
             {
                 ConsumeNextToken();
+            }
+            else
+            {
+                Hanlder.DefaultError(_currentToken);
             }
 
 
