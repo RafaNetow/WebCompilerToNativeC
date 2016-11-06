@@ -12,6 +12,7 @@ namespace WebCompilerToNativeC.Parser
         private Lexer.Lexer _lexer;
         private Token _currentToken;
         public ReserverdWords RWords = new ReserverdWords();
+       public HandlerToSyntactic  Hanlder = new HandlerToSyntactic();
 
         public Syntactic( Lexer.Lexer lexer)
         {
@@ -82,6 +83,7 @@ namespace WebCompilerToNativeC.Parser
            }
             else if (CompareTokenType(TokenTypes.LParenthesis))
             {
+                IsFunctionDeclration();
                 ConsumeNextToken();
                 ParameterList();
 
@@ -91,9 +93,62 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
+        private void IsFunctionDeclration()
+        {
+            ConsumeNextToken();
+            ParameterList();
+
+
+        }
+
         private void ParameterList()
         {
-         //   if(CompareTokenType(Token))
+            if (RWords.DataTypes.Contains(_currentToken.Lexeme))
+            {
+                ChooseIdType();
+            }
+            else
+            {
+                
+            }
+            
+
+        }
+
+        private void ChooseIdType()
+        {
+            Result result
+            //Revisar si esta parte del codigo va a funcionar
+            ConsumeNextToken();
+            if (CompareTokenType(TokenTypes.AndBinary))
+            {   ConsumeNextToken();
+               result=  Hanlder.CheckToken(TokenTypes.Id, _currentToken);
+                if (result.Succes)
+                {
+                    ConsumeNextToken();
+                }
+                throw result.Excpetion;
+
+
+            }
+            else if (CompareTokenType(TokenTypes.Mul))
+            {
+                IsPointer();
+                
+                result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
+                if (result.Succes)
+                {
+                    ConsumeNextToken();
+                }
+                else
+                {
+                    throw result.Excpetion;
+                }
+            }else if (CompareTokenType(TokenTypes.Id))
+            {
+                ConsumeNextToken();
+            }
+
 
         }
 
@@ -331,14 +386,9 @@ namespace WebCompilerToNativeC.Parser
                 IsPointer();
 
 
+
         }
     }
 
-    public class SyntacticException : Exception
-    {
-        public SyntacticException(string message, int row, int column)
-        {
-            throw new NotImplementedException();
-        }
-    }
+   
 }

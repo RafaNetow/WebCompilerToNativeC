@@ -52,6 +52,7 @@
     <Compile Include="Lexer\Symbol.cs" />
     <Compile Include="Lexer\Token.cs" />
     <Compile Include="Lexer\TokenTypes.cs" />
+    <Compile Include="Parser\Syntactic.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
