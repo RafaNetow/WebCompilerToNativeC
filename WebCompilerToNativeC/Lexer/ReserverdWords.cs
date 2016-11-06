@@ -109,6 +109,11 @@ namespace WebCompilerToNativeC.Lexer
            ReserverWords.Add("true",TokenTypes.True);
            ReserverWords.Add("false", TokenTypes.False);
            ReserverWords.Add("else",TokenTypes.RwElse);
+           ReserverWords.Add("struct", TokenTypes.RwStruct);
+           ReserverWords.Add("case",TokenTypes.RwCase);
+           ReserverWords.Add("default",TokenTypes.RwDefault);
+
+
 
 
         }
@@ -161,6 +166,7 @@ namespace WebCompilerToNativeC.Lexer
             Operators.Add(",", TokenTypes.Comma);
             Operators.Add("{",TokenTypes.Lbrace);
             Operators.Add("}", TokenTypes.Rbrace);
+            Operators.Add(" :",TokenTypes.TwoPoints);
 
             Operators.Add(";", TokenTypes.Eos);
             

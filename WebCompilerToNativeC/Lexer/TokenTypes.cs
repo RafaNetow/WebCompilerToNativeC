@@ -79,6 +79,10 @@ namespace WebCompilerToNativeC.Lexer
         HexadecimalLiteral,
         CharLiteral,
         BooleanLiteral,
-        RwElse
+        RwElse,
+        TwoPoints,
+        RwStruct,
+        RwCase,
+        RwDefault
     }
 }
