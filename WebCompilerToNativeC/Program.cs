@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Hanlders;
 using WebCompilerToNativeC.Lexer;
+using WebCompilerToNativeC.Parser;
 
 namespace WebCompilerToNativeC
 {
@@ -17,7 +18,12 @@ namespace WebCompilerToNativeC
             var sourceCodes = handlerFile.getCode();
             Lexer.Lexer lexer = new Lexer.Lexer(new StringContent(sourceCodes.ToLower()));
             Console.WriteLine(sourceCodes);
-            var currentToken = lexer.GetNextToken();
+            Console.WriteLine("********************************************************");
+
+
+         
+
+            /*Testing Lexer
             while (currentToken.Type != TokenTypes.Eof)
             {
                 string s =
@@ -26,6 +32,25 @@ namespace WebCompilerToNativeC
                
                 currentToken = lexer.GetNextToken();
             }
+                  */
+              /* Testing Syntactic  */
+
+            Syntactic parser = new Syntactic(lexer);
+            try
+            {
+                parser.Parse();
+                Console.WriteLine(" No se encontro ningun error de sintaxys");
+
+            }
+            catch (Exception e)
+            {
+                Console.Write(e.Message);
+            }
+
+
+
+
+
             Console.ReadKey();
 
 

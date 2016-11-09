@@ -319,22 +319,24 @@ namespace WebCompilerToNativeC.Lexer
 
                     //Begin Of Comment
                     case 11:
-                        if (char.IsWhiteSpace(_currentSymbol.CSymbol))
-                        {
 
+                        if (_currentSymbol.CSymbol == '*')
+                            
+                        {
                             _currentSymbol = Conent.NextSymbol();
-                        }
-                        else if (_currentSymbol.CSymbol == '*')
                             state = 12;
+                        }
                         else if (rWords.Operators.ContainsKey(currentLexeme.Value[0].ToString()))
                         {
                             return MapperToTokenWithLexeme(rWords.Operators[currentLexeme.Value], currentLexeme);
                         }
-                     
-                        else { 
-                        throw new LexerException(
-                               $"Symbol {_currentSymbol.CSymbol} not recognized at Row:{_currentSymbol.Row} Col: {_currentSymbol.Column}");
-                        }break;
+
+                        else
+                        {
+                            throw new LexerException(
+                                $"Symbol {_currentSymbol.CSymbol} not recognized at Row:{_currentSymbol.Row} Col: {_currentSymbol.Column}");
+                        }
+                        break;
                         
                     //when code is comented
                     case 12:
@@ -343,8 +345,13 @@ namespace WebCompilerToNativeC.Lexer
 
                             _currentSymbol = Conent.NextSymbol();
                         }
-                        if (_currentSymbol.CSymbol == '*')
+                        else if (_currentSymbol.CSymbol == '*')
+                        {
                             state = 13;
+                            _currentSymbol = Conent.NextSymbol();
+                        }
+                          
+                        else
                         _currentSymbol = Conent.NextSymbol();
                         break;
 

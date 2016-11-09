@@ -17,3 +17,8 @@ C:\Users\Sequeiros\Documents\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC
 C:\Users\Sequeiros\Documents\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.exe
 C:\Users\Sequeiros\Documents\Proyectos\WebCompilerToNativeC\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.pdb
 C:\Users\Sequeirios\Documents\Proyects\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.exe.config
+C:\Users\Sequeirios\Documents\Proyects\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.exe
+C:\Users\Sequeirios\Documents\Proyects\WebCompilerToNativeC\bin\Debug\WebCompilerToNativeC.pdb
+C:\Users\Sequeirios\Documents\Proyects\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.csprojResolveAssemblyReference.cache
+C:\Users\Sequeirios\Documents\Proyects\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.exe
+C:\Users\Sequeirios\Documents\Proyects\WebCompilerToNativeC\obj\Debug\WebCompilerToNativeC.pdb

@@ -17,7 +17,7 @@ namespace WebCompilerToNativeC.Lexer
         {
             this.Input= input;
             _currentIndex = 0;
-            _row = 0;
+            _row = 1;
             _column = 0;
         }
 

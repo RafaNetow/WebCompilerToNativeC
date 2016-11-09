@@ -38,12 +38,18 @@ namespace WebCompilerToNativeC.Parser
 
         public Token PeekNextToke()
         {
-           var actualToken = _currentToken;
+            var actualToken = _currentToken;
            ConsumeNextToken();
             var nextToken = _currentToken;
             _currentToken = actualToken;
             return nextToken;
 
+        }
+
+
+        public void Parse()
+        {
+            ListOfSentences();
         }
         /***************************/
 
@@ -55,19 +61,23 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
+        public void VerifySintax()
+        {
+            
+        }
+
         public void Sentence()
         {
             if (RWords.DataTypes.Contains(_currentToken.Lexeme))
             {
-
                 Declaretion();
-                GeneralDeclaration();
+              
             }
 
             else if (CompareTokenType(TokenTypes.Eos))
                 ConsumeNextToken();
 
-            else if (CompareTokenType(TokenTypes.IfEqual))
+            else if (CompareTokenType(TokenTypes.RwIf))
                 If();
 
             else if (CompareTokenType(TokenTypes.RwWhile))
@@ -219,7 +229,7 @@ namespace WebCompilerToNativeC.Parser
             ValueForId();
             else if(CompareTokenType(TokenTypes.LParenthesis))
                 CallFunction();
-            Hanlder.DefaultError(_currentToken);
+            throw Hanlder.DefaultError(_currentToken);
         }
 
         private void Struct()
@@ -469,6 +479,11 @@ namespace WebCompilerToNativeC.Parser
         public void Declaretion()
         {
             GeneralDeclaration();
+            result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+            if (!result.Succes)
+                throw result.Excpetion;
+            ConsumeNextToken();
+
         }
 
         //General declartion is DataTye Pointer Identifeir
@@ -492,16 +507,20 @@ namespace WebCompilerToNativeC.Parser
 
         public void TypeOfDeclaration()
         {
+            ConsumeNextToken();
             if (CompareTokenType(TokenTypes.Asiggnation))
+            {
                 ValueForId();
-           else if (CompareTokenType(TokenTypes.OpenBracket))
-           {
-               IsArrayDeclaration();
-           }
-           else if (CompareTokenType(TokenTypes.Eos))
-           {
-               ConsumeNextToken();
-           }
+                MultiDeclaration();
+            }
+            else if (CompareTokenType(TokenTypes.OpenBracket))
+            {
+                IsArrayDeclaration();
+            }
+            else if (CompareTokenType(TokenTypes.Eos))
+            {
+                ConsumeNextToken();
+            }
             else if (CompareTokenType(TokenTypes.LParenthesis))
             {
                 IsFunctionDeclration();
@@ -511,11 +530,43 @@ namespace WebCompilerToNativeC.Parser
 
 
             }
+
+            else if (CompareTokenType(TokenTypes.Comma))
+            {
+                MultiDeclaration();
+            }
             else
             {
                 Hanlder.DefaultError(_currentToken);
             }
 
+        }
+
+        private void MultiDeclaration()
+        {
+            OptianalId();
+        }
+
+        private void OptianalId()
+        {
+            if (CompareTokenType(TokenTypes.Comma))
+                ListOfId();
+        }
+
+        private void ListOfId()
+        {
+            ConsumeNextToken();
+            if (CompareTokenType(TokenTypes.Id))
+                OtherIdOrValue();
+        }
+
+        private void OtherIdOrValue()
+        {
+            ConsumeNextToken();
+            if (CompareTokenType(TokenTypes.Asiggnation))
+                ValueForId();
+             if(CompareTokenType(TokenTypes.Comma))
+                OptianalId();
         }
 
         private void IsFunctionDeclration()

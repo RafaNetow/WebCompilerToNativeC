@@ -8,7 +8,7 @@ namespace WebCompilerToNativeC.Parser
 {
     public class SyntacticException: Exception
     {
-        public SyntacticException(string message, int row, int column)  : base( message + "Column :" + column.ToString() + "Row :" + row.ToString())
+        public SyntacticException(string message, int row, int column)  : base( message + "Column  : " + column.ToString() + " Row  : " + row.ToString())
         {
             
         }

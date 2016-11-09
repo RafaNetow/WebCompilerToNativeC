@@ -21,6 +21,7 @@ namespace WebCompilerToNativeC.Lexer
             Operators = new Dictionary<string, TokenTypes>();
             ReserverWords = new Dictionary<string, TokenTypes>();
             SpecialOperators = new Dictionary<string, TokenTypes>();
+            RelationalOperators = new Dictionary<TokenTypes, TokenTypes>();
             
             InitOperatorsDictionary();
             InitReservdWords();
@@ -34,7 +35,7 @@ namespace WebCompilerToNativeC.Lexer
        public void InitalRelationalOperators()
         {
             
-            ;
+            
             RelationalOperators.Add(TokenTypes.IfEqual, TokenTypes.IfEqual);
             RelationalOperators.Add(TokenTypes.UnEqual, TokenTypes.UnEqual);
             RelationalOperators.Add(TokenTypes.GreaterThanOrEqual, TokenTypes.GreaterThanOrEqual);
@@ -42,7 +43,7 @@ namespace WebCompilerToNativeC.Lexer
             RelationalOperators.Add(TokenTypes.And, TokenTypes.And);
             RelationalOperators.Add(TokenTypes.Or, TokenTypes.Or);
             RelationalOperators.Add(TokenTypes.LeftShift, TokenTypes.LeftShift);
-            RelationalOperators.Add(TokenTypes.LeftShift, TokenTypes.LeftShift);
+         
             RelationalOperators.Add(TokenTypes.AddAndAssignment, TokenTypes.AddAndAssignment);
             RelationalOperators.Add(TokenTypes.SubAndAssignment, TokenTypes.SubAndAssignment);
             RelationalOperators.Add(TokenTypes.MulAndAssignment, TokenTypes.MulAndAssignment);
