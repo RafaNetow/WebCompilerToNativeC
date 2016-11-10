@@ -167,7 +167,7 @@ namespace WebCompilerToNativeC.Lexer
                         }
                         else
                         {
-                            return new Token {Type = TokenTypes.Id, Lexeme = currentLexeme.Value,Column = currentLexeme.Column};
+                            return new Token {Type = TokenTypes.Id, Lexeme = currentLexeme.Value,Column = currentLexeme.Column, Row = currentLexeme.Row};
                         }
                 
                         break;

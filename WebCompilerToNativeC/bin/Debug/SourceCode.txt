@@ -1,5 +1,13 @@
 
+  int i = 0;
+   while(++i<5)
+   {
+      printf("%d",i);
+   }
+   return suma();
 /* Declaretion Test*/
+
+
 
  #include  "path-spec" 
 int    i, j, k;
@@ -56,4 +64,7 @@ while( a < 20 ) {
    for( a = 10; a < 20; a = a + 1 ){
       printf("value of a: %d\n", a);
    }
+   
  
+   
+   /*ForEach  */

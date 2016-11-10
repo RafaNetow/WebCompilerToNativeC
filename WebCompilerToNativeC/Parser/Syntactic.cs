@@ -153,17 +153,22 @@ namespace WebCompilerToNativeC.Parser
         }
 
         private void Return()
-        {
+        { 
             ConsumeNextToken();
 
             if (CompareTokenType(TokenTypes.Eos))
                 ConsumeNextToken();
             else
             {
-                result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
-                if (!result.Succes)
-                    throw result.Excpetion;
+                 if(CompareTokenType(TokenTypes.OctalLietral)|| CompareTokenType(TokenTypes.NumericalLiteral) ||  CompareTokenType(TokenTypes.StringLiteral) || CompareTokenType(TokenTypes.DecimalLiteral))
                 ConsumeNextToken();
+
+                 else if (CompareTokenType(TokenTypes.Id))
+                 { ConsumeNextToken();
+                  if( CompareTokenType(TokenTypes.LParenthesis))
+                        CallFunction();
+                     
+                 }
 
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
@@ -440,15 +445,18 @@ namespace WebCompilerToNativeC.Parser
             result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
             if (result.Succes)
             {
+                ConsumeNextToken();
                 Expression();
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (result.Succes)
                 {
+                    ConsumeNextToken();
                     Expression();
                     result = Hanlder.CheckToken(TokenTypes.RParenthesis, _currentToken);
                     if (result.Succes)
                     {
-                            BlockForLoop();
+                        ConsumeNextToken();
+                        BlockForLoop();
                     }
                     else
                     {
@@ -875,7 +883,8 @@ namespace WebCompilerToNativeC.Parser
         //Compare if exist some retalacion operation that should return some bool or some similar
         private void RelationalExpressionPrime()
         {
-            if (!RWords.RelationalOperators.ContainsKey(_currentToken.Type)) return;
+            if (!RWords.RelationalOperators.ContainsKey(_currentToken.Type) && !CompareTokenType(TokenTypes.Asiggnation))
+                return;
             RelationalOperators();
             ExpressionAdicion();
             RelationalExpressionPrime();
@@ -964,7 +973,8 @@ namespace WebCompilerToNativeC.Parser
             //Verificar bien o de literales Booleanas
             else if (CompareTokenType(TokenTypes.NumericalLiteral) || CompareTokenType(TokenTypes.StringLiteral) ||
                      CompareTokenType(TokenTypes.DateLiteral) || CompareTokenType(TokenTypes.NumericalLiteral) ||
-                     CompareTokenType(TokenTypes.CharLiteral) || CompareTokenType(TokenTypes.BooleanLiteral) || CompareTokenType(TokenTypes.DecimalLiteral) )
+                     CompareTokenType(TokenTypes.CharLiteral) || CompareTokenType(TokenTypes.BooleanLiteral) || CompareTokenType(TokenTypes.DecimalLiteral) || CompareTokenType(TokenTypes.OctalLietral))
+                     
             {
                 ConsumeNextToken();
             }
@@ -1001,8 +1011,9 @@ namespace WebCompilerToNativeC.Parser
             if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement) ||
                 CompareTokenType(TokenTypes.AndBinary) || CompareTokenType(TokenTypes.ComplementBinary) ||
                 CompareTokenType(TokenTypes.OrBinary) || CompareTokenType(TokenTypes.XorBinary) ||
-                CompareTokenType(TokenTypes.Not)
-                )
+                CompareTokenType(TokenTypes.Not) || CompareTokenType(TokenTypes.Sub) || CompareTokenType(TokenTypes.Increment)
+                 || CompareTokenType(TokenTypes.Decrement))
+                
             {
                 ConsumeNextToken();
             }
@@ -1012,10 +1023,10 @@ namespace WebCompilerToNativeC.Parser
         public void ListOfExpressions()
         {
             ConsumeNextToken();
+            if (CompareTokenType(TokenTypes.RParenthesis)) return;
             Expression();
-            if(CompareTokenType(TokenTypes.Comma))
-            ListOfExpressions();
-
+            if (CompareTokenType(TokenTypes.Comma))
+                ListOfExpressions();
         }
 
         public void OptionalExpression()
