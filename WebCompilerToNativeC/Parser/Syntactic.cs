@@ -481,7 +481,8 @@ namespace WebCompilerToNativeC.Parser
             result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
             if (result.Succes)
             {
-                result = Hanlder.CheckToken(TokenTypes.TwoPoints, _currentToken);
+                ConsumeNextToken();
+                result = Hanlder.CheckToken(TokenTypes.Common, _currentToken);
                 if (result.Succes)
                 {
                     ConsumeNextToken();
@@ -492,6 +493,7 @@ namespace WebCompilerToNativeC.Parser
                         result = Hanlder.CheckToken(TokenTypes.RParenthesis, _currentToken);
                         if (result.Succes)
                         {
+                            ConsumeNextToken();
                             BlockForLoop();
                         }
                         else
@@ -510,6 +512,7 @@ namespace WebCompilerToNativeC.Parser
                     throw result.Excpetion;
                 }
             }
+           
             else
             {
                 throw result.Excpetion;

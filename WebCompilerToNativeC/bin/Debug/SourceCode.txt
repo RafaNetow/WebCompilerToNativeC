@@ -64,6 +64,13 @@ while( a < 20 ) {
    for( a = 10; a < 20; a = a + 1 ){
       printf("value of a: %d\n", a);
    }
+   for(int casa: habitacion){
+       if( a>9)
+            printf("value of a: %d\n", a);   
+        else
+            suma();  
+   }
+   
    
   C = 10;
   pj = &c;
