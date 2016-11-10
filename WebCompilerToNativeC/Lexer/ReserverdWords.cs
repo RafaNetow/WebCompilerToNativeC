@@ -114,6 +114,7 @@ namespace WebCompilerToNativeC.Lexer
            ReserverWords.Add("struct", TokenTypes.RwStruct);
            ReserverWords.Add("case",TokenTypes.RwCase);
            ReserverWords.Add("default",TokenTypes.RwDefault);
+           ReserverWords.Add("return", TokenTypes.RwReturn);
 
 
 

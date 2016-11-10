@@ -83,6 +83,7 @@ namespace WebCompilerToNativeC.Lexer
         TwoPoints,
         RwStruct,
         RwCase,
-        RwDefault
+        RwDefault,
+        RwReturn
     }
 }

@@ -100,17 +100,48 @@ namespace WebCompilerToNativeC.Parser
                 Struct();
 
             else if (CompareTokenType(TokenTypes.Id))
+            {
                 PreId();
-            
+                result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
+            }
+
             else if (CompareTokenType(TokenTypes.RwInclude))
                 Include();
+            
+            else if (CompareTokenType(TokenTypes.RwReturn))
+                Return();
 
             else if (CompareTokenType(TokenTypes.RwSwitch))
                 Switch();
             else if (CompareTokenType(TokenTypes.RwEnum))
                 Enums();
-            
-            
+
+
+        }
+
+        private void Return()
+        {
+            ConsumeNextToken();
+
+            if (CompareTokenType(TokenTypes.Eos))
+                ConsumeNextToken();
+            else
+            {
+                result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
+
+                result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
+            }
+
+
         }
 
         private void Enums()
@@ -234,10 +265,7 @@ namespace WebCompilerToNativeC.Parser
             else if (CompareTokenType(TokenTypes.LParenthesis))
             {
                 CallFunction();
-                result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
-                if (!result.Succes)
-                    throw result.Excpetion;
-                ConsumeNextToken();
+            
             }else
                 throw Hanlder.DefaultError(_currentToken);
 
@@ -551,7 +579,7 @@ namespace WebCompilerToNativeC.Parser
                     throw result.Excpetion;
                 ConsumeNextToken();
                 ListOfSentences();
-                result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
+                result = Hanlder.CheckToken(TokenTypes.Rbrace, _currentToken);
                 if (!result.Succes)
                     throw result.Excpetion;
                 ConsumeNextToken();
