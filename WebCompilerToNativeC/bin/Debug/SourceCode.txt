@@ -65,6 +65,15 @@ while( a < 20 ) {
       printf("value of a: %d\n", a);
    }
    
- 
-   
+  C = 10;
+  pj = &c;
+  d = *p;
+  pj = &d;
+  *s =4;
    /*ForEach  */
+   *******s = 5;
+   
+   x+= 2;
+   y-= 4;
+   
+   *b = bb->m_anumber;

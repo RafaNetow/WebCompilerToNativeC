@@ -101,8 +101,10 @@ namespace WebCompilerToNativeC.Parser
             else if (CompareTokenType(TokenTypes.RwStruct))
                 Struct();
 
-            else if (CompareTokenType(TokenTypes.Id))
+            else if (CompareTokenType(TokenTypes.Id) || CompareTokenType(TokenTypes.Mul))
             {
+                if(CompareTokenType(TokenTypes.Mul))
+                    IsPointer();
                 PreId();
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
@@ -139,7 +141,7 @@ namespace WebCompilerToNativeC.Parser
 
             if (!CompareTokenType(TokenTypes.Id)) return;
             ConsumeNextToken();
-            if (CompareTokenType(TokenTypes.Asiggnation))
+            if (CompareTokenType(TokenTypes.Asiggnation) || CompareTokenType(TokenTypes.AddAndAssignment) || CompareTokenType(TokenTypes.SubAndAssignment) || CompareTokenType(TokenTypes.MulAndAssignment) || CompareTokenType(TokenTypes.DivAndAssignment))
             {
                 ValueForId();
                 MultiDeclaration();
@@ -159,16 +161,16 @@ namespace WebCompilerToNativeC.Parser
             if (CompareTokenType(TokenTypes.Eos))
                 ConsumeNextToken();
             else
-            {
-                 if(CompareTokenType(TokenTypes.OctalLietral)|| CompareTokenType(TokenTypes.NumericalLiteral) ||  CompareTokenType(TokenTypes.StringLiteral) || CompareTokenType(TokenTypes.DecimalLiteral))
-                ConsumeNextToken();
+            {     Expression();
+                // if(CompareTokenType(TokenTypes.OctalLietral)|| CompareTokenType(TokenTypes.NumericalLiteral) ||  CompareTokenType(TokenTypes.StringLiteral) || CompareTokenType(TokenTypes.DecimalLiteral))
+                //ConsumeNextToken();
 
-                 else if (CompareTokenType(TokenTypes.Id))
-                 { ConsumeNextToken();
-                  if( CompareTokenType(TokenTypes.LParenthesis))
-                        CallFunction();
+                // else if (CompareTokenType(TokenTypes.Id))
+                // { ConsumeNextToken();
+                //  if( CompareTokenType(TokenTypes.LParenthesis))
+                //        CallFunction();
                      
-                 }
+                // }
 
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
@@ -310,14 +312,10 @@ namespace WebCompilerToNativeC.Parser
         private void PreId()
         {
             ConsumeNextToken();
-            if(CompareTokenType(TokenTypes.Asiggnation))
-            ValueForId();
-            else if (CompareTokenType(TokenTypes.LParenthesis))
-            {
-                CallFunction();
-            
-            }else
-                throw Hanlder.DefaultError(_currentToken);
+           
+           
+                ValueForId();
+          
 
         }
 
@@ -626,7 +624,7 @@ namespace WebCompilerToNativeC.Parser
         public void TypeOfDeclaration()
         {
             ConsumeNextToken();
-            if (CompareTokenType(TokenTypes.Asiggnation))
+            if (CompareTokenType(TokenTypes.Asiggnation) || CompareTokenType(TokenTypes.AddAndAssignment) || CompareTokenType(TokenTypes.SubAndAssignment) || CompareTokenType(TokenTypes.MulAndAssignment) || CompareTokenType(TokenTypes.DivAndAssignment))
             {
                 ValueForId();
                 MultiDeclaration();
@@ -702,7 +700,7 @@ namespace WebCompilerToNativeC.Parser
         private void OtherIdOrValue()
         {
             ConsumeNextToken();
-            if (CompareTokenType(TokenTypes.Asiggnation))
+            if (CompareTokenType(TokenTypes.Asiggnation) || CompareTokenType(TokenTypes.AddAndAssignment) || CompareTokenType(TokenTypes.SubAndAssignment) || CompareTokenType(TokenTypes.MulAndAssignment) || CompareTokenType(TokenTypes.DivAndAssignment))
                 ValueForId();
              if(CompareTokenType(TokenTypes.Comma))
                 OptianalId();
@@ -865,10 +863,57 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
+        public void IdAccesorsOrFunction()
+        {
+            if (CompareTokenType(TokenTypes.LParenthesis))
+            {
+                CallFunction();
+
+            }
+            else
+            {
+                if (CompareTokenType(TokenTypes.OpenBracket))
+                {
+                    SizeForArray();
+                    ConsumeNextToken();
+                    if (CompareTokenType(TokenTypes.OpenBracket))
+                        BidArray();
+                }
+
+                if (CompareTokenType(TokenTypes.Point) || CompareTokenType(TokenTypes.reference))
+                    ArrowOrDot();
+
+            }
+        }
+
+
         private void ValueForId()
         {
+          IdAccesorsOrFunction();
+           
+            if (CompareTokenType(TokenTypes.Asiggnation) || CompareTokenType(TokenTypes.AddAndAssignment) ||
+                CompareTokenType(TokenTypes.SubAndAssignment) || CompareTokenType(TokenTypes.MulAndAssignment) ||
+                CompareTokenType(TokenTypes.DivAndAssignment))
+
+            {ConsumeNextToken();
+                Expression();
+            }
+
+
+
+
+
+
+        }
+
+        private void ArrowOrDot()
+        {
             ConsumeNextToken();
-            Expression();
+
+            result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
+                if(!result.Succes)
+                    throw result.Excpetion;
+                        ConsumeNextToken();
 
         }
 
@@ -956,8 +1001,27 @@ namespace WebCompilerToNativeC.Parser
 
         public void Factor()
         {
-        if (CompareTokenType(TokenTypes.Id))
-                FactorFunArray();
+            if (CompareTokenType(TokenTypes.StringLiteral) ||
+                    CompareTokenType(TokenTypes.DateLiteral) ||
+                      CompareTokenType(TokenTypes.BooleanLiteral))
+
+            {
+                ConsumeNextToken();
+            }
+          else  if (CompareTokenType(TokenTypes.NumericalLiteral) || CompareTokenType(TokenTypes.DecimalLiteral) || CompareTokenType(TokenTypes.CharLiteral) || CompareTokenType(TokenTypes.DecimalLiteral) || CompareTokenType(TokenTypes.OctalLietral))
+            {
+                ConsumeNextToken();
+                OptionalIncrementOrDecrement();
+            }
+            else if (CompareTokenType(TokenTypes.Id))
+            {
+                ConsumeNextToken();
+                if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement))
+                    ConsumeNextToken();
+                else
+                    IdAccesorsOrFunction();
+            }
+           
             //Verify if expression could begin with LPARENT of if haved to consum that token after
             else if (CompareTokenType(TokenTypes.LParenthesis))
             {
@@ -971,25 +1035,29 @@ namespace WebCompilerToNativeC.Parser
             }
 
             //Verificar bien o de literales Booleanas
-            else if (CompareTokenType(TokenTypes.NumericalLiteral) || CompareTokenType(TokenTypes.StringLiteral) ||
-                     CompareTokenType(TokenTypes.DateLiteral) || CompareTokenType(TokenTypes.NumericalLiteral) ||
-                     CompareTokenType(TokenTypes.CharLiteral) || CompareTokenType(TokenTypes.BooleanLiteral) || CompareTokenType(TokenTypes.DecimalLiteral) || CompareTokenType(TokenTypes.OctalLietral))
-                     
-            {
-                ConsumeNextToken();
-            }
+            
             else
             {
                 throw new SyntacticException("Expected a factor", _currentToken.Row, _currentToken.Column);
             }
         }
+
+        private void OptionalIncrementOrDecrement()
+        {
+            if(CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement))
+                ConsumeNextToken();
+
+        }
+
         /* In this production could be three case
         *CallFunction
         *Index,Pointer or Some Point to Acces  */
         public void FactorFunArray()
         {
 
-            ConsumeNextToken();
+       
+           
+           
             if (CompareTokenType(TokenTypes.LParenthesis))
                 CallFunction();
             
@@ -1011,7 +1079,7 @@ namespace WebCompilerToNativeC.Parser
             if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement) ||
                 CompareTokenType(TokenTypes.AndBinary) || CompareTokenType(TokenTypes.ComplementBinary) ||
                 CompareTokenType(TokenTypes.OrBinary) || CompareTokenType(TokenTypes.XorBinary) ||
-                CompareTokenType(TokenTypes.Not) || CompareTokenType(TokenTypes.Sub) || CompareTokenType(TokenTypes.Increment)
+                CompareTokenType(TokenTypes.Not) || CompareTokenType(TokenTypes.Sub) || CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Mul)
                  || CompareTokenType(TokenTypes.Decrement))
                 
             {
