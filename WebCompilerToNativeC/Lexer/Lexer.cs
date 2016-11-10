@@ -77,8 +77,8 @@ namespace WebCompilerToNativeC.Lexer
                             return new Token
                             {
                                 Type = TokenTypes.Eof,
-                                Column = currentLexeme.Column,
-                                Row = currentLexeme.Row,
+                                Column = _currentSymbol.Column,
+                                Row = _currentSymbol.Row,
                                 Lexeme = "$"
                             };
                         }

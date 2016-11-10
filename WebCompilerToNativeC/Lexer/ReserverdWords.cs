@@ -43,7 +43,8 @@ namespace WebCompilerToNativeC.Lexer
             RelationalOperators.Add(TokenTypes.And, TokenTypes.And);
             RelationalOperators.Add(TokenTypes.Or, TokenTypes.Or);
             RelationalOperators.Add(TokenTypes.LeftShift, TokenTypes.LeftShift);
-         
+            RelationalOperators.Add(TokenTypes.LessThan, TokenTypes.LessThan);
+            RelationalOperators.Add(TokenTypes.GreaterThan, TokenTypes.GreaterThan);
             RelationalOperators.Add(TokenTypes.AddAndAssignment, TokenTypes.AddAndAssignment);
             RelationalOperators.Add(TokenTypes.SubAndAssignment, TokenTypes.SubAndAssignment);
             RelationalOperators.Add(TokenTypes.MulAndAssignment, TokenTypes.MulAndAssignment);

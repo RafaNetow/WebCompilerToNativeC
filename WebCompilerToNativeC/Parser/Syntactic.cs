@@ -56,7 +56,7 @@ namespace WebCompilerToNativeC.Parser
         public void ListOfSentences()
         {
             Sentence();
-            if(!CompareTokenType(TokenTypes.Eof))
+            if(!CompareTokenType(TokenTypes.Eof) && !CompareTokenType(TokenTypes.Rbrace))
                 ListOfSentences();
 
         }
@@ -73,6 +73,10 @@ namespace WebCompilerToNativeC.Parser
                 Declaretion();
               
             }
+            else if (CompareTokenType(TokenTypes.Rbrace))
+                return;
+            else if(CompareTokenType(TokenTypes.RwElse))
+                Else();
 
             else if (CompareTokenType(TokenTypes.Eos))
                 ConsumeNextToken();
@@ -227,9 +231,16 @@ namespace WebCompilerToNativeC.Parser
             ConsumeNextToken();
             if(CompareTokenType(TokenTypes.Asiggnation))
             ValueForId();
-            else if(CompareTokenType(TokenTypes.LParenthesis))
+            else if (CompareTokenType(TokenTypes.LParenthesis))
+            {
                 CallFunction();
-            throw Hanlder.DefaultError(_currentToken);
+                result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
+            }else
+                throw Hanlder.DefaultError(_currentToken);
+
         }
 
         private void Struct()
@@ -421,6 +432,7 @@ namespace WebCompilerToNativeC.Parser
 
         private void While()
         {
+            ConsumeNextToken();
             Expression();
             BlockForLoop();
 
@@ -431,6 +443,7 @@ namespace WebCompilerToNativeC.Parser
             
             if (CompareTokenType(TokenTypes.Lbrace))
             {
+                ConsumeNextToken();
                 ListOfSentences();
                 if (CompareTokenType(TokenTypes.Rbrace))
                     ConsumeNextToken();
@@ -455,6 +468,7 @@ namespace WebCompilerToNativeC.Parser
         {
             if (CompareTokenType(TokenTypes.Lbrace))
             {
+                ConsumeNextToken();
                 ListOfSentences();
                if( CompareTokenType(TokenTypes.Rbrace))
                     ConsumeNextToken();
@@ -473,16 +487,14 @@ namespace WebCompilerToNativeC.Parser
 
         private void Else()
         {
+            ConsumeNextToken();
             BlockForIf();
         }
 
         public void Declaretion()
         {
             GeneralDeclaration();
-            result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
-            if (!result.Succes)
-                throw result.Excpetion;
-            ConsumeNextToken();
+           
 
         }
 
@@ -512,10 +524,18 @@ namespace WebCompilerToNativeC.Parser
             {
                 ValueForId();
                 MultiDeclaration();
+                result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
             }
             else if (CompareTokenType(TokenTypes.OpenBracket))
             {
                 IsArrayDeclaration();
+                result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
             }
             else if (CompareTokenType(TokenTypes.Eos))
             {
@@ -526,6 +546,15 @@ namespace WebCompilerToNativeC.Parser
                 IsFunctionDeclration();
                 ConsumeNextToken();
                 ParameterList();
+                result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
+                ListOfSentences();
+                result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
 
 
 
@@ -534,6 +563,10 @@ namespace WebCompilerToNativeC.Parser
             else if (CompareTokenType(TokenTypes.Comma))
             {
                 MultiDeclaration();
+                result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
             }
             else
             {
@@ -613,7 +646,7 @@ namespace WebCompilerToNativeC.Parser
                 {
 
                 }
-            }
+            }else
             Hanlder.DefaultError(_currentToken);
 
         }
@@ -667,8 +700,7 @@ namespace WebCompilerToNativeC.Parser
                 BidArray();
             if (CompareTokenType(TokenTypes.Asiggnation))
                 OptionalInitOfArray();
-            if (CompareTokenType(TokenTypes.Eos))
-                ConsumeNextToken();
+            
             else
             {
                 
@@ -692,6 +724,7 @@ namespace WebCompilerToNativeC.Parser
 
         private void BidArray()
         {
+            ConsumeNextToken();
             SizeBidArray();
             if (CompareTokenType(TokenTypes.CloseBracket))
                 ConsumeNextToken();
@@ -744,14 +777,10 @@ namespace WebCompilerToNativeC.Parser
         //Compare if exist some retalacion operation that should return some bool or some similar
         private void RelationalExpressionPrime()
         {
-
-            if (RWords.RelationalOperators.ContainsKey(_currentToken.Type))
-            {
-                RelationalOperators();
-                ExpressionAdicion();
-                RelationalExpressionPrime();
-            }
-
+            if (!RWords.RelationalOperators.ContainsKey(_currentToken.Type)) return;
+            RelationalOperators();
+            ExpressionAdicion();
+            RelationalExpressionPrime();
         }
 
         private void RelationalOperators()
@@ -779,8 +808,8 @@ namespace WebCompilerToNativeC.Parser
             {
               
                 AdditiveOperators();
-                ExpressionMul();
-                ExpressionAdicion();
+                ExpressionMul(); // Resolve this problem viendo la gramatica
+                ExpressionAdicionPrime();
             }
 
         }
@@ -797,7 +826,7 @@ namespace WebCompilerToNativeC.Parser
                 ExpressionUnary();
                 ExpressionMulPrime();
            // }
-          //  Factor();
+          //  Factor();f
 
         }
 
@@ -823,20 +852,28 @@ namespace WebCompilerToNativeC.Parser
         if (CompareTokenType(TokenTypes.Id))
                 FactorFunArray();
             //Verify if expression could begin with LPARENT of if haved to consum that token after
-            else if (CompareTokenType(TokenTypes.RParenthesis))             
-                Expression();
-
-        //Verificar bien o de literales Booleanas
-         else if (CompareTokenType(TokenTypes.NumericalLiteral) || CompareTokenType(TokenTypes.StringLiteral) ||
-                  CompareTokenType(TokenTypes.DateLiteral) || CompareTokenType(TokenTypes.NumericalLiteral) ||
-                  CompareTokenType(TokenTypes.CharLiteral) || CompareTokenType(TokenTypes.BooleanLiteral))
-         {
+            else if (CompareTokenType(TokenTypes.LParenthesis))
+            {
                 ConsumeNextToken();
-         }
-         else
-         {
-             throw new SyntacticException("Expected a factor", _currentToken.Row, _currentToken.Column);
-         }
+                Expression();
+                result = Hanlder.CheckToken(TokenTypes.RParenthesis, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+
+                ConsumeNextToken();
+            }
+
+            //Verificar bien o de literales Booleanas
+            else if (CompareTokenType(TokenTypes.NumericalLiteral) || CompareTokenType(TokenTypes.StringLiteral) ||
+                     CompareTokenType(TokenTypes.DateLiteral) || CompareTokenType(TokenTypes.NumericalLiteral) ||
+                     CompareTokenType(TokenTypes.CharLiteral) || CompareTokenType(TokenTypes.BooleanLiteral) || CompareTokenType(TokenTypes.DecimalLiteral) )
+            {
+                ConsumeNextToken();
+            }
+            else
+            {
+                throw new SyntacticException("Expected a factor", _currentToken.Row, _currentToken.Column);
+            }
         }
         /* In this production could be three case
         *CallFunction
@@ -854,18 +891,20 @@ namespace WebCompilerToNativeC.Parser
 
         public void CallFunction()
         {
-            ConsumeNextToken();
+        
             ListOfExpressions();
-            CompareTokenType(TokenTypes.RParenthesis);
+            if(CompareTokenType(TokenTypes.RParenthesis))
+                    ConsumeNextToken();
         }
-
+        
 
         public void ExpressionUnary()
         {
             if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement) ||
                 CompareTokenType(TokenTypes.AndBinary) || CompareTokenType(TokenTypes.ComplementBinary) ||
                 CompareTokenType(TokenTypes.OrBinary) || CompareTokenType(TokenTypes.XorBinary) ||
-                CompareTokenType(TokenTypes.Sub))
+                CompareTokenType(TokenTypes.Not)
+                )
             {
                 ConsumeNextToken();
             }
@@ -874,9 +913,10 @@ namespace WebCompilerToNativeC.Parser
 
         public void ListOfExpressions()
         {
+            ConsumeNextToken();
             Expression();
             if(CompareTokenType(TokenTypes.Comma))
-            OptionalExpression();
+            ListOfExpressions();
 
         }
 
