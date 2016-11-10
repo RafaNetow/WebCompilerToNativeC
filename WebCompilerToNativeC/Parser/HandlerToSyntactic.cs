@@ -17,7 +17,7 @@ namespace WebCompilerToNativeC.Parser
            if (expectToken == currentToken.Type)
                return new Result() {Succes = true, Excpetion = null};
 
-           return new Result {Succes = false,Excpetion = new SyntacticException($"Expected a {expectToken.ToString()} Token",currentToken.Row,currentToken.Column)};
+           return new Result {Succes = false,Excpetion = new SyntacticException($"Expected a {expectToken.ToString()} Token ",currentToken.Row,currentToken.Column)};
 
 
        }

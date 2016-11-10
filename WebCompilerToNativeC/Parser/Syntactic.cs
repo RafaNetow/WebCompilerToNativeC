@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net;
+using System.Security.AccessControl;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -75,6 +76,7 @@ namespace WebCompilerToNativeC.Parser
             }
             else if (CompareTokenType(TokenTypes.Rbrace))
                 return;
+
             else if(CompareTokenType(TokenTypes.RwElse))
                 Else();
 
@@ -116,10 +118,38 @@ namespace WebCompilerToNativeC.Parser
 
             else if (CompareTokenType(TokenTypes.RwSwitch))
                 Switch();
+
             else if (CompareTokenType(TokenTypes.RwEnum))
                 Enums();
 
+            else if (CompareTokenType(TokenTypes.RwConst))
+                Const();
 
+
+
+        }
+
+        private void Const()
+        {
+            ConsumeNextToken();
+       
+      
+            if (CompareTokenType(TokenTypes.Mul))
+                IsPointer();
+
+            if (!CompareTokenType(TokenTypes.Id)) return;
+            ConsumeNextToken();
+            if (CompareTokenType(TokenTypes.Asiggnation))
+            {
+                ValueForId();
+                MultiDeclaration();
+   
+            }
+    
+            result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+            if (!result.Succes)
+                throw result.Excpetion;
+            ConsumeNextToken();
         }
 
         private void Return()
@@ -150,16 +180,29 @@ namespace WebCompilerToNativeC.Parser
             result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
+            ConsumeNextToken();
             result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
+
+            ConsumeNextToken();
             EnumeratorList();
+
+            result = Hanlder.CheckToken(TokenTypes.Rbrace, _currentToken);
+            if (!result.Succes)
+                throw result.Excpetion;
+            ConsumeNextToken();
+
+            result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+            if (!result.Succes)
+                throw result.Excpetion;
+            ConsumeNextToken();
 
         }
 
         private void EnumeratorList()
         {
-
+            
             EnumItem();
         }
 
@@ -167,11 +210,15 @@ namespace WebCompilerToNativeC.Parser
         {
 
             result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
-            if (result.Succes)
+            if (!result.Succes)
                 throw result.Excpetion;
             ConsumeNextToken();
+
             if (CompareTokenType(TokenTypes.Asiggnation))
                 OptionalIndexPosition();
+
+            if (CompareTokenType(TokenTypes.Comma))
+            OptionalEnumItem();
         }
 
         private void OptionalIndexPosition()
@@ -190,7 +237,7 @@ namespace WebCompilerToNativeC.Parser
         private void OptionalEnumItem()
         { 
           ConsumeNextToken();
-            EnumeratorList();  
+            EnumItem();  
 
         }
 
@@ -245,14 +292,12 @@ namespace WebCompilerToNativeC.Parser
         private void Include()
         {
             ConsumeNextToken();
-            result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
-            if (!result.Succes)
-                throw result.Excpetion;
-
-            result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+            result = Hanlder.CheckToken(TokenTypes.StringLiteral, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
             ConsumeNextToken();
+
+
 
 
         }
@@ -278,15 +323,24 @@ namespace WebCompilerToNativeC.Parser
             if (result.Succes)
             {
                 ConsumeNextToken();
+
                 result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
                 if (result.Succes)
-                {
                     MemberList();
-                }
                 else
-                {
                     throw result.Excpetion;
-                }
+           
+                result = Hanlder.CheckToken(TokenTypes.Rbrace, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
+
+                result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
+
+
 
             }
             else
@@ -300,31 +354,31 @@ namespace WebCompilerToNativeC.Parser
         private void MemberList()
         {
             ConsumeNextToken();
-            if (RWords.DataTypes.Contains(_currentToken.Lexeme))
-            {
+            if (RWords.DataTypes.Contains(_currentToken.Lexeme) || CompareTokenType(TokenTypes.Id))
                 DeclaretionOfStruct();
-            }
 
             else
-            {
                 Hanlder.DefaultError(_currentToken);
-            }
+            
         } 
 
         private void DeclaretionOfStruct()
         {
-            GeneralDeclaration();
-            if (!CompareTokenType(TokenTypes.OpenBracket)) return;
-            SizeBidArray();
-            result = Hanlder.CheckToken(TokenTypes.CloseBracket, _currentToken);
-            if (!result.Succes)
-                throw result.Excpetion;
-            ConsumeNextToken();
+            Gd();
+            if (CompareTokenType(TokenTypes.OpenBracket))
+            {
+                SizeBidArray();
+
+                result = Hanlder.CheckToken(TokenTypes.CloseBracket, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
+            }
             result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
-            if (!result.Succes)
+             if (!result.Succes)
                 throw result.Excpetion;
             ConsumeNextToken();
-            if (RWords.DataTypes.Contains(PeekNextToke().Lexeme))
+            if (RWords.DataTypes.Contains(_currentToken.Lexeme))
             {
                  DeclaretionOfStruct();
             }
@@ -527,6 +581,22 @@ namespace WebCompilerToNativeC.Parser
         }
 
         //General declartion is DataTye Pointer Identifeir
+
+        public void Gd()
+        {
+            ConsumeNextToken();
+
+            if (CompareTokenType(TokenTypes.Mul))
+                IsPointer();
+
+            if (CompareTokenType(TokenTypes.Id))
+                ConsumeNextToken();
+            
+            else
+                throw new SyntacticException("Expected some Id", _currentToken.Row, _currentToken.Column);
+            
+        }
+
         public void GeneralDeclaration()
         {
             ConsumeNextToken();
