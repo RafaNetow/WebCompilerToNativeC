@@ -412,11 +412,11 @@ namespace WebCompilerToNativeC.Lexer
                             MapperToLexeme(currentLexeme);
                             if (currentLexeme.Value.Length == 3)
                             {
-                               return  MapperToTokenWithLexeme(TokenTypes.RwChar, currentLexeme);
+                               return  MapperToTokenWithLexeme(TokenTypes.CharLiteral, currentLexeme);
                             }
                             if (currentLexeme.Value[1] == '\\')
                             {
-                                return MapperToTokenWithLexeme(TokenTypes.RwChar, currentLexeme);
+                                return MapperToTokenWithLexeme(TokenTypes.CharLiteral, currentLexeme);
                             }
                             throw new LexerException(
                                 $"Symbol {_currentSymbol.CSymbol} not recognized at Row:{_currentSymbol.Row} Col: {_currentSymbol.Column}");

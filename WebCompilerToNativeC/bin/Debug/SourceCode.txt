@@ -77,10 +77,20 @@ while( a < 20 ) {
   d = *p;
   pj = &d;
   *s =4;
-   /*ForEach  */
+
    *******s = 5;
    
    x+= 2;
    y-= 4;
    
    *b = bb->m_anumber;
+   int main (){ 
+         switch(grade){
+               case 'A' :
+                  printf ("algo", susa);
+                  break;
+         }
+   }
+   
+   
+   algo[0][2] =  otracosa[1].value;

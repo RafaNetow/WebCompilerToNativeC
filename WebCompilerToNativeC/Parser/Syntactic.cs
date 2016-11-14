@@ -250,9 +250,10 @@ namespace WebCompilerToNativeC.Parser
 
         private void Switch()
         {
+            ConsumeNextToken();
             Expression();
             result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
-            if (result.Succes)
+            if (!result.Succes)
                 throw result.Excpetion;
             ListOfCase();
 
@@ -284,9 +285,10 @@ namespace WebCompilerToNativeC.Parser
         {
            ConsumeNextToken();
             Expression();
-            result = Hanlder.CheckToken(TokenTypes.TwoPoints, _currentToken);
-            if(result.Succes)
+            result = Hanlder.CheckToken(TokenTypes.Common, _currentToken);
+            if(!result.Succes)
                 throw result.Excpetion;
+             ConsumeNextToken();
             ListOfSentences();
             if (CompareTokenType(TokenTypes.RwBreak)) 
                     Break();
