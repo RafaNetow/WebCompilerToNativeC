@@ -63,13 +63,39 @@ namespace WebCompilerToNativeC.Lexer
         }
         public Token GetNextToken()
         {
-            var state = 0;
+            var state = 100;
             var currentLexeme = new Lexeme();
+
+            if (CMode)
+                state = 0;
 
             while (true)
             {
                 switch (state)
                 {
+
+                    case 100:
+                        if (_currentSymbol.CSymbol == '<')
+                        {
+                            MapperToLexeme(currentLexeme);
+                            if (_currentSymbol.CSymbol == '%')
+                            {
+                                MapperToLexeme(currentLexeme);
+                                CMode = true;
+                                return MapperToTokenWithLexeme(TokenTypes.Html, currentLexeme);
+                            }
+                        }
+                        else if (_currentSymbol.CSymbol == '\0')
+                        {
+                            return MapperToTokenWithLexeme(TokenTypes.Eof, currentLexeme);
+                        }
+                        else
+                        {     
+                                MapperToLexeme(currentLexeme);
+                            
+                        }
+                        break;
+          
 
                     case 0: 
                     if (_currentSymbol.CSymbol == '\0')
@@ -87,6 +113,7 @@ namespace WebCompilerToNativeC.Lexer
                        
                             _currentSymbol = Conent.NextSymbol();
                         }
+                       
                        else if (char.IsLetter(_currentSymbol.CSymbol) || _currentSymbol.CSymbol == '_')
                         {
                             state = 1;
@@ -142,6 +169,7 @@ namespace WebCompilerToNativeC.Lexer
                         {
                             _currentSymbol = Conent.NextSymbol();
                         }
+                        
                         else
                         {
                             throw new LexerException(
@@ -246,6 +274,13 @@ namespace WebCompilerToNativeC.Lexer
                                 _currentSymbol = Conent.NextSymbol();
                                 return MapperToTokenWithLexeme(rWords.SpecialOperators[currentLexeme.Value],
                                     currentLexeme);
+                            }
+                            if (currentLexeme.Value == "%>")
+                            {
+                                CMode = false;
+
+                                state = 100;
+                                break;
                             }
                             currentLexeme.Value = currentLexeme.Value[0].ToString();
                             return MapperToTokenWithLexeme(rWords.Operators[currentLexeme.Value[0].ToString()],

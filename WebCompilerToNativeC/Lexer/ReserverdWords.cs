@@ -132,7 +132,7 @@ namespace WebCompilerToNativeC.Lexer
             SpecialOperators.Add("&&", TokenTypes.And);
             SpecialOperators.Add("||", TokenTypes.Or);
             SpecialOperators.Add("<<", TokenTypes.LeftShift);
-            SpecialOperators.Add(">>", TokenTypes.LeftShift);
+            SpecialOperators.Add(">>", TokenTypes.RightShift);
             SpecialOperators.Add("+=", TokenTypes.AddAndAssignment);
             SpecialOperators.Add("-=", TokenTypes.SubAndAssignment);
             SpecialOperators.Add("*=", TokenTypes.MulAndAssignment);
@@ -142,6 +142,7 @@ namespace WebCompilerToNativeC.Lexer
             SpecialOperators.Add("^=", TokenTypes.BitwiseExclusiveOrAndAssignment);
             SpecialOperators.Add("|=", TokenTypes.BitwiseInclusiveOrAndAssignment);
             SpecialOperators.Add("->", TokenTypes.reference);
+         
 
         }
 

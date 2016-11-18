@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using WebCompilerToNativeC.Lexer;
+using WebCompilerToNativeC.Tree;
 
 namespace WebCompilerToNativeC.Parser
 {
@@ -80,6 +81,9 @@ namespace WebCompilerToNativeC.Parser
             else if(CompareTokenType(TokenTypes.RwElse))
                 Else();
 
+            else if (CompareTokenType(TokenTypes.Html))
+                Html();
+
             else if (CompareTokenType(TokenTypes.Eos))
                 ConsumeNextToken();
 
@@ -100,6 +104,9 @@ namespace WebCompilerToNativeC.Parser
 
             else if (CompareTokenType(TokenTypes.RwStruct))
                 Struct();
+
+            else if(CompareTokenType(TokenTypes.RwCase))
+                Case();
 
             else if (CompareTokenType(TokenTypes.Id) || CompareTokenType(TokenTypes.Mul))
             {
@@ -129,6 +136,11 @@ namespace WebCompilerToNativeC.Parser
 
 
 
+        }
+
+        private void Html()
+        {
+            ConsumeNextToken();
         }
 
         private void Const()
@@ -256,7 +268,10 @@ namespace WebCompilerToNativeC.Parser
             if (!result.Succes)
                 throw result.Excpetion;
             ListOfCase();
-
+            result = Hanlder.CheckToken(TokenTypes.Rbrace, _currentToken);
+            if (!result.Succes)
+                throw result.Excpetion;
+            ConsumeNextToken();
         }
 
         private void ListOfCase()
@@ -290,12 +305,10 @@ namespace WebCompilerToNativeC.Parser
                 throw result.Excpetion;
              ConsumeNextToken();
             ListOfSentences();
+            //Review case here
             if (CompareTokenType(TokenTypes.RwBreak)) 
                     Break();
-            result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
-            if (!result.Succes)
-                throw result.Excpetion;
-            ConsumeNextToken();
+          
         }
 
         private void Include()
@@ -641,9 +654,19 @@ namespace WebCompilerToNativeC.Parser
             else if (CompareTokenType(TokenTypes.OpenBracket))
             {
                 IsArrayDeclaration();
-                result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
-                if (!result.Succes)
-                    throw result.Excpetion;
+               
+                if (CompareTokenType(TokenTypes.Comma))
+                {
+                    ConsumeNextToken();
+                    TypeOfDeclaration();
+                }
+                else
+                {
+                    result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+                    if (!result.Succes)
+                        throw result.Excpetion;
+                }
+
                 ConsumeNextToken();
             }
             else if (CompareTokenType(TokenTypes.Eos))
@@ -879,6 +902,7 @@ namespace WebCompilerToNativeC.Parser
             {
                 if (CompareTokenType(TokenTypes.OpenBracket))
                 {
+                    ConsumeNextToken();
                     SizeForArray();
                     ConsumeNextToken();
                     if (CompareTokenType(TokenTypes.OpenBracket))
@@ -1004,13 +1028,21 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
-        public void Factor()
+        public ExpresionNode Factor()
         {
+            if (CompareTokenType(_currentToken.Type))
+            {
+                ExpresionNode stringNode = new StringNode {Value = _currentToken.Lexeme};
+                ConsumeNextToken();
+                return null;
+            }
+
             if (CompareTokenType(TokenTypes.StringLiteral) ||
                     CompareTokenType(TokenTypes.DateLiteral) ||
                       CompareTokenType(TokenTypes.BooleanLiteral))
 
             {
+                
                 ConsumeNextToken();
             }
           else  if (CompareTokenType(TokenTypes.NumericalLiteral) || CompareTokenType(TokenTypes.DecimalLiteral) || CompareTokenType(TokenTypes.CharLiteral) || CompareTokenType(TokenTypes.DecimalLiteral) || CompareTokenType(TokenTypes.OctalLietral))
@@ -1045,6 +1077,7 @@ namespace WebCompilerToNativeC.Parser
             {
                 throw new SyntacticException("Expected a factor", _currentToken.Row, _currentToken.Column);
             }
+            return null;
         }
 
         private void OptionalIncrementOrDecrement()

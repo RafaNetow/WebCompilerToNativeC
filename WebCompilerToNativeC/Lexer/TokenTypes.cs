@@ -84,6 +84,10 @@ namespace WebCompilerToNativeC.Lexer
         RwStruct,
         RwCase,
         RwDefault,
-        RwReturn
+        RwReturn,
+        CloseCMode,
+        OpenCMode,
+        Html,
+        RightShift
     }
 }
