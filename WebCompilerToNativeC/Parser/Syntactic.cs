@@ -846,12 +846,12 @@ namespace WebCompilerToNativeC.Parser
             }
         }
 
-        private void OptionalInitOfArray()
+        private ExpressionNode OptionalInitOfArray(List<ExpressionNode> listExpression )
         {
             ConsumeNextToken();
             if (CompareTokenType(TokenTypes.Lbrace))
             {
-                ListOfExpressions();
+                ListOfExpressions(listExpression);
                 if (CompareTokenType(TokenTypes.Rbrace))
                     ConsumeNextToken();
             }
@@ -864,24 +864,28 @@ namespace WebCompilerToNativeC.Parser
         private ExpressionNode BidArray()
         {
             ConsumeNextToken();
-            SizeBidArray();
+          var bidAccesor =   SizeBidArray();
             if (CompareTokenType(TokenTypes.CloseBracket))
+            {
                 ConsumeNextToken();
+                return bidAccesor;
+            }
             else
                 throw new SyntacticException("Expected a CloseBracket", _currentToken.Row, _currentToken.Column);
         }
 
-        private void SizeBidArray()
+        private ExpressionNode SizeBidArray()
         {
-            if (CompareTokenType(TokenTypes.Id) ||
-                CompareTokenType(TokenTypes.NumericalLiteral) ||
-                CompareTokenType(TokenTypes.HexadecimalLiteral) ||
-                CompareTokenType(TokenTypes.OctalLietral))
-                ConsumeNextToken();
-            else
-               throw new SyntacticException("Do not can initializer an array with the type of identifeir", _currentToken.Row, _currentToken.Column);
-        
-    }
+           
+            if (Hanlder.LiteralWithDecreOrIncre.ContainsKey(_currentToken.Type))
+                return new ArrayAccesorNode() { Value = Hanlder.LiteralWithDecreOrIncre[_currentToken.Type] };
+
+            if (CompareTokenType(TokenTypes.Id))
+                return new ArrayAccesorNode() { Value = new IdVariable() { Value = _currentToken.Lexeme } };
+
+            throw new SyntacticException("Do not can initializer an array with the type of identifeir", _currentToken.Row, _currentToken.Column);
+
+        }
 
         private ExpressionNode SizeForArray()
         {
@@ -889,8 +893,14 @@ namespace WebCompilerToNativeC.Parser
             {
                 return new ArrayAccesorNode();
             }
-            var exp = Expression();
-            return new ArrayAccesorNode() {Value = exp};
+            if(Hanlder.LiteralWithDecreOrIncre.ContainsKey(_currentToken.Type))
+                return new ArrayAccesorNode() {Value = Hanlder.LiteralWithDecreOrIncre[_currentToken.Type]};
+
+            if(CompareTokenType(TokenTypes.Id))
+                return new ArrayAccesorNode() {Value = new IdVariable() {Value = _currentToken.Lexeme} };
+
+            throw new SyntacticException("Do not can initializer an array with the type of identifeir", _currentToken.Row, _currentToken.Column);
+           
 
 
         }
@@ -913,11 +923,13 @@ namespace WebCompilerToNativeC.Parser
                     if (CompareTokenType(TokenTypes.OpenBracket))
                     {
                      var bidAccesor =    BidArray();
+                        currentIdVariable.Accesors.Add((AccesorNode) bidAccesor);
                     }
-                }
+                }        
+                   var accesorArrowOrDot =     ArrowOrDot();
+                    currentIdVariable.Accesors.Add((AccesorNode) accesorArrowOrDot);
+                return currentIdVariable;
 
-                if (CompareTokenType(TokenTypes.Point) || CompareTokenType(TokenTypes.reference))
-                    ArrowOrDot();
 
             }
         }
@@ -942,14 +954,39 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
-        private void ArrowOrDot()
+        private ExpressionNode ArrowOrDot()
         {
-            ConsumeNextToken();
 
-            result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
-                if(!result.Succes)
+            if (CompareTokenType(TokenTypes.Point))
+            {ConsumeNextToken();
+
+                result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
+                if (!result.Succes)
                     throw result.Excpetion;
-                        ConsumeNextToken();
+
+                var idVal = _currentToken.Lexeme;
+                ConsumeNextToken();
+                return new PropertyAccesorNode() {Id = new IdNode() {Value = _currentToken.Lexeme} };
+            }
+
+            if (CompareTokenType(TokenTypes.reference))
+            {
+                ConsumeNextToken();
+
+                result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+
+                var idVal = _currentToken.Lexeme;
+                ConsumeNextToken();
+                return new PropertyAccesorNode() { Id = new IdNode() { Value = _currentToken.Lexeme } };
+            }
+
+
+            return new PropertyAccesorNode();
+
+              
+          
 
         }
 
@@ -1129,15 +1166,19 @@ namespace WebCompilerToNativeC.Parser
 
         public ExpressionNode CallFunction(string nameOfFunction)
         {
-           List<ExpressionNode> listOfExpression = new List<ExpressionNode>();
+           var listOfExpression = new List<ExpressionNode>();
                 ListOfExpressions(listOfExpression);
-            if(CompareTokenType(TokenTypes.RParenthesis))
-                    ConsumeNextToken();
+
+
+            if (!CompareTokenType(TokenTypes.RParenthesis)) throw Hanlder.DefaultError(_currentToken);
+            ConsumeNextToken();
+            return new CallFunction() {NameOfFunction = nameOfFunction, ListOfExpression = listOfExpression};
         }
         
 
-        public void ExpressionUnary()
+        public ExpressionNode ExpressionUnary()
         {
+           var unaryExp= new ExpressionUnaryNode();
             if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement) ||
                 CompareTokenType(TokenTypes.AndBinary) || CompareTokenType(TokenTypes.ComplementBinary) ||
                 CompareTokenType(TokenTypes.OrBinary) || CompareTokenType(TokenTypes.XorBinary) ||
@@ -1147,7 +1188,8 @@ namespace WebCompilerToNativeC.Parser
             {
                 ConsumeNextToken();
             }
-            Factor();
+         var factorExpression =    Factor();
+            return new ExpressionUnaryNode() {Factor = factorExpression};
         }
 
         public void ListOfExpressions(List<ExpressionNode> listOfExpression )

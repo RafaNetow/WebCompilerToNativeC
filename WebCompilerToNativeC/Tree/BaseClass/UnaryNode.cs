@@ -2,8 +2,9 @@
 {
    public abstract class UnaryNode : ExpressionNode
     {
-     
-       public  ExpressionNode Value { get; set; }
+
+
+        public  ExpressionNode Value { get; set; }
 
        public string GetCode(string unarySymbol)
        {

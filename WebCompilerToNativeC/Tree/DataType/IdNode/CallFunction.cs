@@ -11,7 +11,8 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
 {
     public class CallFunction: ExpressionNode
     {
-       public List<ExpressionNode> ListOfExpression; 
+        public string NameOfFunction;
+        public List<ExpressionNode> ListOfExpression; 
 
         public override BaseType ValidateSemantic()
         {
