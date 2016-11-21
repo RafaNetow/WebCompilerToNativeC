@@ -21,13 +21,30 @@ namespace WebCompilerToNativeC.Parser
         public Dictionary<TokenTypes, LiteralWithOptionalIncrementOrDecrement> LiteralWithDecreOrIncre = new Dictionary<TokenTypes, LiteralWithOptionalIncrementOrDecrement>();
         public Dictionary<TokenTypes, DataType> DataTypes = new Dictionary<TokenTypes, DataType>();
         public Dictionary<TokenTypes, UnaryNode> UnariesNode = new Dictionary<TokenTypes, UnaryNode>();
-
+        public Dictionary<TokenTypes, BinaryOperator> OperatorsMul = new Dictionary<TokenTypes, BinaryOperator>();
+        public Dictionary<TokenTypes, BinaryOperator> AdditionOp = new Dictionary<TokenTypes, BinaryOperator>(); 
+        public Dictionary<TokenTypes, BinaryOperator> RelationalOp = new Dictionary<TokenTypes, BinaryOperator>();
 
         public HandlerToSyntactic()
        {
-           InitLiteralWithDecreOrIncre();
-           InitDataTypes();
+            InitLiteralWithDecreOrIncre();
+            InitDataTypes();
             InitUnariesNode();
+            InitOperatorsMul();
+            InnitAdditionOp();
+       }
+
+       private void InnitAdditionOp()
+       {
+           AdditionOp.Add(TokenTypes.Sub,new SubNode() );
+           AdditionOp.Add(TokenTypes.Sum, new AddNode());
+       }
+
+       private void InitOperatorsMul()
+       {
+           OperatorsMul.Add(TokenTypes.Div, new DivNode());
+           OperatorsMul.Add(TokenTypes.Mul, new MultNode());
+           OperatorsMul.Add(TokenTypes.Modulus, new ModulusNode());
        }
 
        private void InitUnariesNode()

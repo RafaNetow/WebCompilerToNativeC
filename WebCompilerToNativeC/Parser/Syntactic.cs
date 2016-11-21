@@ -999,7 +999,7 @@ namespace WebCompilerToNativeC.Parser
 
 
         //Compare if exist some retalacion operation that should return some bool or some similar
-        private void RelationalExpressionPrime()
+        private ExpressionNode RelationalExpressionPrime()
         {
             if (!RWords.RelationalOperators.ContainsKey(_currentToken.Type) && !CompareTokenType(TokenTypes.Asiggnation))
                 return;
@@ -1013,29 +1013,35 @@ namespace WebCompilerToNativeC.Parser
            ConsumeNextToken();
         }
        //4
-        public void RelationalExpression()
+        public ExpressionNode RelationalExpression()
         {
-            ExpressionAdicion();
-            RelationalExpressionPrime();
+         var expAdition =     ExpressionAdicion();
+        return    RelationalExpressionPrime(expAdition);
 
         }
 
-        private void ExpressionAdicion()
+        private ExpressionNode ExpressionAdicion()
         {
 
-            ExpressionMul();
-            ExpressionAdicionPrime();
+            var mulVal =ExpressionMul();
+           return  ExpressionAdicionPrime(mulVal);
         }
 
-        public void ExpressionAdicionPrime()
+        public ExpressionNode ExpressionAdicionPrime(ExpressionNode mulVal)
         {
-            if (CompareTokenType(TokenTypes.Sub) || CompareTokenType(TokenTypes.Sum))
+
+            if (Hanlder.AdditionOp.ContainsKey(_currentToken.Type))
             {
-              
+                var additionOp = Hanlder.AdditionOp[_currentToken.Type];
+                additionOp.LeftOperand = mulVal;
                 AdditiveOperators();
-                ExpressionMul(); // Resolve this problem viendo la gramatica
-                ExpressionAdicionPrime();
+                additionOp.RightOperand =  ExpressionMul(); // Resolve this problem viendo la gramatica
+
+                  
+                ExpressionAdicionPrime(additionOp);
             }
+
+            return mulVal;
 
         }
 
@@ -1045,31 +1051,25 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
-        private void ExpressionMul()
+        private ExpressionNode ExpressionMul()
         {
             
-                ExpressionUnary();
-                ExpressionMulPrime();
+              var fValue =  ExpressionUnary();
+              return  ExpressionMulPrime(fValue);
            // }
           //  Factor();f
 
         }
 
-        private void ExpressionMulPrime()
+        private ExpressionNode ExpressionMulPrime(ExpressionNode param)
         {
-            if (CompareTokenType(TokenTypes.Mul) || CompareTokenType(TokenTypes.Div) ||
-                CompareTokenType(TokenTypes.Modulus))
-            {
-                ConsumeNextToken();
-                ExpressionUnary();
-                ExpressionMulPrime();
-            }
-            else
-            {
-                
-            }
-            
-
+            if (!Hanlder.OperatorsMul.ContainsKey(_currentToken.Type)) return param;
+            var operatorMul = Hanlder.OperatorsMul[_currentToken.Type];
+            operatorMul.LeftOperand = param;                
+            ConsumeNextToken();
+            var fvalue = ExpressionUnary();
+            operatorMul.RightOperand = fvalue;
+            return  ExpressionMulPrime(operatorMul);
         }
 
         public ExpressionNode Factor()
@@ -1187,7 +1187,7 @@ namespace WebCompilerToNativeC.Parser
                 ConsumeNextToken();
             }
          var factorExpression =    Factor();
-            return new ExpressionUnaryNode() {Factor = factorExpression};
+            return unaryExp;
         }
 
         public void ListOfExpressions(List<ExpressionNode> listOfExpression )
