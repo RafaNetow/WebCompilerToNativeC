@@ -1,7 +1,7 @@
 ﻿using System;
 using WebCompilerToNativeC.Semantic;
 
-namespace WebCompilerToNativeC.Tree.BinaryNode
+namespace WebCompilerToNativeC.Tree
 {
    public class AndBinary : BaseClass.UnaryNode
     {

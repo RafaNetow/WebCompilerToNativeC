@@ -1179,13 +1179,11 @@ namespace WebCompilerToNativeC.Parser
         public ExpressionNode ExpressionUnary()
         {
            var unaryExp= new ExpressionUnaryNode();
-            if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement) ||
-                CompareTokenType(TokenTypes.AndBinary) || CompareTokenType(TokenTypes.ComplementBinary) ||
-                CompareTokenType(TokenTypes.OrBinary) || CompareTokenType(TokenTypes.XorBinary) ||
-                CompareTokenType(TokenTypes.Not) || CompareTokenType(TokenTypes.Sub) || CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Mul)
-                 || CompareTokenType(TokenTypes.Decrement))
-                
+          
+            if( Hanlder.UnariesNode.ContainsKey(_currentToken.Type))
+
             {
+                unaryExp.UnaryOperator = Hanlder.UnariesNode[_currentToken.Type];
                 ConsumeNextToken();
             }
          var factorExpression =    Factor();

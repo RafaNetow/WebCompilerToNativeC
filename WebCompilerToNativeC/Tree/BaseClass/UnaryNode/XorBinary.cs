@@ -1,7 +1,7 @@
 ﻿using System;
 using WebCompilerToNativeC.Semantic;
 
-namespace WebCompilerToNativeC.Tree
+namespace WebCompilerToNativeC.Tree. UnaryNode
 {
    public class XorBinary : BaseClass.UnaryNode
     {

@@ -3,10 +3,8 @@ using WebCompilerToNativeC.Semantic;
 
 namespace WebCompilerToNativeC.Tree
 {
-    public class ComplementNode : BaseClass.UnaryNode
-   
-
-{
+    public class MulUnary : BaseClass.UnaryNode
+    {
         public override BaseType ValidateSemantic()
         {
             throw new NotImplementedException();
@@ -14,7 +12,7 @@ namespace WebCompilerToNativeC.Tree
 
         public override string GenerateCode()
         {
-            return GetCode("~");
+            throw new NotImplementedException();
         }
-}
+    }
 }

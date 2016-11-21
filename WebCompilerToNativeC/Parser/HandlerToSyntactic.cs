@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Lexer;
 using WebCompilerToNativeC.Tree;
+using WebCompilerToNativeC.Tree.BaseClass;
 using WebCompilerToNativeC.Tree.DataType;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.Boolean;
 using WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre;
+using WebCompilerToNativeC.Tree.UnaryNode;
 
 namespace WebCompilerToNativeC.Parser
 {
@@ -18,15 +20,42 @@ namespace WebCompilerToNativeC.Parser
 
         public Dictionary<TokenTypes, LiteralWithOptionalIncrementOrDecrement> LiteralWithDecreOrIncre = new Dictionary<TokenTypes, LiteralWithOptionalIncrementOrDecrement>();
         public Dictionary<TokenTypes, DataType> DataTypes = new Dictionary<TokenTypes, DataType>();
+        public Dictionary<TokenTypes, UnaryNode> UnariesNode = new Dictionary<TokenTypes, UnaryNode>();
 
 
         public HandlerToSyntactic()
        {
            InitLiteralWithDecreOrIncre();
            InitDataTypes();
+            InitUnariesNode();
        }
 
-       private void InitDataTypes()
+       private void InitUnariesNode()
+       {
+           UnariesNode.Add(TokenTypes.Increment, new LeftIncrement());
+           UnariesNode.Add(TokenTypes.Decrement, new LeftDecrement());
+            UnariesNode.Add(TokenTypes.AndBinary, new AndBinary());
+            UnariesNode.Add(TokenTypes.ComplementBinary, new ComplementNode());
+            UnariesNode.Add(TokenTypes.OrBinary, new OrUnary());
+            UnariesNode.Add(TokenTypes.XorBinary, new XorBinary() );
+            UnariesNode.Add(TokenTypes.XorBinary, new NegativeNode());
+            UnariesNode.Add(TokenTypes.Mul, new MulUnary());
+            UnariesNode.Add(TokenTypes.Not, new NotUnary());
+            /*
+              if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement) ||
+                 CompareTokenType(TokenTypes.AndBinary) || CompareTokenType(TokenTypes.ComplementBinary) ||
+                 CompareTokenType(TokenTypes.OrBinary) || CompareTokenType(TokenTypes.XorBinary) ||
+                 CompareTokenType(TokenTypes.Not) || CompareTokenType(TokenTypes.Sub) || CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Mul)
+                  || CompareTokenType(TokenTypes.Decrement))
+
+             {
+                 ConsumeNextToken();
+             }
+
+              */
+        }
+
+        private void InitDataTypes()
        {
             DataTypes.Add(TokenTypes.StringLiteral, new StringNode());
             DataTypes.Add(TokenTypes.True, new BooleanNode());
