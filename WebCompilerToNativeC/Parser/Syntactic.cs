@@ -11,6 +11,13 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using WebCompilerToNativeC.Lexer;
 using WebCompilerToNativeC.Tree;
+using WebCompilerToNativeC.Tree.BaseClass;
+using WebCompilerToNativeC.Tree.DataType;
+using WebCompilerToNativeC.Tree.DataType.BaseClass;
+using WebCompilerToNativeC.Tree.DataType.Boolean;
+using WebCompilerToNativeC.Tree.DataType.IdNode;
+using WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre;
+using WebCompilerToNativeC.Tree.UnaryNode;
 
 namespace WebCompilerToNativeC.Parser
 {
@@ -854,7 +861,7 @@ namespace WebCompilerToNativeC.Parser
             }
         }
 
-        private void BidArray()
+        private ExpressionNode BidArray()
         {
             ConsumeNextToken();
             SizeBidArray();
@@ -876,37 +883,37 @@ namespace WebCompilerToNativeC.Parser
         
     }
 
-        private void SizeForArray()
+        private ExpressionNode SizeForArray()
         {
-            if(CompareTokenType(TokenTypes.Id) || 
-                CompareTokenType(TokenTypes.NumericalLiteral) ||
-                CompareTokenType(TokenTypes.HexadecimalLiteral) ||
-                CompareTokenType(TokenTypes.OctalLietral)) 
-                ConsumeNextToken();
-            else if (CompareTokenType(TokenTypes.RParenthesis)) { }
-          
-            else   
-                throw  new SyntacticException("Un Expected Token, Array do not support this type",_currentToken.Row, _currentToken.Column);
-               
+            if (CompareTokenType(TokenTypes.RParenthesis))
+            {
+                return new ArrayAccesorNode();
+            }
+            var exp = Expression();
+            return new ArrayAccesorNode() {Value = exp};
+
 
         }
 
-        public void IdAccesorsOrFunction()
+        public ExpressionNode IdAccesorsOrFunction(IdVariable currentIdVariable)
         {
             if (CompareTokenType(TokenTypes.LParenthesis))
             {
-                CallFunction();
+               return CallFunction(currentIdVariable.Value);
 
             }
             else
             {
                 if (CompareTokenType(TokenTypes.OpenBracket))
                 {
-                    ConsumeNextToken();
-                    SizeForArray();
+                    ConsumeNextToken();                   
+                   var accesor =   SizeForArray();
+                   currentIdVariable.Accesors.Add((AccesorNode) accesor);
                     ConsumeNextToken();
                     if (CompareTokenType(TokenTypes.OpenBracket))
-                        BidArray();
+                    {
+                     var bidAccesor =    BidArray();
+                    }
                 }
 
                 if (CompareTokenType(TokenTypes.Point) || CompareTokenType(TokenTypes.reference))
@@ -946,7 +953,7 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
-        private void Expression()
+        private ExpressionNode Expression()
         {
             RelationalExpression();
         
@@ -968,7 +975,7 @@ namespace WebCompilerToNativeC.Parser
         {
            ConsumeNextToken();
         }
-
+       //4
         public void RelationalExpression()
         {
             ExpressionAdicion();
@@ -1028,35 +1035,47 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
-        public ExpresionNode Factor()
+        public ExpressionNode Factor()
         {
-            if (CompareTokenType(_currentToken.Type))
+
+
+
+
+            if (Hanlder.DataTypes.ContainsKey(_currentToken.Type))
             {
-                ExpresionNode stringNode = new StringNode {Value = _currentToken.Lexeme};
+              var currentDataType =  Hanlder.DataTypes[_currentToken.Type];
+                currentDataType.Value = _currentToken.Lexeme;
                 ConsumeNextToken();
-                return null;
+
+                if (Hanlder.LiteralWithDecreOrIncre.ContainsKey(_currentToken.Type))
+                {
+                    OptionalIncrementOrDecrement((LiteralWithOptionalIncrementOrDecrement) currentDataType);
+                }
+                return currentDataType;
             }
 
-            if (CompareTokenType(TokenTypes.StringLiteral) ||
-                    CompareTokenType(TokenTypes.DateLiteral) ||
-                      CompareTokenType(TokenTypes.BooleanLiteral))
-
-            {
-                
-                ConsumeNextToken();
-            }
-          else  if (CompareTokenType(TokenTypes.NumericalLiteral) || CompareTokenType(TokenTypes.DecimalLiteral) || CompareTokenType(TokenTypes.CharLiteral) || CompareTokenType(TokenTypes.DecimalLiteral) || CompareTokenType(TokenTypes.OctalLietral))
-            {
-                ConsumeNextToken();
-                OptionalIncrementOrDecrement();
-            }
+       
             else if (CompareTokenType(TokenTypes.Id))
-            {
-                ConsumeNextToken();
+            {  
+               var iVariable = new IdVariable() {Value = _currentToken.Lexeme};
+               ConsumeNextToken();
+
                 if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement))
-                    ConsumeNextToken();
+                {
+                    if (CompareTokenType(TokenTypes.Increment))
+                        iVariable.IncrementOrDecrement = new RightIncrement();
+
+                    else if (CompareTokenType(TokenTypes.Decrement))
+                        iVariable.IncrementOrDecrement = new LeftIncrement();
+                }
                 else
-                    IdAccesorsOrFunction();
+                {
+                  var id =    IdAccesorsOrFunction(iVariable);
+                    return id;
+                }
+                
+              
+                 
             }
            
             //Verify if expression could begin with LPARENT of if haved to consum that token after
@@ -1080,9 +1099,14 @@ namespace WebCompilerToNativeC.Parser
             return null;
         }
 
-        private void OptionalIncrementOrDecrement()
+        private void OptionalIncrementOrDecrement(LiteralWithOptionalIncrementOrDecrement idExpressionNode)
         {
-            if(CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement))
+            if(CompareTokenType(TokenTypes.Increment))
+                idExpressionNode.DecremmentOrIncremment = new RightIncrement();
+            
+           else if(CompareTokenType(TokenTypes.Decrement))
+                idExpressionNode.DecremmentOrIncremment = new LeftIncrement();
+
                 ConsumeNextToken();
 
         }
@@ -1103,10 +1127,10 @@ namespace WebCompilerToNativeC.Parser
     
         }
 
-        public void CallFunction()
+        public ExpressionNode CallFunction(string nameOfFunction)
         {
-        
-            ListOfExpressions();
+           List<ExpressionNode> listOfExpression = new List<ExpressionNode>();
+                ListOfExpressions(listOfExpression);
             if(CompareTokenType(TokenTypes.RParenthesis))
                     ConsumeNextToken();
         }
@@ -1126,13 +1150,14 @@ namespace WebCompilerToNativeC.Parser
             Factor();
         }
 
-        public void ListOfExpressions()
+        public void ListOfExpressions(List<ExpressionNode> listOfExpression )
         {
             ConsumeNextToken();
             if (CompareTokenType(TokenTypes.RParenthesis)) return;
-            Expression();
+        var exp =     Expression();
+            listOfExpression.Add(exp);
             if (CompareTokenType(TokenTypes.Comma))
-                ListOfExpressions();
+                ListOfExpressions(listOfExpression);
         }
 
         public void OptionalExpression()
