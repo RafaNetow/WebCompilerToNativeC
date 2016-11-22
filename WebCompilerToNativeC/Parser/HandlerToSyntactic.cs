@@ -32,6 +32,17 @@ namespace WebCompilerToNativeC.Parser
             InitUnariesNode();
             InitOperatorsMul();
             InnitAdditionOp();
+            InitRelationalOp();
+       }
+
+       private void InitRelationalOp()
+       {
+           RelationalOp.Add(TokenTypes.LessThan, new LessThanOperatorNode());
+           RelationalOp.Add(TokenTypes.LessThanOrEqual, new LessOrEqualOperatorNode());
+           RelationalOp.Add(TokenTypes.GreaterThan, new GreaterOperatorNode());
+           RelationalOp.Add(TokenTypes.GreaterThanOrEqual, new GreaterOrEqualOperatorNode());
+           RelationalOp.Add(TokenTypes.AddAndAssignment, AndNode);
+            
        }
 
        private void InnitAdditionOp()

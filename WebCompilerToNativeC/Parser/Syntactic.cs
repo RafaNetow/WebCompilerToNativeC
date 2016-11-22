@@ -56,26 +56,27 @@ namespace WebCompilerToNativeC.Parser
         }
 
 
-        public void Parse()
+        public List<SentencesNode> Parse()
         {
-            ListOfSentences();
+           var sentencesList =  ListOfSentences();
+            return sentencesList;
         }
         /***************************/
 
-        public void ListOfSentences()
+        public List<SentencesNode> ListOfSentences()
         {
-            Sentence();
-            if(!CompareTokenType(TokenTypes.Eof) && !CompareTokenType(TokenTypes.Rbrace))
-                ListOfSentences();
-
+            if(CompareTokenType(TokenTypes.Eof) && CompareTokenType(TokenTypes.Rbrace))
+                return new List<SentencesNode>();
+            var sentences = Sentence();
+            var listSentences=     ListOfSentences();
+            listSentences.Insert(0,sentences);
+            return listSentences;
+           
         }
 
-        public void VerifySintax()
-        {
-            
-        }
+       
 
-        public void Sentence()
+        public SentencesNode Sentence()
         {
             if (RWords.DataTypes.Contains(_currentToken.Lexeme))
             {
@@ -83,7 +84,7 @@ namespace WebCompilerToNativeC.Parser
               
             }
             else if (CompareTokenType(TokenTypes.Rbrace))
-                return;
+                return ;
 
             else if(CompareTokenType(TokenTypes.RwElse))
                 Else();
@@ -992,20 +993,25 @@ namespace WebCompilerToNativeC.Parser
 
         private ExpressionNode Expression()
         {
-            RelationalExpression();
+           return  RelationalExpression();
         
 
         }
 
 
         //Compare if exist some retalacion operation that should return some bool or some similar
-        private ExpressionNode RelationalExpressionPrime()
+        private ExpressionNode RelationalExpressionPrime(ExpressionNode param)
         {
-            if (!RWords.RelationalOperators.ContainsKey(_currentToken.Type) && !CompareTokenType(TokenTypes.Asiggnation))
-                return;
+            if (!Hanlder.RelationalOp.ContainsKey(_currentToken.Type))
+                return param;
+ 
+         var expRelationOp =    Hanlder.RelationalOp[_currentToken.Type]; 
             RelationalOperators();
-            ExpressionAdicion();
-            RelationalExpressionPrime();
+        var  expAddOp=   ExpressionAdicion();
+
+            expRelationOp.LeftOperand = param;
+            expRelationOp.RightOperand = expAddOp;
+            return RelationalExpressionPrime(expRelationOp);
         }
 
         private void RelationalOperators()
@@ -1029,19 +1035,16 @@ namespace WebCompilerToNativeC.Parser
 
         public ExpressionNode ExpressionAdicionPrime(ExpressionNode mulVal)
         {
-
-            if (Hanlder.AdditionOp.ContainsKey(_currentToken.Type))
-            {
-                var additionOp = Hanlder.AdditionOp[_currentToken.Type];
-                additionOp.LeftOperand = mulVal;
-                AdditiveOperators();
-                additionOp.RightOperand =  ExpressionMul(); // Resolve this problem viendo la gramatica
+            if (!Hanlder.AdditionOp.ContainsKey(_currentToken.Type)) return mulVal;
+            var additionOp = Hanlder.AdditionOp[_currentToken.Type];
+            additionOp.LeftOperand = mulVal;
+            AdditiveOperators();
+            additionOp.RightOperand =  ExpressionMul(); // Resolve this problem viendo la gramatica
 
                   
-                ExpressionAdicionPrime(additionOp);
-            }
+           return ExpressionAdicionPrime(additionOp);
 
-            return mulVal;
+         
 
         }
 
@@ -1136,7 +1139,7 @@ namespace WebCompilerToNativeC.Parser
             return null;
         }
 
-        private void OptionalIncrementOrDecrement(LiteralWithOptionalIncrementOrDecrement idExpressionNode)
+        private ExpressionNode OptionalIncrementOrDecrement(LiteralWithOptionalIncrementOrDecrement idExpressionNode)
         {
             if(CompareTokenType(TokenTypes.Increment))
                 idExpressionNode.DecremmentOrIncremment = new RightIncrement();
@@ -1145,6 +1148,7 @@ namespace WebCompilerToNativeC.Parser
                 idExpressionNode.DecremmentOrIncremment = new LeftIncrement();
 
                 ConsumeNextToken();
+            return idExpressionNode;
 
         }
 
@@ -1187,6 +1191,7 @@ namespace WebCompilerToNativeC.Parser
                 ConsumeNextToken();
             }
          var factorExpression =    Factor();
+            unaryExp.Factor = factorExpression;
             return unaryExp;
         }
 

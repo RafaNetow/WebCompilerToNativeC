@@ -9,6 +9,6 @@ namespace WebCompilerToNativeC.Tree.DataType.BaseClass
 {
    public abstract class LiteralWithOptionalIncrementOrDecrement : DataType
    {
-       public UnaryNode DecremmentOrIncremment;
+       public Tree.BaseClass.UnaryNode DecremmentOrIncremment;
    }
 }
