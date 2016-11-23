@@ -3,19 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebCompilerToNativeC.Tree.DataType;
-using WebCompilerToNativeC.Tree.DataType.IdNode;
 
-namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
+namespace WebCompilerToNativeC.Tree
 {
-
-
-    public class DeclarationNode : SentencesNode
+    public class IncludeNode : SentencesNode
     {
-        public IdNode Type;
-        public IdNode Variable;
-        public List<PointerNode> ListOfPointers;
-    
+        public string LibreryName;
+
         public override void ValidateSemantic()
         {
             throw new NotImplementedException();

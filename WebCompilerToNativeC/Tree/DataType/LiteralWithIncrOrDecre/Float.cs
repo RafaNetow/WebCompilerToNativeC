@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using WebCompilerToNativeC.Semantic;
-using WebCompilerToNativeC.Tree.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
 
-namespace WebCompilerToNativeC.Tree.DataType
+namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
 {
    public class Float : LiteralWithOptionalIncrementOrDecrement
     {
@@ -19,5 +18,10 @@ namespace WebCompilerToNativeC.Tree.DataType
             return Value.ToString(CultureInfo.InvariantCulture);
 
         }
+
+       public override void SetValue(string value)
+       {
+           throw new NotImplementedException();
+       }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WebCompilerToNativeC.Semantic;
 
-namespace WebCompilerToNativeC.Tree
+namespace WebCompilerToNativeC.Tree.DataType.Char
 {
     public class CharNode : DataType.BaseClass.DataType
     {
         public char CharValue;
-        public override void ValidateSemantic()
+
+
+        public override BaseType ValidateSemantic()
         {
             throw new NotImplementedException();
         }

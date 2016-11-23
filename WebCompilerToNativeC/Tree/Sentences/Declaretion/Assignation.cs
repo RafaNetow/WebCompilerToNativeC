@@ -10,9 +10,9 @@ using WebCompilerToNativeC.Tree.DataType.IdNode;
 
 namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
 {
-    public class Assignation : IdForDeclaration
+    public class Assignation :ExpressionNode
     {
-         public  IdNode Variable { get; set; }
+        
         public  ExpressionNode Value { get; set; }
 
 

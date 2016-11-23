@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebCompilerToNativeC.Tree.DataType.IdNode;
-using WebCompilerToNativeC.Tree.Sentences.Declaretion;
+using WebCompilerToNativeC.Tree.BaseClass;
 
-namespace WebCompilerToNativeC.Tree.Sentences.Enum
+namespace WebCompilerToNativeC.Tree
 {
-   public class EnumerationNode: SentencesNode
-    {
-        public IdNode NameOfEnum { get; set; }
-        public  List<IdNode> ListEnum { get; set; }
-
+   public class ReturnNode : SentencesNode
+   {
+       public ExpressionNode ExpressionToReturn;
         public override void ValidateSemantic()
        {
            throw new NotImplementedException();

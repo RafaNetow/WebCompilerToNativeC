@@ -12,7 +12,7 @@ namespace WebCompilerToNativeC.Tree.DataType.BaseClass
     public  abstract class DataType : ExpressionNode
     {
         public string Value;
-
+        public List<PointerNode> ListOfPointers;
         public abstract void SetValue(string value);
 
 

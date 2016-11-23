@@ -11,6 +11,9 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
     {
         public  string Value { get; set; }
         public List<AccesorNode> Accesors = new List<AccesorNode>();
+        public List<PointerNode> ListOfPointer;
+        public Assignation Assignation;
+       
 
         public override BaseType ValidateSemantic()
         {
@@ -21,7 +24,7 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
         {
             if (Accesors.Count == 0)
                 return $"{Value}";
-            var accesors = Accesors.Aggregate("", (current, accesorNode) => current + accesorNode.GeneratedCodeAttribute());
+            var accesors = Accesors.Aggregate("", (current, accesorNode) => current + accesorNode.GenerateCode());
             return this.Value + accesors;
 
         }

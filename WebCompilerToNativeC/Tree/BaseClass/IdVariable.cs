@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Tree.DataType;
 
 namespace WebCompilerToNativeC.Tree.BaseClass
 {

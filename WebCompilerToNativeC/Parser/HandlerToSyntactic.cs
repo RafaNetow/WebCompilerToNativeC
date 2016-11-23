@@ -10,6 +10,7 @@ using WebCompilerToNativeC.Tree.BaseClass;
 using WebCompilerToNativeC.Tree.DataType;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.Boolean;
+using WebCompilerToNativeC.Tree.DataType.Char;
 using WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre;
 using WebCompilerToNativeC.Tree.UnaryNode;
 
@@ -41,7 +42,7 @@ namespace WebCompilerToNativeC.Parser
            RelationalOp.Add(TokenTypes.LessThanOrEqual, new LessOrEqualOperatorNode());
            RelationalOp.Add(TokenTypes.GreaterThan, new GreaterOperatorNode());
            RelationalOp.Add(TokenTypes.GreaterThanOrEqual, new GreaterOrEqualOperatorNode());
-           RelationalOp.Add(TokenTypes.AddAndAssignment, AndNode);
+          // RelationalOp.Add(TokenTypes.AndBinary, new AndNode);
             
        }
 
@@ -66,7 +67,7 @@ namespace WebCompilerToNativeC.Parser
             UnariesNode.Add(TokenTypes.ComplementBinary, new ComplementNode());
             UnariesNode.Add(TokenTypes.OrBinary, new OrUnary());
             UnariesNode.Add(TokenTypes.XorBinary, new XorBinary() );
-            UnariesNode.Add(TokenTypes.XorBinary, new NegativeNode());
+            UnariesNode.Add(TokenTypes.Sub, new NegativeNode());
             UnariesNode.Add(TokenTypes.Mul, new MulUnary());
             UnariesNode.Add(TokenTypes.Not, new NotUnary());
             /*

@@ -38,7 +38,7 @@ namespace WebCompilerToNativeC
             Syntactic parser = new Syntactic(lexer);
             try
             {
-                parser.Parse();
+              var treeNode=  parser.Parse();
                 Console.WriteLine(" No se encontro ningun error de sintaxys");
 
             }

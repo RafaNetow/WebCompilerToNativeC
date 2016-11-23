@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebCompilerToNativeC.Tree.DataType.IdNode;
+using WebCompilerToNativeC.Tree.BaseClass;
 using WebCompilerToNativeC.Tree.Sentences.Declaretion;
 
-namespace WebCompilerToNativeC.Tree.Sentences.Enum
+namespace WebCompilerToNativeC.Tree
 {
-   public class EnumerationNode: SentencesNode
+   public  class StructNode : SentencesNode
     {
-        public IdNode NameOfEnum { get; set; }
-        public  List<IdNode> ListEnum { get; set; }
-
+        public IdVariable NameOfStruct = new IdVariable();
+        public  List<DeclarationNode>  StructItems = new List<DeclarationNode>();
         public override void ValidateSemantic()
        {
            throw new NotImplementedException();

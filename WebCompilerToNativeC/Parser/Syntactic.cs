@@ -17,6 +17,11 @@ using WebCompilerToNativeC.Tree.DataType.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.Boolean;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
 using WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre;
+using WebCompilerToNativeC.Tree.Sentences;
+using WebCompilerToNativeC.Tree.Sentences.Case;
+using WebCompilerToNativeC.Tree.Sentences.Declaretion;
+using WebCompilerToNativeC.Tree.Sentences.Enum;
+using WebCompilerToNativeC.Tree.Sentences.Fors;
 using WebCompilerToNativeC.Tree.UnaryNode;
 
 namespace WebCompilerToNativeC.Parser
@@ -65,10 +70,11 @@ namespace WebCompilerToNativeC.Parser
 
         public List<SentencesNode> ListOfSentences()
         {
-            if(CompareTokenType(TokenTypes.Eof) && CompareTokenType(TokenTypes.Rbrace))
+            if(CompareTokenType(TokenTypes.Eof) || CompareTokenType(TokenTypes.Rbrace) || CompareTokenType(TokenTypes.RwCase))
                 return new List<SentencesNode>();
             var sentences = Sentence();
             var listSentences=     ListOfSentences();
+            if(sentences != null)
             listSentences.Insert(0,sentences);
             return listSentences;
            
@@ -84,42 +90,44 @@ namespace WebCompilerToNativeC.Parser
               
             }
             else if (CompareTokenType(TokenTypes.Rbrace))
-                return ;
+                return null;
 
             else if(CompareTokenType(TokenTypes.RwElse))
-                Else();
+              return  Else();
 
+            
             else if (CompareTokenType(TokenTypes.Html))
                 Html();
+
+            else if (CompareTokenType(TokenTypes.RwDo))
+              return  DWhile();
 
             else if (CompareTokenType(TokenTypes.Eos))
                 ConsumeNextToken();
 
             else if (CompareTokenType(TokenTypes.RwIf))
-                If();
+                return If();
 
             else if (CompareTokenType(TokenTypes.RwWhile))
-                While();
+               return While();
 
             else if (CompareTokenType(TokenTypes.RwFor))
-                ForLoop();
+               return ForLoop();
 
             else if (CompareTokenType(TokenTypes.RwBreak))
-                Break();
+               return Break();
 
             else if (CompareTokenType(TokenTypes.RwContinue))
-                Continue();
+               return Continue();
 
             else if (CompareTokenType(TokenTypes.RwStruct))
-                Struct();
-
-            else if(CompareTokenType(TokenTypes.RwCase))
-                Case();
+               return Struct();
 
             else if (CompareTokenType(TokenTypes.Id) || CompareTokenType(TokenTypes.Mul))
             {
-                if(CompareTokenType(TokenTypes.Mul))
-                    IsPointer();
+                var listOfId = new List<PointerNode>();
+                if (CompareTokenType(TokenTypes.Mul))
+                    IsPointer(listOfId);
                 PreId();
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
@@ -128,22 +136,37 @@ namespace WebCompilerToNativeC.Parser
             }
 
             else if (CompareTokenType(TokenTypes.RwInclude))
-                Include();
+              return     Include();
             
             else if (CompareTokenType(TokenTypes.RwReturn))
-                Return();
+              return  Return();
 
             else if (CompareTokenType(TokenTypes.RwSwitch))
-                Switch();
+             return   Switch();
 
             else if (CompareTokenType(TokenTypes.RwEnum))
-                Enums();
+                return   Enums();
 
             else if (CompareTokenType(TokenTypes.RwConst))
-                Const();
+                return Const();
 
+            else
+            {
+                throw Hanlder.DefaultError(_currentToken);
+            }
 
+            return null;
+        }
 
+        private SentencesNode DWhile()
+        {
+            var doWhileExp = new DoWhile {Sentences = BlockForLoop()};
+            if (!CompareTokenType(TokenTypes.RwWhile)) throw Hanlder.DefaultError(_currentToken);
+            ConsumeNextToken();
+            doWhileExp.WhileCondition = Expression();
+            if (!CompareTokenType(TokenTypes.Eos)) throw Hanlder.DefaultError(_currentToken);
+            ConsumeNextToken();
+            return doWhileExp;
         }
 
         private void Html()
@@ -151,37 +174,61 @@ namespace WebCompilerToNativeC.Parser
             ConsumeNextToken();
         }
 
-        private void Const()
+        private SentencesNode Const()
         {
             ConsumeNextToken();
-       
-      
-            if (CompareTokenType(TokenTypes.Mul))
-                IsPointer();
 
-            if (!CompareTokenType(TokenTypes.Id)) return;
-            ConsumeNextToken();
-            if (CompareTokenType(TokenTypes.Asiggnation) || CompareTokenType(TokenTypes.AddAndAssignment) || CompareTokenType(TokenTypes.SubAndAssignment) || CompareTokenType(TokenTypes.MulAndAssignment) || CompareTokenType(TokenTypes.DivAndAssignment))
+           var constNode = new ConstNode();
+            if (Hanlder.DataTypes.ContainsKey(_currentToken.Type))
             {
-                ValueForId();
-                MultiDeclaration();
-   
+                constNode.DataType = new IdNode() { Value = _currentToken.Lexeme };
+                ConsumeNextToken();
+            }
+            else
+                throw Hanlder.DefaultError(_currentToken);
+            var listPointer = new List<PointerNode>();
+            if (CompareTokenType(TokenTypes.Mul))
+                IsPointer(listPointer);
+            constNode.ListOfPointers = listPointer;
+            if (CompareTokenType(TokenTypes.Id))
+            {
+                constNode.Id = new IdNode() {Value = _currentToken.Lexeme};
+                ConsumeNextToken();
+            }
+            else
+                throw Hanlder.DefaultError(_currentToken);
+
+            if (CompareTokenType(TokenTypes.Asiggnation))
+            {
+                ConsumeNextToken();
+                var assigmentNode = new Assignation {Value = Expression()};
+
+                constNode.Expression = assigmentNode;
+                 ConsumeNextToken();
+
+
+
             }
     
             result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
             ConsumeNextToken();
+            return constNode;
         }
 
-        private void Return()
+        private SentencesNode Return()
         { 
             ConsumeNextToken();
 
             if (CompareTokenType(TokenTypes.Eos))
+            {
                 ConsumeNextToken();
+                return new ReturnNode();
+            }
             else
-            {     Expression();
+            {
+              var expReturn=  Expression();
                 // if(CompareTokenType(TokenTypes.OctalLietral)|| CompareTokenType(TokenTypes.NumericalLiteral) ||  CompareTokenType(TokenTypes.StringLiteral) || CompareTokenType(TokenTypes.DecimalLiteral))
                 //ConsumeNextToken();
 
@@ -189,31 +236,37 @@ namespace WebCompilerToNativeC.Parser
                 // { ConsumeNextToken();
                 //  if( CompareTokenType(TokenTypes.LParenthesis))
                 //        CallFunction();
-                     
+
                 // }
 
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
                     throw result.Excpetion;
                 ConsumeNextToken();
+                return new ReturnNode() {ExpressionToReturn = expReturn};
+               
             }
 
 
         }
 
-        private void Enums()
+        private SentencesNode Enums()
         {
+            var enumNode = new EnumerationNode();
+
             ConsumeNextToken();
             result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
+            enumNode.NameOfEnum =  new IdNode() {Value = _currentToken.Lexeme};
             ConsumeNextToken();
             result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
 
             ConsumeNextToken();
-            EnumeratorList();
+            var enumItems = new List<IdNode>();
+            EnumeratorList(enumItems);
 
             result = Hanlder.CheckToken(TokenTypes.Rbrace, _currentToken);
             if (!result.Succes)
@@ -224,108 +277,135 @@ namespace WebCompilerToNativeC.Parser
             if (!result.Succes)
                 throw result.Excpetion;
             ConsumeNextToken();
+            enumNode.ListEnum = enumItems;
+            return enumNode;
 
         }
 
-        private void EnumeratorList()
+        private void EnumeratorList(List<IdNode> listEnum )
         {
             
-            EnumItem();
+            EnumItem(listEnum);
         }
 
-        private void EnumItem()
+        private void EnumItem(List<IdNode> list )
         {
-
+            var newIdNode = new IdNode();
             result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
+            newIdNode.Value = _currentToken.Lexeme;
             if (!result.Succes)
                 throw result.Excpetion;
             ConsumeNextToken();
 
+          
             if (CompareTokenType(TokenTypes.Asiggnation))
-                OptionalIndexPosition();
+             newIdNode.Assignation=   OptionalIndexPosition();
 
+            list.Add(newIdNode);
             if (CompareTokenType(TokenTypes.Comma))
-            OptionalEnumItem();
+            OptionalEnumItem(list);
         }
 
-        private void OptionalIndexPosition()
+        private Assignation OptionalIndexPosition()
         {
-            
+            var assig = new Assignation();
             ConsumeNextToken();
             result = Hanlder.CheckToken(TokenTypes.NumericalLiteral, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
+            assig.Value = new IntNode() {Value = _currentToken.Lexeme};
             ConsumeNextToken();
-            if (CompareTokenType(TokenTypes.Comma))
-                OptionalEnumItem();
+            return assig;
+            
+
 
         }
 
-        private void OptionalEnumItem()
+        private void OptionalEnumItem(List<IdNode> list)
         { 
           ConsumeNextToken();
-            EnumItem();  
+            EnumItem(list);  
 
         }
 
-        private void Switch()
+        private SentencesNode Switch()
         {
+            var switchNode = new SwitchNode();
+            var listOfStament = new List<CaseStatement>();
+           
             ConsumeNextToken();
-            Expression();
+           switchNode.OptionCase  = Expression();
             result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
-            ListOfCase();
+            Case(listOfStament);
             result = Hanlder.CheckToken(TokenTypes.Rbrace, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
+            switchNode.CaseStatements = listOfStament;
             ConsumeNextToken();
+
+            return switchNode;
         }
 
-        private void ListOfCase()
-        {
-           ConsumeNextToken();
-            if(CompareTokenType(TokenTypes.RwCase))
-                Case();
-            if (CompareTokenType(TokenTypes.RwDefault))
-                Default();
-        }
+       
 
-        private void Default()
+        private CaseStatement Default()
         {
             ConsumeNextToken();
-            Expression();
+      //      Expression();
             result = Hanlder.CheckToken(TokenTypes.TwoPoints, _currentToken);
             if (result.Succes)
                 throw result.Excpetion;
-            ListOfSentences();
-            if (!result.Succes)
-                throw result.Excpetion;
-            ConsumeNextToken();
+          var listOfSentnces=  ListOfSentences();
+            if(CompareTokenType(TokenTypes.Rbrace))
+                return new CaseStatement() {Sentences = listOfSentnces};
+            throw Hanlder.DefaultError(_currentToken);
         }
 
-        private void Case()
+        private List<CaseStatement> Case(List<CaseStatement> listOfStatements )
         {
-           ConsumeNextToken();
-            Expression();
-            result = Hanlder.CheckToken(TokenTypes.Common, _currentToken);
-            if(!result.Succes)
-                throw result.Excpetion;
-             ConsumeNextToken();
-            ListOfSentences();
-            //Review case here
-            if (CompareTokenType(TokenTypes.RwBreak)) 
+
+            if (CompareTokenType(TokenTypes.RwCase))
+            {
+                ConsumeNextToken();
+                var expStament = Expression();
+                result = Hanlder.CheckToken(TokenTypes.Common, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
+                var list = ListOfSentences();
+                listOfStatements.Add(new CaseStatement() {CaseOption = expStament, Sentences = list});
+                //Review case here
+                if (CompareTokenType(TokenTypes.RwBreak))
                     Break();
-          
+                if (CompareTokenType(TokenTypes.RwCase))
+                    Case(listOfStatements);
+                return listOfStatements;
+
+            }else if (CompareTokenType(TokenTypes.RwDefault))
+            {
+
+                listOfStatements.Add(Default());
+                return listOfStatements;
+            }
+
+            return listOfStatements;
+
+
+
+
         }
 
-        private void Include()
+        private SentencesNode Include()
         {
             ConsumeNextToken();
             result = Hanlder.CheckToken(TokenTypes.StringLiteral, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
+            var includeNode = new IncludeNode() {LibreryName = _currentToken.Lexeme};
             ConsumeNextToken();
+            return includeNode;
 
 
 
@@ -342,12 +422,15 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
-        private void Struct()
+        private SentencesNode Struct()
         {
+            var expStruct = new StructNode();
+
             ConsumeNextToken();
             result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
             if (result.Succes)
             {
+                expStruct.NameOfStruct = new IdVariable() {Value = _currentToken.Lexeme};
                 ConsumeNextToken();
 
                 result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
@@ -412,72 +495,75 @@ namespace WebCompilerToNativeC.Parser
 
         
 
-        private void Continue()
+        private SentencesNode Continue()
         { 
           ConsumeNextToken();
             result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
             if (!result.Succes)
                 throw result.Excpetion;
                 ConsumeNextToken();
+            return new ContinueNode();
 
 
 
         }
 
-        private void Break()
+        private SentencesNode Break()
         {
             ConsumeNextToken();
             if (CompareTokenType(TokenTypes.Eos)) 
                 ConsumeNextToken();
+            return new BreakNode();
 
         }
 
-        private void ForLoop()
+        private SentencesNode ForLoop()
         {
            ConsumeNextToken();
             if (CompareTokenType(TokenTypes.LParenthesis))
             {
-                ForOrForeach();
+              return  ForOrForeach();
             }
             else
             {
-                Hanlder.DefaultError(_currentToken);
+              throw  Hanlder.DefaultError(_currentToken);
             }
 
         }
 
-        private void ForOrForeach()
+        private SentencesNode ForOrForeach()
         {
              ConsumeNextToken();
             if (RWords.DataTypes.Contains(_currentToken.Lexeme))
             {
-                ForEach();
+              return  ForEach();
             }
             else
             {
-                NormalFor();
+               return NormalFor();
             }
         }
 
-        private void NormalFor()
+        private SentencesNode NormalFor()
         {
-            
-            Expression();
+            var normalFor = new ForNode {FirstCondition = Expression()};
+
             result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
             if (result.Succes)
             {
                 ConsumeNextToken();
-                Expression();
+              normalFor.SecondCondition=  Expression();
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (result.Succes)
                 {
                     ConsumeNextToken();
-                    Expression();
+                   normalFor.ThirdCondition= Expression();
                     result = Hanlder.CheckToken(TokenTypes.RParenthesis, _currentToken);
                     if (result.Succes)
                     {
                         ConsumeNextToken();
-                        BlockForLoop();
+                       normalFor.ListStencnesNode.AddRange( BlockForLoop());
+                        return normalFor;
                     }
                     else
                     {
@@ -498,26 +584,32 @@ namespace WebCompilerToNativeC.Parser
             }
         }
 
-        private void ForEach()
-        {ConsumeNextToken();
+        private SentencesNode ForEach()
 
+        {
+            var forEachNode = new Foreach {DataType = new IdNode() {Value = _currentToken.Lexeme}};
+            ConsumeNextToken();
+           
             result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
             if (result.Succes)
-            {
+            {     forEachNode.Element = new IdNode() {Value = _currentToken.Lexeme};
                 ConsumeNextToken();
                 result = Hanlder.CheckToken(TokenTypes.Common, _currentToken);
                 if (result.Succes)
-                {
+                {     
                     ConsumeNextToken();
                     result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
                     if (result.Succes)
                     {
+                        forEachNode.ListToForeach = new IdNode() { Value = _currentToken.Lexeme };
                         ConsumeNextToken();
                         result = Hanlder.CheckToken(TokenTypes.RParenthesis, _currentToken);
                         if (result.Succes)
                         {
                             ConsumeNextToken();
-                            BlockForLoop();
+                            forEachNode.ListStencnesNode.AddRange(BlockForLoop());
+                            return forEachNode;
+
                         }
                         else
                         {
@@ -544,65 +636,94 @@ namespace WebCompilerToNativeC.Parser
             
         }
 
-        private void While()
+        private SentencesNode While()
         {
             ConsumeNextToken();
-            Expression();
-            BlockForLoop();
+           
+            var expWhile =  Expression();
+          var listSentences=  BlockForLoop();
+            return new WhileNode() {Sentences = listSentences, WhileCondition = expWhile};
 
         }
 
-        private void BlockForLoop()
+        private List<SentencesNode> BlockForLoop()
         {
-            
+
             if (CompareTokenType(TokenTypes.Lbrace))
             {
                 ConsumeNextToken();
-                ListOfSentences();
+                var listExp = ListOfSentences();
                 if (CompareTokenType(TokenTypes.Rbrace))
+                {
                     ConsumeNextToken();
+                    return listExp;
+                }
+                else
+                {
+                    throw Hanlder.DefaultError(_currentToken);
+                }
             }
             else
             {
-                Hanlder.DefaultError(_currentToken);
+                throw Hanlder.DefaultError(_currentToken);
             }
+          
                 
 
         }
 
-        private void If()
+        private SentencesNode If()
         {
+            var ifNode = new IfNode();
             ConsumeNextToken();
-            Expression();
-            BlockForIf();
+            ifNode.IfCondition= Expression();
+             var trueAndFalseBlock =BlockForIf();
+            ifNode.TrueBlock = trueAndFalseBlock.TrueBlock;
+            ifNode.FalseBlock = trueAndFalseBlock.FalseBlock;
+            return ifNode;
 
         }
 
-        private void BlockForIf()
+        private IfNode BlockForIf()
         {
+           
+            var trueAndFalseBclok = new IfNode();
+
             if (CompareTokenType(TokenTypes.Lbrace))
             {
                 ConsumeNextToken();
-                ListOfSentences();
-               if( CompareTokenType(TokenTypes.Rbrace))
+                trueAndFalseBclok.TrueBlock= ListOfSentences();
+                if (CompareTokenType(TokenTypes.Rbrace))
+                {
                     ConsumeNextToken();
-               if(CompareTokenType(TokenTypes.RwElse))
-                    Else();
-
+                }
+                else
+                {
+                  throw Hanlder.DefaultError(_currentToken);
+                }
+                if (CompareTokenType(TokenTypes.RwElse))
+                {
+                    var elseresult = Else();
+                    trueAndFalseBclok.FalseBlock.Add(elseresult);
+                }
+                  
+                return trueAndFalseBclok;
             }
             else
             {
-                Sentence();
+               trueAndFalseBclok.TrueBlock.Add(Sentence());
                 if(CompareTokenType(TokenTypes.RwElse))
-                Else();
+              trueAndFalseBclok.FalseBlock.Add(Else());
+                return trueAndFalseBclok;
+                
             }
 
         }
 
-        private void Else()
+        private SentencesNode Else()
         {
             ConsumeNextToken();
-            BlockForIf();
+          return  BlockForIf();
         }
 
         public void Declaretion()
@@ -616,10 +737,11 @@ namespace WebCompilerToNativeC.Parser
 
         public void Gd()
         {
+            var listOfPointer = new List<PointerNode>();
             ConsumeNextToken();
 
-            if (CompareTokenType(TokenTypes.Mul))
-                IsPointer();
+            if (CompareTokenType(TokenTypes.Mul))  
+                IsPointer(listOfPointer);
 
             if (CompareTokenType(TokenTypes.Id))
                 ConsumeNextToken();
@@ -632,9 +754,9 @@ namespace WebCompilerToNativeC.Parser
         public void GeneralDeclaration()
         {
             ConsumeNextToken();
-
-            if(CompareTokenType(TokenTypes.Mul))
-            IsPointer();
+            var listOfPointer = new List<PointerNode>();
+            if (CompareTokenType(TokenTypes.Mul))
+            IsPointer(listOfPointer);
 
             if (CompareTokenType(TokenTypes.Id))
             {
@@ -809,7 +931,8 @@ namespace WebCompilerToNativeC.Parser
             }
             else if (CompareTokenType(TokenTypes.Mul))
             {
-                IsPointer();
+                var listOfPointer = new List<PointerNode>();
+                IsPointer(listOfPointer);
                 
                 result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
                 if (result.Succes)
@@ -839,7 +962,7 @@ namespace WebCompilerToNativeC.Parser
             if (CompareTokenType(TokenTypes.OpenBracket))
                 BidArray();
             if (CompareTokenType(TokenTypes.Asiggnation))
-                OptionalInitOfArray();
+                OptionalInitOfArray(null);
             
             else
             {
@@ -847,7 +970,7 @@ namespace WebCompilerToNativeC.Parser
             }
         }
 
-        private ExpressionNode OptionalInitOfArray(List<ExpressionNode> listExpression )
+        private void OptionalInitOfArray(List<ExpressionNode> listExpression )
         {
             ConsumeNextToken();
             if (CompareTokenType(TokenTypes.Lbrace))
@@ -938,7 +1061,7 @@ namespace WebCompilerToNativeC.Parser
 
         private void ValueForId()
         {
-          IdAccesorsOrFunction();
+          IdAccesorsOrFunction(null);
            
             if (CompareTokenType(TokenTypes.Asiggnation) || CompareTokenType(TokenTypes.AddAndAssignment) ||
                 CompareTokenType(TokenTypes.SubAndAssignment) || CompareTokenType(TokenTypes.MulAndAssignment) ||
@@ -1122,12 +1245,13 @@ namespace WebCompilerToNativeC.Parser
             else if (CompareTokenType(TokenTypes.LParenthesis))
             {
                 ConsumeNextToken();
-                Expression();
+              var exp=  Expression();
                 result = Hanlder.CheckToken(TokenTypes.RParenthesis, _currentToken);
                 if (!result.Succes)
                     throw result.Excpetion;
 
                 ConsumeNextToken();
+                return exp;
             }
 
             //Verificar bien o de literales Booleanas
@@ -1162,7 +1286,7 @@ namespace WebCompilerToNativeC.Parser
            
            
             if (CompareTokenType(TokenTypes.LParenthesis))
-                CallFunction();
+                CallFunction(null);
             
 
     
@@ -1207,15 +1331,18 @@ namespace WebCompilerToNativeC.Parser
 
         public void OptionalExpression()
         {   ConsumeNextToken();
-            ListOfExpressions();
+            ListOfExpressions(null);
 
         }
 
-        public void IsPointer()
+        public void IsPointer(List<PointerNode> listPointer )
         {
+            
+            listPointer.Add(new PointerNode());
             ConsumeNextToken();
             if (CompareTokenType(TokenTypes.Mul))
-                IsPointer();
+                IsPointer(listPointer);
+
 
 
 

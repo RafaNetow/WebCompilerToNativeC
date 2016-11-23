@@ -3,19 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebCompilerToNativeC.Tree.DataType;
-using WebCompilerToNativeC.Tree.DataType.IdNode;
 
 namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
 {
-
-
-    public class DeclarationNode : SentencesNode
+    public class DesreferenceNode : SentencesNode
     {
-        public IdNode Type;
-        public IdNode Variable;
-        public List<PointerNode> ListOfPointers;
-    
         public override void ValidateSemantic()
         {
             throw new NotImplementedException();

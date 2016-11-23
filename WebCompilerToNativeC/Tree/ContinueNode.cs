@@ -3,20 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebCompilerToNativeC.Tree.BaseClass;
 
-namespace WebCompilerToNativeC.Tree.Sentences
+namespace WebCompilerToNativeC.Tree
 {
-   public class ForNode : SentencesNode
-   {
-       public ExpressionNode FirstCondition;
-       public ExpressionNode SecondCondition;
-       public ExpressionNode ThirdCondition;
-       public List<SentencesNode> Sentences;
-        
-         
-   
-
+   public class ContinueNode : SentencesNode
+    {
        public override void ValidateSemantic()
        {
            throw new NotImplementedException();
