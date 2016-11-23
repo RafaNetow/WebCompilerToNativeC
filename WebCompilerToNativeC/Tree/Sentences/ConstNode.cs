@@ -13,7 +13,7 @@ namespace WebCompilerToNativeC.Tree.Sentences
     public class ConstNode : SentencesNode
     {
          public  IdNode Id;
-        public IdNode DataType;
+        public DataType.BaseClass.DataType DataType;
         public Assignation Expression;
 
         public List<PointerNode> ListOfPointers;

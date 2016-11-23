@@ -4,6 +4,6 @@ namespace WebCompilerToNativeC.Tree
 {
    public  abstract class Fors : SentencesNode
    {
-      public List<SentencesNode> ListStencnesNode;
+      public List<SentencesNode> ListStencnesNode = new List<SentencesNode>();
    }
 }

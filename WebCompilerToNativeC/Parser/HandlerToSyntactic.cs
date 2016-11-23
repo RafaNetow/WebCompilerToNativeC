@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -25,6 +26,8 @@ namespace WebCompilerToNativeC.Parser
         public Dictionary<TokenTypes, BinaryOperator> OperatorsMul = new Dictionary<TokenTypes, BinaryOperator>();
         public Dictionary<TokenTypes, BinaryOperator> AdditionOp = new Dictionary<TokenTypes, BinaryOperator>(); 
         public Dictionary<TokenTypes, BinaryOperator> RelationalOp = new Dictionary<TokenTypes, BinaryOperator>();
+        public Dictionary<TokenTypes, BinaryOperator> AssignationOperator = new Dictionary<TokenTypes, BinaryOperator>();
+        public Dictionary<string, DataType> DataTypesLexeme = new Dictionary<string, DataType>();
 
         public HandlerToSyntactic()
        {
@@ -34,7 +37,30 @@ namespace WebCompilerToNativeC.Parser
             InitOperatorsMul();
             InnitAdditionOp();
             InitRelationalOp();
+            IntitAssignationOp();
+            InitDataTypesLexeme();
        }
+
+       private void InitDataTypesLexeme()
+       {
+            DataTypesLexeme.Add("string", new StringNode());
+            DataTypesLexeme.Add("bool", new BooleanNode());
+            DataTypesLexeme.Add("char", new CharNode());
+            DataTypesLexeme.Add("int", new IntNode());
+            DataTypesLexeme.Add("float", new Float());
+            DataTypesLexeme.Add("decimal", new DecimalNode());
+
+        }
+
+        private void IntitAssignationOp()
+       {
+           AssignationOperator.Add(TokenTypes.AddAndAssignment, new AddAndAssignmentNode());
+           AssignationOperator.Add(TokenTypes.SubAndAssignment, new SubAndAssignment());
+           AssignationOperator.Add(TokenTypes.MulAndAssignment, new MulAndAssignment());
+           AssignationOperator.Add(TokenTypes.DivAndAssignment, new DivAndAssignmentNode());
+            AssignationOperator.Add(TokenTypes.Asiggnation, new AssignationBinary());
+
+        }
 
        private void InitRelationalOp()
        {
@@ -42,9 +68,10 @@ namespace WebCompilerToNativeC.Parser
            RelationalOp.Add(TokenTypes.LessThanOrEqual, new LessOrEqualOperatorNode());
            RelationalOp.Add(TokenTypes.GreaterThan, new GreaterOperatorNode());
            RelationalOp.Add(TokenTypes.GreaterThanOrEqual, new GreaterOrEqualOperatorNode());
-          // RelationalOp.Add(TokenTypes.AndBinary, new AndNode);
-            
-       }
+           RelationalOp.Add(TokenTypes.IfEqual, new EqualityOperator());
+           RelationalOp.Add(TokenTypes.UnEqual, new NotEqualt());
+         RelationalOp.Add(TokenTypes.Asiggnation, new AssignationBinary());
+        }
 
        private void InnitAdditionOp()
        {
@@ -70,18 +97,7 @@ namespace WebCompilerToNativeC.Parser
             UnariesNode.Add(TokenTypes.Sub, new NegativeNode());
             UnariesNode.Add(TokenTypes.Mul, new MulUnary());
             UnariesNode.Add(TokenTypes.Not, new NotUnary());
-            /*
-              if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement) ||
-                 CompareTokenType(TokenTypes.AndBinary) || CompareTokenType(TokenTypes.ComplementBinary) ||
-                 CompareTokenType(TokenTypes.OrBinary) || CompareTokenType(TokenTypes.XorBinary) ||
-                 CompareTokenType(TokenTypes.Not) || CompareTokenType(TokenTypes.Sub) || CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Mul)
-                  || CompareTokenType(TokenTypes.Decrement))
-
-             {
-                 ConsumeNextToken();
-             }
-
-              */
+          
         }
 
         private void InitDataTypes()

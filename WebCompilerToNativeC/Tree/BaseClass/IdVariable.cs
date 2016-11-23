@@ -12,7 +12,11 @@ namespace WebCompilerToNativeC.Tree.BaseClass
     {
         public string Value;
         public UnaryNode IncrementOrDecrement;
+        public ExpressionNode TypeOfAssignment;
         public List<AccesorNode> Accesors = new List<AccesorNode>();
+        public ExpressionNode ValueOfAssigment;
+
+
         public override BaseType ValidateSemantic()
         {
             throw new NotImplementedException();

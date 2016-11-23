@@ -11,7 +11,7 @@ namespace WebCompilerToNativeC.Tree.Sentences
     {
         public ExpressionNode IfCondition;
         public List<SentencesNode> TrueBlock;
-        public List<SentencesNode> FalseBlock;
+        public List<SentencesNode> FalseBlock = new List<SentencesNode>();
         public override void ValidateSemantic()
        {
            throw new NotImplementedException();

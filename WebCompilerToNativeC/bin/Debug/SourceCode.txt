@@ -1,12 +1,62 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
 <%
+  
+      #include  "path-spec"  
+#include  "path-spec"  
+const int height = 100; 
+const float number = 3.14; /*Real constant*/
+const char letter = 'A'; /*char constant*/
+enum DAY            /* Defines an enumeration type    */  
+{  
+    saturday,       /* Names day and declares a       */  
+    sunday = 22,     /* variable named workday with    */   
+    monday,         /* that type                      */  
+    tuesday,  
+    wednesday,      /* wednesday is associated with 3 */  
+    thursday,  
+    friday  
+} ;  
+
+ int sum (int a, int b)
+    {
+        return a + b;
+    }
+
+do {
+     int o;
+     int k;
+   }while( a < 20 );
+
+ for( a = 10; a < 20; a = a + 1 ){
+      int y;
+      int z;
+   }
+ while( a < 20 ) {
+
+   int ax;
+   }
 if(a<4){
  if(2>3){
- 
+   int x; 
+
  }else{
     if(2>4){
+    int o;
     }
  }
 
 }
+ int x;
+
+
 %>
+<h1>WebC compiler</h1>
+
+
+</body>
+</html>

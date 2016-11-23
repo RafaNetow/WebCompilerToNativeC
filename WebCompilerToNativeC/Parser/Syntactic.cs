@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Policy;
 using System.Text;
@@ -86,7 +87,7 @@ namespace WebCompilerToNativeC.Parser
         {
             if (RWords.DataTypes.Contains(_currentToken.Lexeme))
             {
-                Declaretion();
+               return Declaretion();
               
             }
             else if (CompareTokenType(TokenTypes.Rbrace))
@@ -160,6 +161,7 @@ namespace WebCompilerToNativeC.Parser
 
         private SentencesNode DWhile()
         {
+            ConsumeNextToken();
             var doWhileExp = new DoWhile {Sentences = BlockForLoop()};
             if (!CompareTokenType(TokenTypes.RwWhile)) throw Hanlder.DefaultError(_currentToken);
             ConsumeNextToken();
@@ -179,9 +181,10 @@ namespace WebCompilerToNativeC.Parser
             ConsumeNextToken();
 
            var constNode = new ConstNode();
-            if (Hanlder.DataTypes.ContainsKey(_currentToken.Type))
+            if (Hanlder.DataTypesLexeme.ContainsKey(_currentToken.Lexeme))
             {
-                constNode.DataType = new IdNode() { Value = _currentToken.Lexeme };
+                constNode.DataType = Hanlder.DataTypesLexeme[_currentToken.Lexeme];
+                constNode.DataType.Value = _currentToken.Lexeme;
                 ConsumeNextToken();
             }
             else
@@ -204,7 +207,7 @@ namespace WebCompilerToNativeC.Parser
                 var assigmentNode = new Assignation {Value = Expression()};
 
                 constNode.Expression = assigmentNode;
-                 ConsumeNextToken();
+                
 
 
 
@@ -417,7 +420,7 @@ namespace WebCompilerToNativeC.Parser
             ConsumeNextToken();
            
            
-                ValueForId();
+                ValueForId(null);
           
 
         }
@@ -450,7 +453,7 @@ namespace WebCompilerToNativeC.Parser
                 ConsumeNextToken();
 
 
-
+                return null;
             }
             else
             {
@@ -546,7 +549,10 @@ namespace WebCompilerToNativeC.Parser
 
         private SentencesNode NormalFor()
         {
-            var normalFor = new ForNode {FirstCondition = Expression()};
+            var variable = new IdVariable() {Value = _currentToken.Lexeme};
+            ConsumeNextToken();
+           variable= (IdVariable) ValueForId(variable);
+            var normalFor = new ForNode {FirstCondition = variable};
 
             result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
             if (result.Succes)
@@ -726,9 +732,9 @@ namespace WebCompilerToNativeC.Parser
           return  BlockForIf();
         }
 
-        public void Declaretion()
+        public SentencesNode Declaretion()
         {
-            GeneralDeclaration();
+           return  GeneralDeclaration();
            
 
         }
@@ -751,16 +757,24 @@ namespace WebCompilerToNativeC.Parser
             
         }
 
-        public void GeneralDeclaration()
+        public SentencesNode GeneralDeclaration()
         {
+            var declaretion = new DeclarationNode();
+            declaretion.Type = Hanlder.DataTypesLexeme[_currentToken.Lexeme];
             ConsumeNextToken();
+
             var listOfPointer = new List<PointerNode>();
+             
+     
+
             if (CompareTokenType(TokenTypes.Mul))
             IsPointer(listOfPointer);
 
             if (CompareTokenType(TokenTypes.Id))
             {
-                TypeOfDeclaration();
+                declaretion.ListOfPointers = listOfPointer;
+                declaretion.Variable = new IdVariable() {Value = _currentToken.Lexeme};
+             return   TypeOfDeclaration(declaretion);
             }
             else
             {
@@ -769,17 +783,20 @@ namespace WebCompilerToNativeC.Parser
            
         }
 
-        public void TypeOfDeclaration()
+        public SentencesNode TypeOfDeclaration(DeclarationNode generalDeclaretion)
         {
             ConsumeNextToken();
-            if (CompareTokenType(TokenTypes.Asiggnation) || CompareTokenType(TokenTypes.AddAndAssignment) || CompareTokenType(TokenTypes.SubAndAssignment) || CompareTokenType(TokenTypes.MulAndAssignment) || CompareTokenType(TokenTypes.DivAndAssignment))
+            if (Hanlder.AssignationOperator.ContainsKey(_currentToken.Type))
             {
-                ValueForId();
-                MultiDeclaration();
+                generalDeclaretion.Variable= (IdVariable) ValueForId(generalDeclaretion.Variable);
+                var listIdNode = new List<IdVariable>();
+                MultiDeclaration(listIdNode);
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
                     throw result.Excpetion;
                 ConsumeNextToken();
+             var simpleDeclaretion = new MultiDeclaration() {Type = generalDeclaretion.Type, Variable = generalDeclaretion.Variable, ListOfPointers  = generalDeclaretion.ListOfPointers,ListOfIdNodes = listIdNode};
+                return simpleDeclaretion;
             }
             else if (CompareTokenType(TokenTypes.OpenBracket))
             {
@@ -788,7 +805,7 @@ namespace WebCompilerToNativeC.Parser
                 if (CompareTokenType(TokenTypes.Comma))
                 {
                     ConsumeNextToken();
-                    TypeOfDeclaration();
+                    TypeOfDeclaration(null);
                 }
                 else
                 {
@@ -796,94 +813,103 @@ namespace WebCompilerToNativeC.Parser
                     if (!result.Succes)
                         throw result.Excpetion;
                 }
-
+                return null;
                 ConsumeNextToken();
             }
             else if (CompareTokenType(TokenTypes.Eos))
             {
                 ConsumeNextToken();
+                return generalDeclaretion;
             }
             else if (CompareTokenType(TokenTypes.LParenthesis))
             {
-                IsFunctionDeclration();
+                var functioNDeclaretion = new FunctionDeclaretion();
                 ConsumeNextToken();
-                ParameterList();
+                var functionDeclaretionList = new List<DeclarationNode>();
+                ParameterList(functionDeclaretionList);
+                result = Hanlder.CheckToken(TokenTypes.RParenthesis, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                ConsumeNextToken();
                 result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
                 if (!result.Succes)
                     throw result.Excpetion;
                 ConsumeNextToken();
-                ListOfSentences();
+               functioNDeclaretion.ListOfEspecialSentences=  ListOfSentences();
                 result = Hanlder.CheckToken(TokenTypes.Rbrace, _currentToken);
                 if (!result.Succes)
                     throw result.Excpetion;
                 ConsumeNextToken();
 
-
-
+                functioNDeclaretion.ParameterList = functionDeclaretionList;
+                functioNDeclaretion.Type = generalDeclaretion.Type;
+                functioNDeclaretion.ListOfPointers = generalDeclaretion.ListOfPointers;
+                functioNDeclaretion.Variable = generalDeclaretion.Variable;
+                return functioNDeclaretion;
             }
 
             else if (CompareTokenType(TokenTypes.Comma))
             {
-                MultiDeclaration();
+                MultiDeclaration(null);
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
                     throw result.Excpetion;
                 ConsumeNextToken();
+                return null;
             }
             else
             {
-                Hanlder.DefaultError(_currentToken);
+              throw  Hanlder.DefaultError(_currentToken);
             }
 
+            return null;
         }
 
-        private void MultiDeclaration()
+        private void MultiDeclaration(List<IdVariable> listid )
         {
-            OptianalId();
+            OptianalId(listid);
         }
 
-        private void OptianalId()
+        private void OptianalId(List<IdVariable> listId)
         {
             if (CompareTokenType(TokenTypes.Comma))
-                ListOfId();
+                ListOfId(listId);
         }
 
-        private void ListOfId()
+        private void ListOfId(List<IdVariable> listId)
         {
             ConsumeNextToken();
             if (CompareTokenType(TokenTypes.Id))
-                OtherIdOrValue();
+                OtherIdOrValue(listId);
         }
 
-        private void OtherIdOrValue()
+        private void OtherIdOrValue(List<IdVariable> listId)
         {
+            var newVariable = new IdVariable();
+            newVariable.Value = _currentToken.Lexeme;
+
             ConsumeNextToken();
-            if (CompareTokenType(TokenTypes.Asiggnation) || CompareTokenType(TokenTypes.AddAndAssignment) || CompareTokenType(TokenTypes.SubAndAssignment) || CompareTokenType(TokenTypes.MulAndAssignment) || CompareTokenType(TokenTypes.DivAndAssignment))
-                ValueForId();
-             if(CompareTokenType(TokenTypes.Comma))
-                OptianalId();
-        }
-
-        private void IsFunctionDeclration()
-        {
-            ConsumeNextToken();
-            ParameterList();
-
-
-        }
-
-        private void ParameterList()
-        {
-            if (RWords.DataTypes.Contains(_currentToken.Lexeme))
+            if (Hanlder.AssignationOperator.ContainsKey(_currentToken.Type))
             {
-                ChooseIdType();
+              newVariable=  (IdVariable) ValueForId(newVariable);
+                listId.Add(newVariable);
+            }
+            if(CompareTokenType(TokenTypes.Comma))
+                OptianalId(listId);
+        }
+
+        private void ParameterList(List<DeclarationNode> listOfDeclaretion)
+        {
+            if (Hanlder.DataTypesLexeme.ContainsKey(_currentToken.Lexeme))
+            {
+                listOfDeclaretion.Add(ChooseIdType( Hanlder.DataTypesLexeme[_currentToken.Lexeme]));
                 if (CompareTokenType(TokenTypes.Comma))
                 {
-                    OptionalListOfParams();
+                    OptionalListOfParams(listOfDeclaretion);
                 }
                 else
                 {
-                    
+                   
                 }
             }
             else
@@ -894,36 +920,40 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
-        private void OptionalListOfParams()
+        private void OptionalListOfParams(List<DeclarationNode> listOfDeclaretion)
         {
            ConsumeNextToken();
-            if (RWords.DataTypes.Contains(_currentToken.Lexeme))
+            if (Hanlder.DataTypesLexeme.ContainsKey(_currentToken.Lexeme))
             {
-                ChooseIdType();
+               listOfDeclaretion.Add(ChooseIdType(Hanlder.DataTypesLexeme[_currentToken.Lexeme]));
                 if (CompareTokenType(TokenTypes.Comma))
                 {
-                    OptionalListOfParams();
+                    OptionalListOfParams(listOfDeclaretion);
                 }
                 else
                 {
-
+                  
                 }
             }else
             Hanlder.DefaultError(_currentToken);
 
         }
 
-        private void ChooseIdType()
+        private DeclarationNode ChooseIdType(DataType type)
         {
-             
+             var newDeclaretion = new DeclarationNode();
             //Revisar si esta parte del codigo va a funcionar
             ConsumeNextToken();
-            if (CompareTokenType(TokenTypes.AndBinary))
+            if (CompareTokenType(TokenTypes.AndBinary))            
             {   ConsumeNextToken();
+                
                result=  Hanlder.CheckToken(TokenTypes.Id, _currentToken);
                 if (result.Succes)
                 {
+                    newDeclaretion.Type = type;
+                    newDeclaretion.Variable = new IdVariable() {Value = _currentToken.Lexeme};
                     ConsumeNextToken();
+                    return newDeclaretion;
                 }
                 throw result.Excpetion;
 
@@ -937,7 +967,11 @@ namespace WebCompilerToNativeC.Parser
                 result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
                 if (result.Succes)
                 {
+                    newDeclaretion.Type = type;
+                    newDeclaretion.Variable = new IdVariable() { Value = _currentToken.Lexeme };
+                    newDeclaretion.ListOfPointers = listOfPointer;
                     ConsumeNextToken();
+                    return newDeclaretion;
                 }
                 else
                 {
@@ -945,7 +979,10 @@ namespace WebCompilerToNativeC.Parser
                 }
             }else if (CompareTokenType(TokenTypes.Id))
             {
+                newDeclaretion.Type = type;
+                newDeclaretion.Variable = new IdVariable() { Value = _currentToken.Lexeme };
                 ConsumeNextToken();
+                return newDeclaretion;
             }
             else
             {
@@ -953,6 +990,7 @@ namespace WebCompilerToNativeC.Parser
             }
 
 
+            return null;
         }
 
         private void IsArrayDeclaration()
@@ -1059,23 +1097,15 @@ namespace WebCompilerToNativeC.Parser
         }
 
 
-        private void ValueForId()
+        public ExpressionNode ValueForId(IdVariable currentId)
         {
-          IdAccesorsOrFunction(null);
-           
-            if (CompareTokenType(TokenTypes.Asiggnation) || CompareTokenType(TokenTypes.AddAndAssignment) ||
-                CompareTokenType(TokenTypes.SubAndAssignment) || CompareTokenType(TokenTypes.MulAndAssignment) ||
-                CompareTokenType(TokenTypes.DivAndAssignment))
+            if (!Hanlder.AssignationOperator.ContainsKey(_currentToken.Type))
+                return IdAccesorsOrFunction(currentId);
 
-            {ConsumeNextToken();
-                Expression();
-            }
-
-
-
-
-
-
+            currentId.TypeOfAssignment = Hanlder.AssignationOperator[_currentToken.Type];
+            ConsumeNextToken();
+            currentId.ValueOfAssigment = Expression();
+            return currentId;
         }
 
         private ExpressionNode ArrowOrDot()
