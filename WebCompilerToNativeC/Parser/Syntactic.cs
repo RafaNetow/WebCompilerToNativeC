@@ -129,11 +129,12 @@ namespace WebCompilerToNativeC.Parser
                 var listOfId = new List<PointerNode>();
                 if (CompareTokenType(TokenTypes.Mul))
                     IsPointer(listOfId);
-                PreId();
+               var preid =PreId();
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
                     throw result.Excpetion;
                 ConsumeNextToken();
+                return preid;
             }
 
             else if (CompareTokenType(TokenTypes.RwInclude))
@@ -415,14 +416,15 @@ namespace WebCompilerToNativeC.Parser
 
         }
 
-        private void PreId()
+        private SentencesNode PreId()
         {
+            var functionOrAssigment  = new CallFunctionOrAssignment() {IdToAssignment = new IdVariable() {Value = _currentToken.Lexeme} };
             ConsumeNextToken();
            
            
-                ValueForId(null);
+               functionOrAssigment.Expression=  ValueForId(functionOrAssigment.IdToAssignment);
           
-
+            return functionOrAssigment;
         }
 
         private SentencesNode Struct()

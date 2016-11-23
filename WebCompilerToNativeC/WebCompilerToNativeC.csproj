@@ -88,6 +88,7 @@
     <Compile Include="Tree\BinaryNode\RightDecrement.cs" />
     <Compile Include="Tree\BinaryNode\SubAndAssignment.cs" />
     <Compile Include="Tree\BinaryNode\SubNode.cs" />
+    <Compile Include="Tree\CallFunctionOrAssignment.cs" />
     <Compile Include="Tree\ContinueNode.cs" />
     <Compile Include="Tree\DataType\AccesorNode.cs" />
     <Compile Include="Tree\BaseClass\BinaryNode.cs" />

@@ -26,7 +26,8 @@ enum DAY            /* Defines an enumeration type    */
     {
         return a + b;
     }
-
+   ret = max(a, b);
+   max(a,b);
 do {
      int o;
      int k;
