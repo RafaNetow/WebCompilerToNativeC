@@ -1157,14 +1157,20 @@ namespace WebCompilerToNativeC.Parser
 
       public  void  GetArrayProperties(List<AccesorNode> listOfAccesor)
         {
-            
+            ConsumeNextToken();
+            listOfAccesor.Add((AccesorNode)SizeForArray());
+            ConsumeNextToken();
+            if (CompareTokenType(TokenTypes.OpenBracket))
+                listOfAccesor.Add((AccesorNode)BidArray());
+
         }
 
         private void GetAllAccesorNodes(List<AccesorNode> listOfAccesors)
         {
-            if (CompareTokenType(TokenTypes.OpenBracket))
-            {
+            if (CompareTokenType(TokenTypes.OpenBracket)) 
+            {      GetArrayProperties(listOfAccesors);
                 if (Hanlder.TypeOfAccesors.ContainsKey(_currentToken.Type))
+                    ArrowOrDot(listOfAccesors)
                     return null;
             }
             else
@@ -1186,9 +1192,9 @@ namespace WebCompilerToNativeC.Parser
             return currentId;
         }
 
-        private ExpressionNode ArrowOrDot()
+        private void ArrowOrDot(List<AccesorNode> listOfAccesors)
         {
-            var listOfAccesors = new List<AccesorNode>();
+        
 
 
             
