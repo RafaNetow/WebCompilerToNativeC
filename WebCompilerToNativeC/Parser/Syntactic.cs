@@ -236,7 +236,7 @@ namespace WebCompilerToNativeC.Parser
                 // if(CompareTokenType(TokenTypes.OctalLietral)|| CompareTokenType(TokenTypes.NumericalLiteral) ||  CompareTokenType(TokenTypes.StringLiteral) || CompareTokenType(TokenTypes.DecimalLiteral))
                 //ConsumeNextToken();
 
-                // else if (CompareTokenType(TokenTypes.Id))
+                // else if (CompareTokenType(TokenTypes.id))
                 // { ConsumeNextToken();
                 //  if( CompareTokenType(TokenTypes.LParenthesis))
                 //        CallFunction();
@@ -768,7 +768,7 @@ namespace WebCompilerToNativeC.Parser
                 ConsumeNextToken();
             
             else
-                throw new SyntacticException("Expected some Id", _currentToken.Row, _currentToken.Column);
+                throw new SyntacticException("Expected some id", _currentToken.Row, _currentToken.Column);
             
         }
 
@@ -793,7 +793,7 @@ namespace WebCompilerToNativeC.Parser
             }
             else
             {
-                throw new SyntacticException("Expected some Id", _currentToken.Row, _currentToken.Column);
+                throw new SyntacticException("Expected some id", _currentToken.Row, _currentToken.Column);
             }
            
         }
@@ -1137,6 +1137,40 @@ namespace WebCompilerToNativeC.Parser
                 return currentIdVariable;
 
 
+            }
+        }
+
+
+        public ExpressionNode IdProperties(IdVariable id)
+        {
+
+            var listOfAccesors = new List<AccesorNode>();
+            GetAllAccesorNodes(listOfAccesors);
+
+            if (id.Accesors != null) id.Accesors = id.Accesors;
+            return id;
+        }
+
+
+
+
+
+      public  void  GetArrayProperties(List<AccesorNode> listOfAccesor)
+        {
+            
+        }
+
+        private void GetAllAccesorNodes(List<AccesorNode> listOfAccesors)
+        {
+            if (CompareTokenType(TokenTypes.OpenBracket))
+            {
+                if (Hanlder.TypeOfAccesors.ContainsKey(_currentToken.Type))
+                    return null;
+            }
+            else
+            {
+                if (Hanlder.TypeOfAccesors.ContainsKey(_currentToken.Type))
+                    return null;
             }
         }
 
