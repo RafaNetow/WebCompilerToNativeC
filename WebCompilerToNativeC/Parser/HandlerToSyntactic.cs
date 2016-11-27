@@ -12,6 +12,7 @@ using WebCompilerToNativeC.Tree.DataType;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.Boolean;
 using WebCompilerToNativeC.Tree.DataType.Char;
+using WebCompilerToNativeC.Tree.DataType.IdNode;
 using WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre;
 using WebCompilerToNativeC.Tree.UnaryNode;
 
@@ -28,6 +29,7 @@ namespace WebCompilerToNativeC.Parser
         public Dictionary<TokenTypes, BinaryOperator> RelationalOp = new Dictionary<TokenTypes, BinaryOperator>();
         public Dictionary<TokenTypes, BinaryOperator> AssignationOperator = new Dictionary<TokenTypes, BinaryOperator>();
         public Dictionary<string, DataType> DataTypesLexeme = new Dictionary<string, DataType>();
+        public Dictionary<TokenTypes,AccesorNode>TypeOfAccesors = new Dictionary<TokenTypes, AccesorNode>();
 
         public HandlerToSyntactic()
        {
@@ -39,6 +41,15 @@ namespace WebCompilerToNativeC.Parser
             InitRelationalOp();
             IntitAssignationOp();
             InitDataTypesLexeme();
+            InitTypeOfAccesors();
+       }
+
+       public void InitTypeOfAccesors()
+       {
+            TypeOfAccesors.Add(TokenTypes.reference, new ReferenceNode());
+            TypeOfAccesors.Add(TokenTypes.Point, new PropertyAccesorNode());
+           
+
        }
 
        private void InitDataTypesLexeme()

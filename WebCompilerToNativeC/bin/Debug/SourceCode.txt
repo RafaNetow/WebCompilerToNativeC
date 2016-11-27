@@ -4,13 +4,24 @@
 <title>Page Title</title>
 </head>
 <body>
-<%
-  
-      #include  "path-spec"  
 #include  "path-spec"  
+#include  "path-spec"  
+<%
+b[2][3]->4[4][3] = a.s;
+a.d[2].c =  arr[a->d[2].c];
+
+a->[3] = 4;
+a->d[2].c =  arr[a->d[2].c];
+
 const int height = 100; 
 const float number = 3.14; /*Real constant*/
 const char letter = 'A'; /*char constant*/
+
+int****x = 5;
+int y=5 , y=4,z;
+
+char cha=3,nplname[20],c,plame[20];
+
 enum DAY            /* Defines an enumeration type    */  
 {  
     saturday,       /* Names day and declares a       */  
@@ -25,6 +36,38 @@ enum DAY            /* Defines an enumeration type    */
  int sum (int a, int b)
     {
         return a + b;
+    }
+    
+   while (edad < 20) {
+	printf("value of a: %d\n", a);
+		const char x = 'x';
+}
+ 
+ enum suit {
+	club = 88,
+	diamonds = 10,
+	hearts = 20,
+	spades = 3,
+	jimbo
+};
+ 
+ for( a = 10; a < 20; a = a + 1 ){
+
+	if (i == 5)
+	{
+		continue;
+	}
+	printf("Hello %d\n", i);
+}
+ 
+ do {
+	printf("value of a: %d\n", a);
+	a = a + 1;
+} while (a>6);
+ 
+ int resta (int a, int b)
+    {
+        return a - b;
     }
    ret = max(a, b);
    max(a,b);
