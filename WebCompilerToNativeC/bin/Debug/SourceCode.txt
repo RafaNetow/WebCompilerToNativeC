@@ -4,12 +4,11 @@
 <title>Page Title</title>
 </head>
 <body>
-#include  "path-spec"  
+#include  "patñoh-spec"  
 #include  "path-spec"  
 <%
-b[2][3]->4[4][3] = a.s;
+b[2][3]->x[4][3] = a.s;
 a.d[2].c =  arr[a->d[2].c];
-
 a->[3] = 4;
 a->d[2].c =  arr[a->d[2].c];
 

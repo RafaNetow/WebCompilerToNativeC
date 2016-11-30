@@ -132,6 +132,7 @@ namespace WebCompilerToNativeC.Parser
                var preid =PreId();
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
+
                     throw result.Excpetion;
                 ConsumeNextToken();
                 return preid;
@@ -429,12 +430,16 @@ namespace WebCompilerToNativeC.Parser
             {
               
                 IsArrayDeclaration(listOfAccesors);
+
+                 result = Hanlder.CheckToken(TokenTypes.CloseBracket, _currentToken);
+               
+             
             }
             if(Hanlder.TypeOfAccesors.ContainsKey(_currentToken.Type))
-            ArrowOrDot();
-                   ConsumeNextToken();
-           
-           
+            ArrowOrDot(listOfAccesors);
+
+
+            functionOrAssigment.IdToAssignment.Accesors = listOfAccesors;           
                functionOrAssigment.Expression=  ValueForId(functionOrAssigment.IdToAssignment);
           
             return functionOrAssigment;
@@ -1041,10 +1046,18 @@ namespace WebCompilerToNativeC.Parser
         { ConsumeNextToken();
           listOfAccces.Add( (AccesorNode) SizeForArray());
             ConsumeNextToken();
+
+            result = Hanlder.CheckToken(TokenTypes.CloseBracket, _currentToken);
+            if (!result.Succes)
+                throw result.Excpetion;
+
+            ConsumeNextToken();
+
             if (CompareTokenType(TokenTypes.OpenBracket))
              listOfAccces.Add( (AccesorNode) BidArray());
-            if (CompareTokenType(TokenTypes.Asiggnation))
-                OptionalInitOfArray(null);
+
+          //  if (CompareTokenType(TokenTypes.Asiggnation))
+            //    OptionalInitOfArray(null);
             
             else
             {
@@ -1071,6 +1084,7 @@ namespace WebCompilerToNativeC.Parser
         {
             ConsumeNextToken();
           var bidAccesor =   SizeBidArray();
+            
             if (CompareTokenType(TokenTypes.CloseBracket))
             {
                 ConsumeNextToken();
@@ -1082,12 +1096,20 @@ namespace WebCompilerToNativeC.Parser
 
         private ExpressionNode SizeBidArray()
         {
-           
+
             if (Hanlder.LiteralWithDecreOrIncre.ContainsKey(_currentToken.Type))
-                return new ArrayAccesorNode() { Value = Hanlder.LiteralWithDecreOrIncre[_currentToken.Type] };
+            {
+                var value = Hanlder.LiteralWithDecreOrIncre[_currentToken.Type];
+                value.Value = _currentToken.Lexeme;
+                ConsumeNextToken();
+                return new ArrayAccesorNode() {Value = value};
+            }
 
             if (CompareTokenType(TokenTypes.Id))
-                return new ArrayAccesorNode() { Value = new IdVariable() { Value = _currentToken.Lexeme } };
+            {
+
+                return new ArrayAccesorNode() {Value = new IdVariable() {Value = _currentToken.Lexeme}};
+            }
 
             throw new SyntacticException("Do not can initializer an array with the type of identifeir", _currentToken.Row, _currentToken.Column);
 
@@ -1099,8 +1121,12 @@ namespace WebCompilerToNativeC.Parser
             {
                 return new ArrayAccesorNode();
             }
-            if(Hanlder.LiteralWithDecreOrIncre.ContainsKey(_currentToken.Type))
-                return new ArrayAccesorNode() {Value = Hanlder.LiteralWithDecreOrIncre[_currentToken.Type]};
+            if (Hanlder.LiteralWithDecreOrIncre.ContainsKey(_currentToken.Type))
+            {
+                var value = Hanlder.LiteralWithDecreOrIncre[_currentToken.Type];
+                value.Value = _currentToken.Lexeme;
+                return new ArrayAccesorNode() {Value = value};
+            }
 
             if(CompareTokenType(TokenTypes.Id))
                 return new ArrayAccesorNode() {Value = new IdVariable() {Value = _currentToken.Lexeme} };
@@ -1120,22 +1146,11 @@ namespace WebCompilerToNativeC.Parser
             }
             else
             {
-                if (CompareTokenType(TokenTypes.OpenBracket))
-                {
-                    ConsumeNextToken();                   
-                   var accesor =   SizeForArray();
-                   currentIdVariable.Accesors.Add((AccesorNode) accesor);
-                    ConsumeNextToken();
-                    if (CompareTokenType(TokenTypes.OpenBracket))
-                    {
-                     var bidAccesor =    BidArray();
-                        currentIdVariable.Accesors.Add((AccesorNode) bidAccesor);
-                    }
-                }        
-                   var accesorArrowOrDot =     ArrowOrDot();
-                    currentIdVariable.Accesors.Add((AccesorNode) accesorArrowOrDot);
-                return currentIdVariable;
+              return   IdProperties(currentIdVariable);
 
+                  
+                      
+              
 
             }
         }
@@ -1147,7 +1162,7 @@ namespace WebCompilerToNativeC.Parser
             var listOfAccesors = new List<AccesorNode>();
             GetAllAccesorNodes(listOfAccesors);
 
-            if (id.Accesors != null) id.Accesors = id.Accesors;
+            if (id.Accesors != null) id.Accesors = listOfAccesors;
             return id;
         }
 
@@ -1170,13 +1185,13 @@ namespace WebCompilerToNativeC.Parser
             if (CompareTokenType(TokenTypes.OpenBracket)) 
             {      GetArrayProperties(listOfAccesors);
                 if (Hanlder.TypeOfAccesors.ContainsKey(_currentToken.Type))
-                    ArrowOrDot(listOfAccesors)
-                    return null;
+                    ArrowOrDot(listOfAccesors);
+
             }
             else
             {
                 if (Hanlder.TypeOfAccesors.ContainsKey(_currentToken.Type))
-                    return null;
+                    ArrowOrDot(listOfAccesors);
             }
         }
 
@@ -1194,45 +1209,52 @@ namespace WebCompilerToNativeC.Parser
 
         private void ArrowOrDot(List<AccesorNode> listOfAccesors)
         {
-        
-
-
-            
+                    
             if (CompareTokenType(TokenTypes.Point))
             {ConsumeNextToken();
-                if (CompareTokenType(TokenTypes.Lbrace))
+                result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
+                if (!result.Succes)
+                    throw result.Excpetion;
+                listOfAccesors.Add(new PropertyAccesorNode() { Id = new IdNode() { Value = _currentToken.Lexeme } });
+                ConsumeNextToken();
+                if (CompareTokenType(TokenTypes.OpenBracket))
                   IsArrayDeclaration(listOfAccesors);
-          
 
 
-                result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
+                if (Hanlder.TypeOfAccesors.ContainsKey(_currentToken.Type))
+                    ArrowOrDot(listOfAccesors);
 
-                if (!result.Succes)
-                    throw result.Excpetion;
 
-                if (CompareTokenType(TokenTypes.Lbrace))
-                    IsArrayDeclaration(listOfAccesors);
+                
 
-                ArrowOrDot();
-                var idVal = _currentToken.Lexeme;
-                ConsumeNextToken();
-                return new PropertyAccesorNode() {Id = new IdNode() {Value = _currentToken.Lexeme} };
+
+             
+
+
+              
+                
+            
+               
             }
 
-            if (!CompareTokenType(TokenTypes.reference)) return new PropertyAccesorNode();
-            {
-                ConsumeNextToken();
-                if (CompareTokenType(TokenTypes.Lbrace))
-                    IsArrayDeclaration(listOfAccesors);
+            if (!CompareTokenType(TokenTypes.reference)) return;
+            ConsumeNextToken();
+            result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
+            if (!result.Succes)
+                throw result.Excpetion;
 
-                result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
-                if (!result.Succes)
-                    throw result.Excpetion;
+            listOfAccesors.Add(new ReferenceNode() {Id = new IdNode() {Value = _currentToken.Lexeme} });
+            ConsumeNextToken();
+            if (CompareTokenType(TokenTypes.OpenBracket))
+                IsArrayDeclaration(listOfAccesors);
 
-                var idVal = _currentToken.Lexeme;
-                ConsumeNextToken();
-                return new PropertyAccesorNode() { Id = new IdNode() { Value = _currentToken.Lexeme } };
-            }
+            if (Hanlder.TypeOfAccesors.ContainsKey(_currentToken.Type))
+                ArrowOrDot(listOfAccesors);
+
+
+
+
+
         }
 
         private ExpressionNode Expression()
@@ -1342,6 +1364,7 @@ namespace WebCompilerToNativeC.Parser
             else if (CompareTokenType(TokenTypes.Id))
             {  
                var iVariable = new IdVariable() {Value = _currentToken.Lexeme};
+              
                ConsumeNextToken();
 
                 if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement))
