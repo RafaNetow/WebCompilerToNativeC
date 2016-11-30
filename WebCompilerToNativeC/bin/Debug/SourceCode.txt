@@ -7,9 +7,14 @@
 #include  "patñoh-spec"  
 #include  "path-spec"  
 <%
-b[2][3]->x[4][3] = a.s;
+
+
+float balance[] = {1000.0, 2.0, 3.4, 7.0, 50.0};
+
 a.d[2].c =  arr[a->d[2].c];
-a->[3] = 4;
+b[2][3]->x[4][3] = a.s;
+
+a->w[3] = 4;
 a->d[2].c =  arr[a->d[2].c];
 
 const int height = 100; 
