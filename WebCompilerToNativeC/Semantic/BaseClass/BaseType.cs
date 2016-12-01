@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebCompilerToNativeC.Semantic
 {
-   public class BaseType
-    {
-    }
+   public abstract class BaseType
+   {
+       public abstract bool IsAssignable(BaseType otherType);
+     
+   }
 }
