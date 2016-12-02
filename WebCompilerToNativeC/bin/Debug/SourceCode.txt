@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <title>Page Title</title>
@@ -7,8 +7,14 @@
 #include  "patñoh-spec"  
 #include  "path-spec"  
 <%
+struct Books {
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+} book,c,x,w,s;
 b[2][3]->x[4][3] = a.s;
-a.d[2].c =  arr[a->d[2].c];
+
 a->[3] = 4;
 a->d[2].c =  arr[a->d[2].c];
 

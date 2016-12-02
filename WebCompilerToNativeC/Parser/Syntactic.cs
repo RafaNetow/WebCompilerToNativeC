@@ -467,11 +467,14 @@ namespace WebCompilerToNativeC.Parser
                     throw result.Excpetion;
                 ConsumeNextToken();
 
+                OptianalVariableStruct(new List<IdVariable>());
+
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
                     throw result.Excpetion;
                 ConsumeNextToken();
 
+             
 
                 return null;
             }
@@ -481,6 +484,17 @@ namespace WebCompilerToNativeC.Parser
             }
          
 
+        }
+
+        private void OptianalVariableStruct(List<IdVariable> idVariables)
+        {
+            if(CompareTokenType(TokenTypes.Id))
+                idVariables.Add(new IdVariable() {Value = _currentToken.Lexeme});
+            ConsumeNextToken();
+
+            if (!CompareTokenType(TokenTypes.Comma)) return;
+            ConsumeNextToken();
+            OptianalVariableStruct(idVariables);
         }
 
         private void MemberList()
@@ -497,15 +511,7 @@ namespace WebCompilerToNativeC.Parser
         private void DeclaretionOfStruct()
         {
             Gd();
-            if (CompareTokenType(TokenTypes.OpenBracket))
-            {
-                SizeBidArray();
-
-                result = Hanlder.CheckToken(TokenTypes.CloseBracket, _currentToken);
-                if (!result.Succes)
-                    throw result.Excpetion;
-                ConsumeNextToken();
-            }
+         
             result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
              if (!result.Succes)
                 throw result.Excpetion;
@@ -771,9 +777,14 @@ namespace WebCompilerToNativeC.Parser
 
             if (CompareTokenType(TokenTypes.Id))
                 ConsumeNextToken();
-            
             else
                 throw new SyntacticException("Expected some id", _currentToken.Row, _currentToken.Column);
+
+            if (CompareTokenType(TokenTypes.OpenBracket))
+                IsArrayDeclaration(new List<AccesorNode>());
+            
+            
+           
             
         }
 

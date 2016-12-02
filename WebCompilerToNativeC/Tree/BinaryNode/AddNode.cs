@@ -9,12 +9,18 @@ namespace WebCompilerToNativeC.Tree
 {
    public class AddNode : BinaryOperator
     {
-       public override BaseType ValidateSemantic()
+
+       public AddNode ()
        {
-           throw new NotImplementedException();
+           Validation = new Dictionary<Tuple<BaseType, BaseType>, BaseType>
+           {
+              
+               
+               
+           };
        }
 
-       public override string GenerateCode()
+        public override string GenerateCode()
        {
            return GetCode("+");
        }
