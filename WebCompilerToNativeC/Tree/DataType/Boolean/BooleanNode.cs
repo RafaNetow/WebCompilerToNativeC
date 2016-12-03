@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.DataType.Boolean
@@ -15,7 +16,7 @@ namespace WebCompilerToNativeC.Tree.DataType.Boolean
 
         public override BaseType ValidateSemantic()
        {
-           throw new NotImplementedException();
+          return new BooleanType();
        }
 
        public override string GenerateCode()

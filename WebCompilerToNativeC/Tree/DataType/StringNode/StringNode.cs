@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Tree.BaseClass;
 
 namespace WebCompilerToNativeC.Tree
@@ -13,7 +14,7 @@ namespace WebCompilerToNativeC.Tree
         public string StringValue { get; set; }
         public override BaseType ValidateSemantic()
         {
-            throw new NotImplementedException();
+            return new StringType();
         }
 
         public override string GenerateCode()

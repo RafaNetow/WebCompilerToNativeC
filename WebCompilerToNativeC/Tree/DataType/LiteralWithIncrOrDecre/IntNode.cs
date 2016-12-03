@@ -1,5 +1,6 @@
 ﻿using System;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
@@ -9,7 +10,7 @@ namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
         public int IntValue { get; set; }
         public override BaseType ValidateSemantic()
         {
-            throw new NotImplementedException();
+            return new IntType();
         }
 
         public override string GenerateCode()

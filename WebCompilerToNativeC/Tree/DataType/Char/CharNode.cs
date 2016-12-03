@@ -1,5 +1,6 @@
 ﻿using System;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.DataType.Char
 {
@@ -10,7 +11,7 @@ namespace WebCompilerToNativeC.Tree.DataType.Char
 
         public override BaseType ValidateSemantic()
         {
-            throw new NotImplementedException();
+            return new CharType();
         }
 
         public override string GenerateCode()

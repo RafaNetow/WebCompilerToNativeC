@@ -1,5 +1,6 @@
 ﻿using System;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.DataType
@@ -11,7 +12,7 @@ namespace WebCompilerToNativeC.Tree.DataType
 
         public override BaseType ValidateSemantic()
         {
-            throw new NotImplementedException();
+          return new DateType();
         }
 
         public override string GenerateCode()

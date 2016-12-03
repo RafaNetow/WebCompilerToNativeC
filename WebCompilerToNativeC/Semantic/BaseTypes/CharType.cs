@@ -6,7 +6,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
     {
         public override bool IsAssignable(BaseType otherType)
         {
-            throw new NotImplementedException();
+           
         }
     }
 }
