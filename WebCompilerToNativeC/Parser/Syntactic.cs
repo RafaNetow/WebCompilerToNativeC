@@ -179,6 +179,7 @@ namespace WebCompilerToNativeC.Parser
         }
 
         private SentencesNode Const()
+
         {
             ConsumeNextToken();
 
@@ -790,14 +791,12 @@ namespace WebCompilerToNativeC.Parser
 
         public SentencesNode GeneralDeclaration()
         {
-            var declaretion = new DeclarationNode();
-            declaretion.Type = Hanlder.DataTypesLexeme[_currentToken.Lexeme];
+            var declaretion = new DeclarationNode {Type = Hanlder.DataTypesLexeme[_currentToken.Lexeme]};
+
             ConsumeNextToken();
 
             var listOfPointer = new List<PointerNode>();
-             
-     
-
+                
             if (CompareTokenType(TokenTypes.Mul))
             IsPointer(listOfPointer);
 
@@ -805,7 +804,8 @@ namespace WebCompilerToNativeC.Parser
             {
                 declaretion.ListOfPointers = listOfPointer;
                 declaretion.Variable = new IdVariable() {Value = _currentToken.Lexeme};
-             return   TypeOfDeclaration(declaretion);
+
+                return   TypeOfDeclaration(declaretion);
             }
             else
             {
@@ -823,14 +823,17 @@ namespace WebCompilerToNativeC.Parser
                 var listIdNode = new List<IdVariable>();
                 MultiDeclaration(listIdNode);
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
+
                 if (!result.Succes)
                     throw result.Excpetion;
+
                 ConsumeNextToken();
-             var simpleDeclaretion = new MultiDeclaration() {Type = generalDeclaretion.Type, Variable = generalDeclaretion.Variable, ListOfPointers  = generalDeclaretion.ListOfPointers,ListOfIdNodes = listIdNode};
+                 var simpleDeclaretion = new MultiDeclaration() {Type = generalDeclaretion.Type, Variable = generalDeclaretion.Variable, ListOfPointers  = generalDeclaretion.ListOfPointers,ListOfIdNodes = listIdNode};
                 return simpleDeclaretion;
             }
             else if (CompareTokenType(TokenTypes.OpenBracket))
-            {   List<AccesorNode> listOfAcces = new List<AccesorNode>();
+            {
+                var listOfAcces = new List<AccesorNode>();
                 IsArrayDeclaration(listOfAcces);
                
                 if (CompareTokenType(TokenTypes.Comma))
@@ -845,7 +848,7 @@ namespace WebCompilerToNativeC.Parser
                         throw result.Excpetion;
                 }
                 return null;
-                ConsumeNextToken();
+              
             }
             else if (CompareTokenType(TokenTypes.Eos))
             {
@@ -916,8 +919,7 @@ namespace WebCompilerToNativeC.Parser
 
         private void OtherIdOrValue(List<IdVariable> listId)
         {
-            var newVariable = new IdVariable();
-            newVariable.Value = _currentToken.Lexeme;
+            var newVariable = new IdVariable {Value = _currentToken.Lexeme};
 
             ConsumeNextToken();
             if (Hanlder.AssignationOperator.ContainsKey(_currentToken.Type))
@@ -940,20 +942,19 @@ namespace WebCompilerToNativeC.Parser
                 listId.Add(newVariable);
                 if (CompareTokenType(TokenTypes.Comma))
                 {
-                    ConsumeNextToken();
-                    TypeOfDeclaration(null);
+                   
+                    OptianalId(listId);
                 }
                 else
                 {
-                    result = Hanlder.CheckToken(TokenTypes.CloseBracket, _currentToken);
-                    if (!result.Succes)
-                        throw result.Excpetion;
-                    ConsumeNextToken();
+                    //result = Hanlder.CheckToken(TokenTypes.CloseBracket, _currentToken);
+                    //if (!result.Succes)
+                    //    throw result.Excpetion;
+                    //ConsumeNextToken();
                     if (CompareTokenType(TokenTypes.Comma))
                         OptianalId(listId);
                 }
-           //     return null;
-            //    ConsumeNextToken();
+           
             }
 
         }
@@ -1118,8 +1119,10 @@ namespace WebCompilerToNativeC.Parser
 
             if (CompareTokenType(TokenTypes.Id))
             {
-
-                return new ArrayAccesorNode() {Value = new IdVariable() {Value = _currentToken.Lexeme}};
+                var currentVariable = new IdVariable() { Value = _currentToken.Lexeme };
+                ConsumeNextToken();
+                IdProperties(currentVariable);
+                return new ArrayAccesorNode() {Value = currentVariable};
             }
 
             throw new SyntacticException("Do not can initializer an array with the type of identifeir", _currentToken.Row, _currentToken.Column);
@@ -1128,7 +1131,7 @@ namespace WebCompilerToNativeC.Parser
 
         private ExpressionNode SizeForArray()
         {
-            if (CompareTokenType(TokenTypes.RParenthesis))
+            if (CompareTokenType(TokenTypes.CloseBracket))
             {
                 return new ArrayAccesorNode();
             }
@@ -1139,8 +1142,14 @@ namespace WebCompilerToNativeC.Parser
                 return new ArrayAccesorNode() {Value = value};
             }
 
-            if(CompareTokenType(TokenTypes.Id))
-                return new ArrayAccesorNode() {Value = new IdVariable() {Value = _currentToken.Lexeme} };
+            if (CompareTokenType(TokenTypes.Id))
+            {
+                var currentVariable = new IdVariable() {Value = _currentToken.Lexeme};
+                ConsumeNextToken();
+                IdProperties(currentVariable);
+                return new ArrayAccesorNode() { Value = currentVariable };
+            }
+          
 
             throw new SyntacticException("Do not can initializer an array with the type of identifeir", _currentToken.Row, _currentToken.Column);
            
