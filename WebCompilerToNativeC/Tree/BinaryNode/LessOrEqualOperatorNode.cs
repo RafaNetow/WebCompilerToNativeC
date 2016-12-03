@@ -44,10 +44,6 @@ namespace WebCompilerToNativeC.Tree
                             TypesTable.Instance.GetType("bool")),
                         TypesTable.Instance.GetType("bool")
                     },{
-                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("bool"),
-                            TypesTable.Instance.GetType("int")),
-                        TypesTable.Instance.GetType("bool")
-                    },{
                         new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("int"),
                             TypesTable.Instance.GetType("bool")),
                         TypesTable.Instance.GetType("bool")

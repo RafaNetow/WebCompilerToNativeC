@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
@@ -10,7 +11,7 @@ namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
         public double Value { get; set; }
         public override BaseType ValidateSemantic()
        {
-           throw new NotImplementedException();
+          return new FloatType();
        }
 
        public override string GenerateCode()

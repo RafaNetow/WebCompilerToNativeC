@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Lexer;
+using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Tree;
 using WebCompilerToNativeC.Tree.BaseClass;
 using WebCompilerToNativeC.Tree.DataType;
@@ -155,6 +156,32 @@ namespace WebCompilerToNativeC.Parser
        {
             return new  SyntacticException("UnExpected Token"+currentToken.Type.ToString() +" ",currentToken.Row,currentToken.Column);
     }
+    }
+
+    internal class MulUnary : UnaryNode
+    {
+        public override BaseType ValidateSemantic()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    internal class XorBinary : UnaryNode
+    {
+        public override BaseType ValidateSemantic()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class Result

@@ -13,8 +13,8 @@ namespace WebCompilerToNativeC.Tree
 
         public override BaseType ValidateSemantic()
        {
-           throw new NotImplementedException();
-       }
+            return Value.ValidateSemantic();
+        }
 
        public override string GenerateCode()
        {

@@ -80,7 +80,7 @@
     <Compile Include="Tree\DataType\AccesorNode.cs" />
     <Compile Include="Tree\BinaryNode\AddAndAssignmentNode.cs" />
     <Compile Include="Tree\BinaryNode\AddNode.cs" />
-    <Compile Include="Tree\BinaryNode\AndBinary.cs" />
+    <Compile Include="Tree\UnaryNode\AndBinary.cs" />
     <Compile Include="Tree\BinaryNode\AndNode.cs" />
     <Compile Include="Tree\BaseClass\BinaryNode.cs" />
     <Compile Include="Tree\BaseClass\BinaryOperator.cs" />
@@ -111,7 +111,6 @@
     <Compile Include="Tree\Sentences\Declaretion\MultiDeclaration.cs" />
     <Compile Include="Tree\Sentences\Enum\EnumerationNode.cs" />
     <Compile Include="Tree\Sentences\StructNode.cs" />
-    <Compile Include="Tree\UnaryNode\MulUnary.cs" />
     <Compile Include="Tree\UnaryNode\ComplementNode.cs" />
     <Compile Include="Tree\DataType\LiteralWithIncrOrDecre\DecimalNode.cs" />
     <Compile Include="Tree\BinaryNode\DivNode.cs" />
@@ -130,15 +129,15 @@
     <Compile Include="Tree\BinaryNode\ModulusNode.cs" />
     <Compile Include="Tree\BinaryNode\MulAndAssignment.cs" />
     <Compile Include="Tree\BinaryNode\MultNode.cs" />
-    <Compile Include="Tree\BinaryNode\NegativeNode.cs" />
+    <Compile Include="Tree\UnaryNode\NegativeNode.cs" />
     <Compile Include="Tree\BinaryNode\NotEqualt.cs" />
     <Compile Include="Tree\BaseClass\NotNode.cs" />
     <Compile Include="Tree\BinaryNode\OrNode.cs" />
-    <Compile Include="Tree\BinaryNode\RightDecrement.cs" />
+    <Compile Include="Tree\UnaryNode\RightDecrement.cs" />
     <Compile Include="Tree\UnaryNode\NotUnary.cs" />
     <Compile Include="Tree\UnaryNode\OrUnary.cs" />
     <Compile Include="Tree\UnaryNode\RightIncrement.cs" />
-    <Compile Include="Tree\UnaryNode\RightShift.cs" />
+    <Compile Include="Tree\BinaryNode\RightShift.cs" />
     <Compile Include="Tree\BaseClass\SentencesNode.cs" />
     <Compile Include="Tree\Sentences\Case\SwitchNode.cs" />
     <Compile Include="Tree\Sentences\Case\CaseStatement.cs" />
@@ -151,7 +150,6 @@
     <Compile Include="Tree\BinaryNode\SubAndAssignment.cs" />
     <Compile Include="Tree\BinaryNode\SubNode.cs" />
     <Compile Include="Tree\BaseClass\UnaryNode.cs" />
-    <Compile Include="Tree\UnaryNode\XorBinary.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

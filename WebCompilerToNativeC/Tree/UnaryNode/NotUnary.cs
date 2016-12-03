@@ -1,4 +1,5 @@
 ﻿using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 
 namespace WebCompilerToNativeC.Tree
 {
@@ -6,7 +7,7 @@ namespace WebCompilerToNativeC.Tree
     {
         public override BaseType ValidateSemantic()
         {
-            throw new System.NotImplementedException();
+            return new BooleanType();
         }
 
         public override string GenerateCode()

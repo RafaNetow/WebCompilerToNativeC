@@ -1,13 +1,13 @@
 ﻿using System;
 using WebCompilerToNativeC.Semantic;
 
-namespace WebCompilerToNativeC.Tree.UnaryNode
+namespace WebCompilerToNativeC.Tree
 {
     public class LeftIncrement : BaseClass.UnaryNode
     {
         public override BaseType ValidateSemantic()
         {
-            throw new NotImplementedException();
+            return Value.ValidateSemantic();
         }
 
         public override string GenerateCode()
