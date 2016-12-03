@@ -4,17 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 
 namespace WebCompilerToNativeC.Tree
 {
    public class ModulAndAssignmentNode : BinaryOperator
     {
-       public override BaseType ValidateSemantic()
-       {
-           throw new NotImplementedException();
-       }
+        public ModulAndAssignmentNode()
+        {
+            Validation = new Dictionary<Tuple<BaseType, BaseType>, BaseType>
+           {
 
-       public override string GenerateCode()
+               {
+                   new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("int"),
+                       TypesTable.Instance.GetType("int")),
+                   TypesTable.Instance.GetType("int")
+               }
+           };
+        }
+
+        public override string GenerateCode()
        {
            return GetCode("%=");
        }

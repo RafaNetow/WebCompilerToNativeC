@@ -7,10 +7,10 @@ using WebCompilerToNativeC.Semantic.BaseTypes;
 
 namespace WebCompilerToNativeC.Semantic.BaseClass
 {
-    class TypesTable
+    public class TypesTable
     {
         public Dictionary<string, BaseType> _table;
-
+        private static TypesTable _instance;
         public TypesTable()
         {
             _table = new Dictionary<string, BaseType>();
@@ -26,7 +26,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
         }
 
 
-
+        public static TypesTable Instance => _instance ?? (_instance = new TypesTable());
         public void RegisterType(string name, BaseType baseType)
         {
 
@@ -35,6 +35,8 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
             {
                 throw new SemanticException($"Type :{name} exists.");
             }
+            if (Instance.Contains(name))
+                throw new SemanticException($"  :{name} is a type.");
 
             _table.Add(name, baseType);
         }
@@ -45,7 +47,8 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
             {
                 return _table[name];
             }
-
+          
+           
             throw new SemanticException($"Type :{name} doesn't exists.");
         }
 

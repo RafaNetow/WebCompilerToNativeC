@@ -4,17 +4,62 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 
 namespace WebCompilerToNativeC.Tree
 {
    public class EqualityOperator : BinaryOperator
     {
-       public override BaseType ValidateSemantic()
-       {
-           throw new NotImplementedException();
-       }
+        public EqualityOperator()
+        {
+            Validation = new Dictionary<Tuple<BaseType, BaseType>, BaseType>
+           {
 
-       public override string GenerateCode()
+               {
+                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("int"),
+                            TypesTable.Instance.GetType("int")),
+                        TypesTable.Instance.GetType("bool")
+                    },   {
+                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("bool"),
+                            TypesTable.Instance.GetType("float")),
+                        TypesTable.Instance.GetType("bool")
+                    },  {
+                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("bool"),
+                            TypesTable.Instance.GetType("int")),
+                        TypesTable.Instance.GetType("bool")
+                    }, {
+                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("string"),
+                            TypesTable.Instance.GetType("string")),
+                        TypesTable.Instance.GetType("bool")
+                    },{
+                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("char"),
+                            TypesTable.Instance.GetType("string")),
+                        TypesTable.Instance.GetType("bool")
+                    },{
+                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("char"),
+                            TypesTable.Instance.GetType("char")),
+                        TypesTable.Instance.GetType("bool")
+                    },{
+                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("bool"),
+                            TypesTable.Instance.GetType("bool")),
+                        TypesTable.Instance.GetType("bool")
+                    },{
+                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("bool"),
+                            TypesTable.Instance.GetType("int")),
+                        TypesTable.Instance.GetType("bool")
+                    },{
+                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("int"),
+                            TypesTable.Instance.GetType("bool")),
+                        TypesTable.Instance.GetType("bool")
+                    }
+
+
+
+
+           };
+        }
+
+        public override string GenerateCode()
        {
            return GetCode("=="); 
         }
