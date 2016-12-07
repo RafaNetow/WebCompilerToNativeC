@@ -41,6 +41,10 @@ namespace WebCompilerToNativeC
               var treeNode=  parser.Parse();
                 Console.WriteLine(" No se encontro ningun error de sintaxys");
 
+                foreach(var sentencesNode in treeNode)
+                {
+                    sentencesNode.ValidateSemantic();
+                }
             }
             catch (Exception e)
             {

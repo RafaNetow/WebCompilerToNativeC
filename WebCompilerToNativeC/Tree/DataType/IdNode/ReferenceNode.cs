@@ -21,5 +21,10 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
        {
            throw new NotImplementedException();
        }
+
+       public override BaseType ValidateSemantic(string variable)
+       {
+           throw new NotImplementedException();
+       }
     }
 }

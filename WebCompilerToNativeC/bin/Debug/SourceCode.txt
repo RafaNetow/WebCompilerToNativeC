@@ -7,6 +7,7 @@
 #include  "patñoh-spec"  
 #include  "path-spec"  
 <%
+a.d[2]->c =  arr[a->d[2]->c];
 struct Books {
    char  title[50];
    char  author[50];
@@ -15,6 +16,9 @@ struct Books {
 } book,c,x,w,s;
 b[2][3]->x[4][3] = a.s;
 
+a->x[3] = 4;
+a->d[2].c =  arr[a->d[2].c];  
+ /* revisar porque ya no  pasa esta  */
 
 const int height = 100; 
 const float number = 3.14; /*Real constant*/

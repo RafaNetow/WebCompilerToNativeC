@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebCompilerToNativeC.Semantic.BaseTypes;
+using WebCompilerToNativeC.Semantic.BaseTypes.Struct;
+using WebCompilerToNativeC.Tree;
 
 namespace WebCompilerToNativeC.Semantic.BaseClass
 {
@@ -21,7 +21,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
             _table.Add("bool", new BooleanType());
            _table.Add("date", new DateType()); 
             _table.Add("const", new ConstType());
-            _table.Add("struct", new StructType());
+            _table.Add("struct", new StructType(new List<StructParams>()));
             _table.Add("enum", new EnumType());
         }
 
@@ -29,43 +29,35 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
         public static TypesTable Instance => _instance ?? (_instance = new TypesTable());
         public void RegisterType(string name, BaseType baseType)
         {
-
-         
-            if (_table.ContainsKey(name))
+       
+            if (Context.StackOfContext.Stack.Peek()._table.ContainsKey(name))
             {
                 throw new SemanticException($"Type :{name} exists.");
             }
-            if (Instance.Contains(name))
+            if (Context.StackOfContext.Stack.Peek().Contains(name))
                 throw new SemanticException($"  :{name} is a type.");
 
             _table.Add(name, baseType);
         }
 
+
         public BaseType GetType(string name)
         {
-            if (_table.ContainsKey(name))
+            foreach (var typesTable in Context._context.Stack.Where(typesTable => typesTable.Contains(name)))
             {
-                return _table[name];
+                return typesTable._table[name];
             }
-          
-           
-            throw new SemanticException($"Type :{name} doesn't exists.");
+            throw new SemanticException($"Type : {name} doesn't exist.");
         }
 
 
         public bool Contains(string name)
         {
-            return _table.ContainsKey(name);
+            return Context._context.Stack.Select(typesTable => typesTable._table.ContainsKey(name)).FirstOrDefault();
         }
     }
 
-    internal class EnumType : BaseType
-    {
-        public override bool IsAssignable(BaseType otherType)
-        {
-            throw new NotImplementedException();
-        }
-    }
+   
 
 
     internal class SemanticException : Exception
@@ -76,6 +68,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
 
         }
     }
+   
 
 }
 

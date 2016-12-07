@@ -10,7 +10,7 @@ namespace WebCompilerToNativeC.Tree
     {
        public override void ValidateSemantic()
        {
-           throw new NotImplementedException();
+         
        }
 
        public override string GenerateCode()

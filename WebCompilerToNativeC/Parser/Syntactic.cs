@@ -17,6 +17,7 @@ using WebCompilerToNativeC.Tree.DataType;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.Boolean;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
+using WebCompilerToNativeC.Tree.DataType.IdNode.Accesors;
 using WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre;
 using WebCompilerToNativeC.Tree.Sentences;
 using WebCompilerToNativeC.Tree.Sentences.Case;

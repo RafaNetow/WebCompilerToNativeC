@@ -66,7 +66,8 @@
     <Compile Include="Semantic\BaseTypes\FloatType.cs" />
     <Compile Include="Semantic\BaseTypes\SemanticException.cs" />
     <Compile Include="Semantic\BaseTypes\StringType.cs" />
-    <Compile Include="Semantic\BaseTypes\StructType.cs" />
+    <Compile Include="Semantic\BaseTypes\Struct\StructParams.cs" />
+    <Compile Include="Semantic\BaseTypes\Struct\StructType.cs" />
     <Compile Include="Semantic\BaseTypes\IntType.cs" />
     <Compile Include="Semantic\BaseClass\TypesTable.cs" />
     <Compile Include="Semantic\BaseClass\BaseType.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="Tree\DataType\IdNode\ArrayAccesorNode.cs" />
     <Compile Include="Tree\DataType\IdNode\CallFunction.cs" />
     <Compile Include="Tree\DataType\IdNode\IsArrayDeclaration.cs" />
-    <Compile Include="Tree\DataType\IdNode\PropertyAccesorNode.cs" />
+    <Compile Include="Tree\DataType\IdNode\Accesors\PropertyAccesorNode.cs" />
     <Compile Include="Tree\DataType\IdNode\ReferenceNode.cs" />
     <Compile Include="Tree\DataType\Char\CharNode.cs" />
     <Compile Include="Tree\DataType\DateNode\DateNode.cs" />

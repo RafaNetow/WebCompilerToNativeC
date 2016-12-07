@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Tree.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.Sentences.Fors
@@ -16,7 +17,18 @@ namespace WebCompilerToNativeC.Tree.Sentences.Fors
 
        public override void ValidateSemantic()
        {
-           throw new NotImplementedException();
+
+           FirstCondition.ValidateSemantic();
+
+            if(!(SecondCondition.ValidateSemantic() is BooleanType))
+                throw new SemanticException("Se espera una expression booleana");
+
+           ThirdCondition.ValidateSemantic();
+
+            foreach (var statement in ListStencnesNode)
+           {
+               statement.ValidateSemantic();
+           }
        }
 
        public override string GenerateCode()

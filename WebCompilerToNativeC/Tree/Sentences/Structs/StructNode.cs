@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using WebCompilerToNativeC.Semantic.BaseClass;
-using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Semantic.BaseTypes.Struct;
 using WebCompilerToNativeC.Tree.Sentences.Declaretion;
 
-namespace WebCompilerToNativeC.Tree.Sentences
+namespace WebCompilerToNativeC.Tree.Sentences.Structs
     //Que tenga el mismo lenght
     //Que no tenga propiedades
     //
@@ -18,14 +17,17 @@ namespace WebCompilerToNativeC.Tree.Sentences
         public  List<DeclarationNode>  StructItems = new List<DeclarationNode>();
         public override void ValidateSemantic()
        {
+            Context._context.Stack.Push(new TypesTable());
             var listParams = new List<StructParams>();
             foreach (var item in StructItems)
             {
-                listParams.Add(new StructParams() {Name = item.Variable.Value, LengOfProperties = item.Variable.Accesors.Count});
+                item.ValidateSemantic();
+            
+                listParams.Add(new StructParams() {Name = item.Variable.Value, LengOfProperties = item.Variable.Accesors.Count, Type = item.Type });
+
             }
-
-
-        TypesTable.Instance.RegisterType(NameOfStruct.Value, new StringType());
+        Context._context.Stack.Pop();
+        Context._context.Stack.Peek().RegisterType(NameOfStruct.Value, new StructType(listParams) );
        }
 
        public override string GenerateCode()

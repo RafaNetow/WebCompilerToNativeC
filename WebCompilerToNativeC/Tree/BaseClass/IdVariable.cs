@@ -21,7 +21,7 @@ namespace WebCompilerToNativeC.Tree
         {
             var type = TypesTable.Instance.GetType(Value);
 
-            return Accesors.Count <= 0 ? TypesTable.Instance.GetType(Value) : Accesors.Aggregate(type, (current, variable) => variable.ValidateSemantic(current));
+            return Accesors.Count <= 0 ? TypesTable.Instance.GetType(Value) : Accesors.Aggregate(type, (current, variable) => variable.ValidateSemantic(null));
         }
 
         public override string GenerateCode()

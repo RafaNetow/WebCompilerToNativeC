@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Tree.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.Sentences
@@ -15,10 +16,15 @@ namespace WebCompilerToNativeC.Tree.Sentences
 
         public override void ValidateSemantic()
       {
-          throw new NotImplementedException();
-      }
+            if (!(WhileCondition.ValidateSemantic() is BooleanType))
+                throw new SemanticException("Se esperaba expresion booleana en la sentencia while");
+            foreach (var statement in Sentences)
+            {
+                statement.ValidateSemantic();
+            }
+        }   
 
-      public override string GenerateCode()
+        public override string GenerateCode()
       {
           throw new NotImplementedException();
       }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.Semantic.BaseClass;
+using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
 using WebCompilerToNativeC.Tree.Sentences.Declaretion;
 
@@ -15,7 +17,7 @@ namespace WebCompilerToNativeC.Tree.Sentences.Enum
 
         public override void ValidateSemantic()
        {
-           throw new NotImplementedException();
+           Context._context.Stack.Peek().RegisterType(NameOfEnum.Value,new EnumType(ListEnum));
        }
 
        public override string GenerateCode()

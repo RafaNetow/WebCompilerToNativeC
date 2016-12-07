@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebCompilerToNativeC.Tree.BaseClass;
 
-namespace WebCompilerToNativeC.Tree.Sentences
+namespace WebCompilerToNativeC.Tree.Sentences.IfNode
 {
    public class IfNode : SentencesNode
     {
