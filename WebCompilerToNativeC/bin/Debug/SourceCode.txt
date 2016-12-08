@@ -6,17 +6,15 @@
 <body>
 #include  "patñoh-spec"  
 #include  "path-spec"  
-<% 
-int suma;
-int b=30;
-int a=20;
- suma = a+b;
-bool x= true;
-bool y=false;
-
-int  h,j,k,l;
-
-y=x;
+<%
+int resta (int n1, int n2)
+    {
+        return  n1+ n2;
+    } 
+    int y =2;
+ int x =1;
+    x = resta(x,y);
+  
 
 
 

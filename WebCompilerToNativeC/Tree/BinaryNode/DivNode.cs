@@ -20,29 +20,29 @@ namespace WebCompilerToNativeC.Tree
            {
 
                {
-                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("int"),
-                            TypesTable.Instance.GetType("int")),
-                        TypesTable.Instance.GetType("int")
+                        new Tuple<BaseType, BaseType>(Context.StackOfContext.GetType("int"),
+                            Context.StackOfContext.GetType("int")),
+                        Context.StackOfContext.GetType("int")
                     },   {
-                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("int"),
-                            TypesTable.Instance.GetType("float")),
-                        TypesTable.Instance.GetType("float")
+                        new Tuple<BaseType, BaseType>(Context.StackOfContext.GetType("int"),
+                            Context.StackOfContext.GetType("float")),
+                        Context.StackOfContext.GetType("float")
                     },  {
-                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("float"),
-                            TypesTable.Instance.GetType("int")),
-                        TypesTable.Instance.GetType("float")
+                        new Tuple<BaseType, BaseType>(Context.StackOfContext.GetType("float"),
+                            Context.StackOfContext.GetType("int")),
+                        Context.StackOfContext.GetType("float")
                     },{
-                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("bool"),
-                            TypesTable.Instance.GetType("bool")),
-                        TypesTable.Instance.GetType("bool")
+                        new Tuple<BaseType, BaseType>(Context.StackOfContext.GetType("bool"),
+                            Context.StackOfContext.GetType("bool")),
+                        Context.StackOfContext.GetType("bool")
                     },{
-                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("bool"),
-                            TypesTable.Instance.GetType("int")),
-                        TypesTable.Instance.GetType("bool")
+                        new Tuple<BaseType, BaseType>(Context.StackOfContext.GetType("bool"),
+                            Context.StackOfContext.GetType("int")),
+                        Context.StackOfContext.GetType("bool")
                     },{
-                        new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("int"),
-                            TypesTable.Instance.GetType("bool")),
-                        TypesTable.Instance.GetType("bool")
+                        new Tuple<BaseType, BaseType>(Context.StackOfContext.GetType("int"),
+                            Context.StackOfContext.GetType("bool")),
+                        Context.StackOfContext.GetType("bool")
                     }
 
 

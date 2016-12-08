@@ -16,9 +16,9 @@ namespace WebCompilerToNativeC.Tree
            {
 
                {
-                   new Tuple<BaseType, BaseType>(TypesTable.Instance.GetType("int"),
-                       TypesTable.Instance.GetType("int")),
-                   TypesTable.Instance.GetType("int")
+                   new Tuple<BaseType, BaseType>(Context.StackOfContext.GetType("int"),
+                       Context.StackOfContext.GetType("int")),
+                   Context.StackOfContext.GetType("int")
                }
            };
         }

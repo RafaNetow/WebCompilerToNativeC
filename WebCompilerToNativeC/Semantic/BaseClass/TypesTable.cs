@@ -14,15 +14,15 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
         public TypesTable()
         {
             _table = new Dictionary<string, BaseType>();
-            _table.Add("int", new IntType());
-            _table.Add("string", new StringType());
-            _table.Add("float", new FloatType());
-            _table.Add("char", new CharType());
-            _table.Add("bool", new BooleanType());
-           _table.Add("date", new DateType()); 
-            _table.Add("const", new ConstType());
-            _table.Add("struct", new StructType(new List<StructParams>()));
-            _table.Add("enum", new EnumType(null));
+           // _table.Add("int", new IntType());
+           // _table.Add("string", new StringType());
+           // _table.Add("float", new FloatType());
+           // _table.Add("char", new CharType());
+           // _table.Add("bool", new BooleanType());
+           //_table.Add("date", new DateType()); 
+           // _table.Add("const", new ConstType());
+           // _table.Add("struct", new StructType(new List<StructParams>()));
+           // _table.Add("enum", new EnumType(null));
         }
 
 

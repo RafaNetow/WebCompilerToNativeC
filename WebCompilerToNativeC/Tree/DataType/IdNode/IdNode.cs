@@ -18,7 +18,7 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
 
         public override BaseType ValidateSemantic()
         {
-            var type = TypesTable.Instance.GetType(Value);
+            var type = Context.StackOfContext.GetType(Value);
 
 
             if(Accesors.Count<=0)

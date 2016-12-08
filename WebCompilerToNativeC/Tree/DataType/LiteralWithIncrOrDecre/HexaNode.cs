@@ -11,7 +11,7 @@ namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
 
         public override BaseType ValidateSemantic()
        {
-          return new IntType();
+            return Context.StackOfContext.GetType("int"); ;
        }
 
        public override string GenerateCode()

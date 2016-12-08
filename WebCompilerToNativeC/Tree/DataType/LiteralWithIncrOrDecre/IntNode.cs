@@ -10,7 +10,7 @@ namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
         public int IntValue { get; set; }
         public override BaseType ValidateSemantic()
         {
-            return Context.StackOfContext.Stack.Peek().GetType("int");
+            return Context.StackOfContext.GetType("int");
         }
 
         public override string GenerateCode()

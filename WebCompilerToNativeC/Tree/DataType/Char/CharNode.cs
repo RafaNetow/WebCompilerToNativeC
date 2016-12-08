@@ -12,7 +12,7 @@ namespace WebCompilerToNativeC.Tree.DataType.Char
 
         public override BaseType ValidateSemantic()
         {
-            return new CharType();
+            return Context.StackOfContext.GetType("char");
         }
 
         public override string GenerateCode()

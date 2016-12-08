@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
+using WebCompilerToNativeC.Semantic.BaseTypes.FuncType;
 using WebCompilerToNativeC.Tree.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.DataType.IdNode
@@ -16,7 +19,28 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
 
         public override BaseType ValidateSemantic()
         {
-            throw new NotImplementedException();
+
+            var baseType = Context.StackOfContext.Stack.Peek().GetType(NameOfFunction);
+            var functionType = (FunctionType) baseType;
+
+
+            for (int i = 0; i < ListOfExpression.Count; i++)
+            {
+               if(ListOfExpression[i].ValidateSemantic() != functionType.ListOfParemterters[i].Type.ValidateSemantic() ) 
+                    throw new SemanticException("El parametro"+functionType.ListOfParemterters[i].Variable.Value+"no es del tipo correspondiente a la funcion");
+
+            }
+
+            return functionType.ReturnParam;
+
+
+
+
+
+
+
+
+
         }
 
         public override string GenerateCode()

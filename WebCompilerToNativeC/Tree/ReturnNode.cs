@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Tree.BaseClass;
 
 namespace WebCompilerToNativeC.Tree
@@ -10,7 +11,12 @@ namespace WebCompilerToNativeC.Tree
    public class ReturnNode : SentencesNode
    {
        public ExpressionNode ExpressionToReturn;
-        public override void ValidateSemantic()
+        public bool ValidateSemantic(BaseType baseToCompare)
+        {
+            return ExpressionToReturn.ValidateSemantic() == baseToCompare;
+        }
+
+       public override void ValidateSemantic()
        {
            throw new NotImplementedException();
        }

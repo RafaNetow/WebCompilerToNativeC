@@ -18,7 +18,8 @@ namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
         public DataType.BaseClass.DataType Type;
         public IdVariable Variable;
         public List<PointerNode> ListOfPointers;
-    
+       
+
         public override void ValidateSemantic()
         {
           var baseType=  Type.ValidateSemantic();

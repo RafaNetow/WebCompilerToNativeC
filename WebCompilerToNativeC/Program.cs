@@ -36,8 +36,8 @@ namespace WebCompilerToNativeC
               /* Testing Syntactic  */
 
             Syntactic parser = new Syntactic(lexer);
-            try
-            {
+            //try
+            //{
               var treeNode=  parser.Parse();
                 Console.WriteLine(" No se encontro ningun error de sintaxys");
 
@@ -45,11 +45,11 @@ namespace WebCompilerToNativeC
                 {
                     sentencesNode.ValidateSemantic();
                 }
-            }
-            catch (Exception e)
-            {
-                Console.Write(e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.Write(e.Message);
+            //}
 
 
 

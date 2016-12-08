@@ -28,7 +28,7 @@ namespace WebCompilerToNativeC.Tree
 
                 return baseTypeAssigment;
             }
-            var type = TypesTable.Instance.GetType(Value);
+            var type = Context.StackOfContext.Stack.Peek().GetType(Value);
 
             return type;
         }

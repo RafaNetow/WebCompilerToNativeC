@@ -11,8 +11,8 @@ namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
         public double Value { get; set; }
         public override BaseType ValidateSemantic()
        {
-          return new FloatType();
-       }
+            return Context.StackOfContext.GetType("float");
+        }
 
        public override string GenerateCode()
        {

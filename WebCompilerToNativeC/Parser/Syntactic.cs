@@ -452,6 +452,7 @@ namespace WebCompilerToNativeC.Parser
         private SentencesNode Struct()
         {
             var expStruct = new StructNode();
+            var lisOfStructDeclaretion = new List<DeclarationNode>();
 
             ConsumeNextToken();
             result = Hanlder.CheckToken(TokenTypes.Id, _currentToken);
@@ -462,7 +463,7 @@ namespace WebCompilerToNativeC.Parser
 
                 result = Hanlder.CheckToken(TokenTypes.Lbrace, _currentToken);
                 if (result.Succes)
-                    MemberList();
+                    MemberList(lisOfStructDeclaretion);
                 else
                     throw result.Excpetion;
            
@@ -501,20 +502,20 @@ namespace WebCompilerToNativeC.Parser
             OptianalVariableStruct(idVariables);
         }
 
-        private void MemberList()
+        private void MemberList(List<DeclarationNode> lisOfStructDeclaretion)
         {
             ConsumeNextToken();
             if (RWords.DataTypes.Contains(_currentToken.Lexeme) || CompareTokenType(TokenTypes.Id))
-                DeclaretionOfStruct();
+                DeclaretionOfStruct(lisOfStructDeclaretion);
 
             else
                 Hanlder.DefaultError(_currentToken);
             
         } 
 
-        private void DeclaretionOfStruct()
+        private void DeclaretionOfStruct(List<DeclarationNode> lisOfStructDeclaretion)
         {
-            Gd();
+            Gd(lisOfStructDeclaretion);
          
             result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
              if (!result.Succes)
@@ -522,7 +523,7 @@ namespace WebCompilerToNativeC.Parser
             ConsumeNextToken();
             if (RWords.DataTypes.Contains(_currentToken.Lexeme))
             {
-                 DeclaretionOfStruct();
+                 DeclaretionOfStruct(lisOfStructDeclaretion);
             }
         }
 
@@ -771,25 +772,33 @@ namespace WebCompilerToNativeC.Parser
 
         //General declartion is DataTye Pointer Identifeir
 
-        public void Gd()
+        public void Gd(List<DeclarationNode> lisOfStructDeclaretion)
         {
+            var newDeclaretion = new DeclarationNode();
+            
             var listOfPointer = new List<PointerNode>();
+
             ConsumeNextToken();
 
             if (CompareTokenType(TokenTypes.Mul))  
                 IsPointer(listOfPointer);
 
+            newDeclaretion.ListOfPointers = listOfPointer;
+
             if (CompareTokenType(TokenTypes.Id))
+            {
+                newDeclaretion.Variable = new IdVariable() {Value = _currentToken.Lexeme};
                 ConsumeNextToken();
+            }
             else
                 throw new SyntacticException("Expected some id", _currentToken.Row, _currentToken.Column);
 
             if (CompareTokenType(TokenTypes.OpenBracket))
+            {
+                //var listOfAccesNode = new 
                 IsArrayDeclaration(new List<AccesorNode>());
-            
-            
-           
-            
+            } 
+
         }
 
         public SentencesNode GeneralDeclaration()

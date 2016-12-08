@@ -24,7 +24,7 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode.Accesors
         
         public override BaseType ValidateSemantic(string variable)
         {
-            var typeOfVaribel = TypesTable.Instance.GetType(variable);
+            var typeOfVaribel = Context.StackOfContext.GetType(variable);
 
             if (typeOfVaribel is StructType)
             {
