@@ -1,6 +1,7 @@
 ﻿using System;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
+using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Tree.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.DataType

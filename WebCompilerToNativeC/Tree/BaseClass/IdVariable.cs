@@ -19,9 +19,18 @@ namespace WebCompilerToNativeC.Tree
 
         public override BaseType ValidateSemantic()
         {
+            if (ValueOfAssigment != null)
+            {
+             var baseTypeAssigment =    ValueOfAssigment.ValidateSemantic();
+             var baseTypeOfVariable =   Context.StackOfContext.Stack.Peek().GetType(Value);
+                if (baseTypeOfVariable != baseTypeAssigment)
+                    throw new SemanticException("el tipo de asignacion no es valida");
+
+                return baseTypeAssigment;
+            }
             var type = TypesTable.Instance.GetType(Value);
 
-            return Accesors.Count <= 0 ? TypesTable.Instance.GetType(Value) : Accesors.Aggregate(type, (current, variable) => variable.ValidateSemantic(null));
+            return type;
         }
 
         public override string GenerateCode()

@@ -4,7 +4,7 @@ using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Semantic.BaseTypes.Struct;
-using EnumType = WebCompilerToNativeC.Semantic.BaseClass.EnumType;
+
 
 namespace WebCompilerToNativeC.Tree.DataType.IdNode.Accesors
 {

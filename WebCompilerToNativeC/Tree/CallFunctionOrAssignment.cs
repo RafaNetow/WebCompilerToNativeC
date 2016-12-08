@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Tree.BaseClass;
 
 namespace WebCompilerToNativeC.Tree
@@ -13,7 +14,7 @@ namespace WebCompilerToNativeC.Tree
        public ExpressionNode Expression;
        public override void ValidateSemantic()
        {
-           throw new NotImplementedException();
+           Expression.ValidateSemantic();
        }
 
        public override string GenerateCode()

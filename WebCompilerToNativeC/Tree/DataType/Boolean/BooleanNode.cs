@@ -17,8 +17,8 @@ namespace WebCompilerToNativeC.Tree.DataType.Boolean
 
         public override BaseType ValidateSemantic()
        {
-          return new BooleanType();
-       }
+            return Context.StackOfContext.Stack.Peek().GetType("bool");
+        }
 
        public override string GenerateCode()
        {

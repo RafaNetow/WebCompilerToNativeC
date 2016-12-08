@@ -22,7 +22,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
            _table.Add("date", new DateType()); 
             _table.Add("const", new ConstType());
             _table.Add("struct", new StructType(new List<StructParams>()));
-            _table.Add("enum", new EnumType());
+            _table.Add("enum", new EnumType(null));
         }
 
 
@@ -43,17 +43,19 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
 
         public BaseType GetType(string name)
         {
-            foreach (var typesTable in Context._context.Stack.Where(typesTable => typesTable.Contains(name)))
+           foreach(var table in Context.StackOfContext.Stack)
             {
-                return typesTable._table[name];
+                if (table._table.ContainsKey(name))
+                    return table._table[name];
             }
+            
             throw new SemanticException($"Type : {name} doesn't exist.");
         }
 
 
         public bool Contains(string name)
         {
-            return Context._context.Stack.Select(typesTable => typesTable._table.ContainsKey(name)).FirstOrDefault();
+            return Context.StackOfContext.Stack.Select(typesTable => typesTable._table.ContainsKey(name)).FirstOrDefault();
         }
     }
 

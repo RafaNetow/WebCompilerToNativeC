@@ -13,9 +13,9 @@ namespace WebCompilerToNativeC.Tree.DataType
        public Tree.BaseClass.UnaryNode UnaryOperator { get; set; }
         public  ExpressionNode Factor { get; set; }
         public override BaseType ValidateSemantic()
-       {
-           throw new NotImplementedException();
-       }
+        {
+            return Factor.ValidateSemantic();
+        }
 
        public override string GenerateCode()
        {

@@ -24,6 +24,8 @@ using WebCompilerToNativeC.Tree.Sentences.Case;
 using WebCompilerToNativeC.Tree.Sentences.Declaretion;
 using WebCompilerToNativeC.Tree.Sentences.Enum;
 using WebCompilerToNativeC.Tree.Sentences.Fors;
+using WebCompilerToNativeC.Tree.Sentences;
+using WebCompilerToNativeC.Tree.Sentences.Structs;
 using WebCompilerToNativeC.Tree.UnaryNode;
 
 namespace WebCompilerToNativeC.Parser
@@ -885,7 +887,8 @@ namespace WebCompilerToNativeC.Parser
 
             else if (CompareTokenType(TokenTypes.Comma))
             {
-                MultiDeclaration(null);
+                var listIdNode = new List<IdVariable>();
+                MultiDeclaration(listIdNode);
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                 if (!result.Succes)
                     throw result.Excpetion;
@@ -897,7 +900,7 @@ namespace WebCompilerToNativeC.Parser
               throw  Hanlder.DefaultError(_currentToken);
             }
 
-            return null;
+            
         }
 
         private void MultiDeclaration(List<IdVariable> listid )
@@ -943,7 +946,7 @@ namespace WebCompilerToNativeC.Parser
                 listId.Add(newVariable);
                 if (CompareTokenType(TokenTypes.Comma))
                 {
-                   
+
                     OptianalId(listId);
                 }
                 else
@@ -955,7 +958,11 @@ namespace WebCompilerToNativeC.Parser
                     if (CompareTokenType(TokenTypes.Comma))
                         OptianalId(listId);
                 }
-           
+
+            }
+            else
+            {
+                listId.Add(newVariable);
             }
 
         }

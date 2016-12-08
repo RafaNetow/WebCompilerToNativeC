@@ -58,6 +58,7 @@
     <Compile Include="Parser\SyntacticException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Semantic\BaseClass\Context.cs" />
     <Compile Include="Semantic\BaseTypes\BooleanType.cs" />
     <Compile Include="Semantic\BaseTypes\CharType.cs" />
     <Compile Include="Semantic\BaseTypes\ConstType.cs" />
@@ -77,10 +78,15 @@
     <Compile Include="Tree\BaseClass\IdVariable.cs" />
     <Compile Include="Tree\BaseClass\UnaryNode\LeftDecrement.cs" />
     <Compile Include="Tree\CallFunctionOrAssignment.cs" />
-    <Compile Include="Tree\Sentences\ContinueNode.cs" />
+    <Compile Include="Tree\Sentences\DoWhile.cs" />
+    <Compile Include="Tree\Sentences\WhileNode.cs" />
+    <Compile Include="Tree\Sentences\ConstNode.cs" />
     <Compile Include="Tree\DataType\AccesorNode.cs" />
     <Compile Include="Tree\BinaryNode\AddAndAssignmentNode.cs" />
     <Compile Include="Tree\BinaryNode\AddNode.cs" />
+    <Compile Include="Tree\Sentences\ContinueNode.cs" />
+    <Compile Include="Tree\Sentences\IfNode.cs" />
+    <Compile Include="Tree\Sentences\StructNode.cs" />
     <Compile Include="Tree\UnaryNode\AndBinary.cs" />
     <Compile Include="Tree\BinaryNode\AndNode.cs" />
     <Compile Include="Tree\BaseClass\BinaryNode.cs" />
@@ -103,7 +109,6 @@
     <Compile Include="Tree\IncludeNode.cs" />
     <Compile Include="Tree\PointerNode.cs" />
     <Compile Include="Tree\ReturnNode.cs" />
-    <Compile Include="Tree\Sentences\ConstNode.cs" />
     <Compile Include="Tree\Sentences\Declaretion\Assignation.cs" />
     <Compile Include="Tree\Sentences\Declaretion\DeclarationNode.cs" />
     <Compile Include="Tree\Sentences\Declaretion\DesreferenceNode.cs" />
@@ -111,7 +116,6 @@
     <Compile Include="Tree\Sentences\Declaretion\IdForDeclaration.cs" />
     <Compile Include="Tree\Sentences\Declaretion\MultiDeclaration.cs" />
     <Compile Include="Tree\Sentences\Enum\EnumerationNode.cs" />
-    <Compile Include="Tree\Sentences\StructNode.cs" />
     <Compile Include="Tree\UnaryNode\ComplementNode.cs" />
     <Compile Include="Tree\DataType\LiteralWithIncrOrDecre\DecimalNode.cs" />
     <Compile Include="Tree\BinaryNode\DivNode.cs" />
@@ -142,11 +146,8 @@
     <Compile Include="Tree\BaseClass\SentencesNode.cs" />
     <Compile Include="Tree\Sentences\Case\SwitchNode.cs" />
     <Compile Include="Tree\Sentences\Case\CaseStatement.cs" />
-    <Compile Include="Tree\Sentences\DoWhile.cs" />
     <Compile Include="Tree\Sentences\Fors\Foreach.cs" />
     <Compile Include="Tree\Sentences\Fors\ForNode.cs" />
-    <Compile Include="Tree\Sentences\IfNode.cs" />
-    <Compile Include="Tree\Sentences\WhileNode.cs" />
     <Compile Include="Tree\DataType\StringNode\StringNode.cs" />
     <Compile Include="Tree\BinaryNode\SubAndAssignment.cs" />
     <Compile Include="Tree\BinaryNode\SubNode.cs" />
@@ -154,8 +155,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="WebCompilerToNativeC.csproj.DotSettings" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Tree\Sentences\Bucles\" />
+    <Folder Include="Tree\Sentences\Const\" />
+    <Folder Include="Tree\Sentences\Continue\" />
+    <Folder Include="Tree\Sentences\If\" />
+    <Folder Include="Tree\Sentences\Structs\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

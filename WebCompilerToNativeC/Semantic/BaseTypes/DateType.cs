@@ -1,6 +1,6 @@
 using System;
 
-namespace WebCompilerToNativeC.Semantic.BaseClass
+namespace WebCompilerToNativeC.Semantic.BaseTypes
 {
     internal class DateType : BaseType
     {

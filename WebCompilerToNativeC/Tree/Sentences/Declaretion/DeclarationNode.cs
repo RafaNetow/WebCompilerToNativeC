@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.BaseClass;
 using WebCompilerToNativeC.Tree.DataType;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
@@ -19,7 +21,15 @@ namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
     
         public override void ValidateSemantic()
         {
-            throw new NotImplementedException();
+          var baseType=  Type.ValidateSemantic();
+            if (Variable.ValueOfAssigment != null)
+            {
+                var baseTypeAssignment = Variable.ValueOfAssigment.ValidateSemantic();
+                if (baseType != baseTypeAssignment)
+                    throw new SemanticException("La asignacion tiene que ser del mismo tipo");
+            }
+            Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value,baseType);
+        
         }
 
         public override string GenerateCode()

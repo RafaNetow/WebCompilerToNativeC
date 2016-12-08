@@ -10,7 +10,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
 {
     public   class Context
     {
-        public static Context _context ;
+        private static Context _context ;
         public Stack<TypesTable> Stack = new Stack<TypesTable>();
 
 
