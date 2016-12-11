@@ -79,6 +79,7 @@
     <Compile Include="Tree\BaseClass\IdVariable.cs" />
     <Compile Include="Tree\BaseClass\UnaryNode\LeftDecrement.cs" />
     <Compile Include="Tree\CallFunctionOrAssignment.cs" />
+    <Compile Include="Tree\DataType\Struct\StructDataType.cs" />
     <Compile Include="Tree\Sentences\DoWhile.cs" />
     <Compile Include="Tree\Sentences\Struct\StructDeclaretion.cs" />
     <Compile Include="Tree\Sentences\Struct\structMembers.cs" />

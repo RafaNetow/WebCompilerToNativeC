@@ -5,7 +5,7 @@ using WebCompilerToNativeC.Semantic.BaseTypes.Struct;
 using WebCompilerToNativeC.Tree.Sentences.Declaretion;
 
 namespace WebCompilerToNativeC.Tree.Sentences.Structs
-    //Que tenga el mismo lenght
+    //Que tenga el mismo Lenght
     //Que no tenga propiedades
     //
 {   //strcut.x[2][3]
@@ -36,7 +36,7 @@ namespace WebCompilerToNativeC.Tree.Sentences.Structs
             {
                 Context.StackOfContext.Stack.Peek().RegisterType(variableToDeclaretion.Value, new StructType(listParams),variableToDeclaretion.Accesors.Count);
             }
-        Context.StackOfContext.Stack.Peek().RegisterType(NameOfStruct.Value, new StructType(listParams) ,0);
+        Context.StackOfContext.RegisterType(NameOfStruct.Value, new StructType(listParams) );
        }
 
        public override string GenerateCode()

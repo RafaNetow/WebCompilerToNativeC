@@ -27,10 +27,11 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
 
        public override BaseType ValidateSemantic(BaseType type)
        {
+           int lengthOfProperties = type.LenghtOfProperties;
            var idType = Value.ValidateSemantic();
-           if(!(type.LenghtOfProperties>0))
+           if(!(lengthOfProperties > 0))
                throw  new SemanticException("This  doesnt support more ArrayProperties");
-
+           type.LenghtOfProperties = lengthOfProperties;
            type.LenghtOfProperties--;       
            if (idType.BaseTypeEquivalent(idType, Context.StackOfContext.GetType("int"))) 
                return type;

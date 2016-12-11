@@ -24,8 +24,7 @@ namespace WebCompilerToNativeC.Tree
             {
              var baseTypeAssigment =    ValueOfAssigment.ValidateSemantic();
              var baseTypeOfVariable =   Context.StackOfContext.Stack.Peek().GetType(Value);
-                if (baseTypeOfVariable != baseTypeAssigment)
-                    throw new SemanticException("el tipo de asignacion no es valida");
+                
                 foreach (var accesorNode in Accesors)
                 {
                     baseTypeOfVariable = accesorNode.ValidateSemantic(baseTypeOfVariable);
@@ -33,18 +32,23 @@ namespace WebCompilerToNativeC.Tree
                 }
                 if (!(baseTypeOfVariable.LenghtOfProperties == 0))
                     throw new SemanticException("The properties have a more brackets");
+                if (baseTypeOfVariable != baseTypeAssigment)
+                    throw new SemanticException("el tipo de asignacion no es valida");
 
                 return baseTypeAssigment;
             }
             var type = Context.StackOfContext.Stack.Peek().GetType(Value);
+            type.LenghtOfProperties = (Context.StackOfContext.Stack.Peek().InformatioNVariable.ContainsKey(Value))?  (Context.StackOfContext.Stack.Peek().InformatioNVariable[Value].Lenght) : type.LenghtOfProperties;
 
+            
             foreach (var accesorNode in Accesors)
             {
              type=   accesorNode.ValidateSemantic(type);
                
             }
-              
 
+            if (type.LenghtOfProperties > 0)
+                throw new SemanticException("Jimmy restar es lo mejor loco");
             return type;
         }
 

@@ -10,9 +10,12 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
     public class TypesTable
     {
         public Dictionary<string, BaseType> _table;
+        public Dictionary<string, InforamtionVariable> InformatioNVariable;
         private static TypesTable _instance;
         public TypesTable()
         {
+
+            InformatioNVariable = new Dictionary<string, InforamtionVariable>();
             _table = new Dictionary<string, BaseType>();
            // _table.Add("int", new IntType());
            // _table.Add("string", new StringType());
@@ -37,6 +40,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
             if (Context.StackOfContext.Stack.Peek().Contains(name))
                 throw new SemanticException($"  :{name} is a type.");
             baseType.LenghtOfProperties = propertiesOfVarible;
+           
             _table.Add(name, baseType);
         }
 
@@ -59,7 +63,11 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
         }
     }
 
-   
+    public class InforamtionVariable
+    {
+        public int Lenght;
+
+    }
 
 
     internal class SemanticException : Exception

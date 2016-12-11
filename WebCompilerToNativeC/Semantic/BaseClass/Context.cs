@@ -46,6 +46,19 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
             throw new SemanticException($"Type : {name} doesn't exist.");
         }
 
+        public void RegisterType(string name, BaseType baseType)
+        {
+
+            if (StackOfContext._table.ContainsKey(name))
+            {
+                throw new SemanticException($"Type :{name} exists.");
+            }
+            if (Context.StackOfContext.Stack.Peek().Contains(name))
+                throw new SemanticException($"  :{name} is a type.");
+            
+
+            _table.Add(name, baseType);
+        }
 
 
         public static Context StackOfContext
