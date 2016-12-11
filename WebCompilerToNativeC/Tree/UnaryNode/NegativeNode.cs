@@ -1,5 +1,6 @@
 ﻿using System;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 
 
 namespace WebCompilerToNativeC.Tree

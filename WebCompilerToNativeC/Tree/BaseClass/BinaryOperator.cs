@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Semantic;
-using WebCompilerToNativeC.Semantic.BaseTypes;
+using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.BaseClass;
+using SemanticException = WebCompilerToNativeC.Semantic.BaseTypes.SemanticException;
 
 namespace WebCompilerToNativeC.Tree
 {

@@ -1,3 +1,5 @@
+using WebCompilerToNativeC.Semantic.BaseClass;
+
 namespace WebCompilerToNativeC.Semantic.BaseTypes
 {
     internal class CharType : BaseType

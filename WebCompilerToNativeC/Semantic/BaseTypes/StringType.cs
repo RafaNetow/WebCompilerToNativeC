@@ -1,4 +1,5 @@
 using System;
+using WebCompilerToNativeC.Semantic.BaseClass;
 
 namespace WebCompilerToNativeC.Semantic.BaseTypes
 {

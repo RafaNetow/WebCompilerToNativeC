@@ -23,16 +23,17 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
            throw new NotImplementedException();
        }
 
-       public override BaseType ValidateSemantic(string variable)
-       {
-           throw new NotImplementedException();
-       }
+       
 
-       public BaseType ValidateSemantic(BaseType type)
+       public override BaseType ValidateSemantic(BaseType type)
        {
            var idType = Value.ValidateSemantic();
-           if (type == idType)
-               return idType;
+           if(!(type.LenghtOfProperties>0))
+               throw  new SemanticException("This  doesnt support more ArrayProperties");
+
+           type.LenghtOfProperties--;       
+           if (idType.BaseTypeEquivalent(idType, Context.StackOfContext.GetType("int"))) 
+               return type;
            else
                throw new SemanticException("Tiene que ingresar un accesor con un tipo correcto");
        }

@@ -15,6 +15,7 @@ namespace WebCompilerToNativeC.Tree.Sentences.Structs
     {
         public IdVariable NameOfStruct = new IdVariable();
         public  List<DeclarationNode>  StructItems = new List<DeclarationNode>();
+       public List<IdVariable> VariableDeclaretion; 
         public override void ValidateSemantic()
        {
             Context.StackOfContext.Stack.Push(new TypesTable());
@@ -26,8 +27,16 @@ namespace WebCompilerToNativeC.Tree.Sentences.Structs
                 listParams.Add(new StructParams() {Name = item.Variable.Value, LengOfProperties = item.Variable.Accesors.Count, Type = item.Type });
 
             }
+
+           
+            
         Context.StackOfContext.Stack.Pop();
-        Context.StackOfContext.Stack.Peek().RegisterType(NameOfStruct.Value, new StructType(listParams) );
+
+            foreach (var variableToDeclaretion in VariableDeclaretion)
+            {
+                Context.StackOfContext.Stack.Peek().RegisterType(variableToDeclaretion.Value, new StructType(listParams),variableToDeclaretion.Accesors.Count);
+            }
+        Context.StackOfContext.Stack.Peek().RegisterType(NameOfStruct.Value, new StructType(listParams) ,0);
        }
 
        public override string GenerateCode()

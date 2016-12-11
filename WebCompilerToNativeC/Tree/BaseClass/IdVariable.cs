@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
+using WebCompilerToNativeC.Semantic.BaseTypes.Struct;
 using WebCompilerToNativeC.Tree.BaseClass;
 using WebCompilerToNativeC.Tree.DataType;
 
@@ -25,10 +26,24 @@ namespace WebCompilerToNativeC.Tree
              var baseTypeOfVariable =   Context.StackOfContext.Stack.Peek().GetType(Value);
                 if (baseTypeOfVariable != baseTypeAssigment)
                     throw new SemanticException("el tipo de asignacion no es valida");
+                foreach (var accesorNode in Accesors)
+                {
+                    baseTypeOfVariable = accesorNode.ValidateSemantic(baseTypeOfVariable);
+
+                }
+                if (!(baseTypeOfVariable.LenghtOfProperties == 0))
+                    throw new SemanticException("The properties have a more brackets");
 
                 return baseTypeAssigment;
             }
             var type = Context.StackOfContext.Stack.Peek().GetType(Value);
+
+            foreach (var accesorNode in Accesors)
+            {
+             type=   accesorNode.ValidateSemantic(type);
+               
+            }
+              
 
             return type;
         }

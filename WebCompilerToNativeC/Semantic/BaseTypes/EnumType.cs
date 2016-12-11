@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
 
 namespace WebCompilerToNativeC.Semantic.BaseTypes

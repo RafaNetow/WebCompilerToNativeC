@@ -12,7 +12,11 @@ namespace WebCompilerToNativeC.Tree.Sentences.Fors
 
        public override void ValidateSemantic()
        {
-           throw new System.NotImplementedException();
+           foreach (var sentencesNode in ListStencnesNode)
+           {
+               sentencesNode.ValidateSemantic();
+               
+           }
        }
 
        public override string GenerateCode()

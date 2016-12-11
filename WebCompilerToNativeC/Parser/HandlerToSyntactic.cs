@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Lexer;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree;
 using WebCompilerToNativeC.Tree.BaseClass;
 using WebCompilerToNativeC.Tree.DataType;
@@ -136,8 +137,9 @@ namespace WebCompilerToNativeC.Parser
             LiteralWithDecreOrIncre.Add(TokenTypes.HexadecimalLiteral, new HexaNode());
             LiteralWithDecreOrIncre.Add(TokenTypes.FloatLiteral, new Float() );
             LiteralWithDecreOrIncre.Add(TokenTypes.DecimalLiteral,new DecimalNode() );
-           
-       }
+        
+
+        }
 
     
 

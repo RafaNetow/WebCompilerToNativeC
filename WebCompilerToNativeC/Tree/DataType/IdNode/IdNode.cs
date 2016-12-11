@@ -25,7 +25,7 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
                 return type;
             foreach (var variable in Accesors)
             {
-               type =  variable.ValidateSemantic(Value);
+               type =  variable.ValidateSemantic(type);
 
             }
            return type;

@@ -41,7 +41,7 @@ namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
 
             }
             Context.StackOfContext.Stack.Pop();
-            Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value,new FunctionType() {ListOfParemterters = ParameterList,ReturnParam = typeOfReturn});
+            Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value,new FunctionType() {ListOfParemterters = ParameterList,ReturnParam = typeOfReturn}, Variable.Accesors.Count);
             //Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value, baseType);
 
         }

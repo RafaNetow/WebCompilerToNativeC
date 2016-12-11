@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.IO.IsolatedStorage;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
@@ -22,22 +23,20 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode.Accesors
             throw new NotImplementedException();
         }
         
-        public override BaseType ValidateSemantic(string variable)
+        public override BaseType ValidateSemantic(BaseType variable)
         {
-            var typeOfVaribel = Context.StackOfContext.GetType(variable);
+           
 
-            if (typeOfVaribel is StructType)
+            if (variable is StructType)
             {
-              var  structVariable = (StructType)typeOfVaribel;
-                if (structVariable.ContainMember(Id))
-                    return Id.ValidateSemantic();
-
-
-
+              var  structVariable = (StructType)variable;
+  
+                return structVariable.ContainMember(Id);
+                
             }
-            if (typeOfVaribel is EnumType)
+            if (variable is EnumType)
             {
-                typeOfVaribel = (EnumType)typeOfVaribel;
+                variable = (EnumType)variable;
 
 
             }

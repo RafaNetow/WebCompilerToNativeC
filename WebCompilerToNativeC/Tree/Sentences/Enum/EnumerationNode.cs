@@ -17,7 +17,7 @@ namespace WebCompilerToNativeC.Tree.Sentences.Enum
 
         public override void ValidateSemantic()
        {
-           Context.StackOfContext.Stack.Peek().RegisterType(NameOfEnum.Value,new EnumType(ListEnum));
+           Context.StackOfContext.Stack.Peek().RegisterType(NameOfEnum.Value,new EnumType(ListEnum), 0);
        }
 
        public override string GenerateCode()

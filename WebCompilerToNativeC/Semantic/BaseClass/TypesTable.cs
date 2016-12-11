@@ -27,7 +27,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
 
 
         public static TypesTable Instance => _instance ?? (_instance = new TypesTable());
-        public void RegisterType(string name, BaseType baseType)
+        public void RegisterType(string name, BaseType baseType, int propertiesOfVarible)
         {
        
             if (Context.StackOfContext.Stack.Peek()._table.ContainsKey(name))
@@ -36,7 +36,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
             }
             if (Context.StackOfContext.Stack.Peek().Contains(name))
                 throw new SemanticException($"  :{name} is a type.");
-
+            baseType.LenghtOfProperties = propertiesOfVarible;
             _table.Add(name, baseType);
         }
 

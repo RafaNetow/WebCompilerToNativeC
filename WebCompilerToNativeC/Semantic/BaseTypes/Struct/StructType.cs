@@ -1,5 +1,7 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
 
 namespace WebCompilerToNativeC.Semantic.BaseTypes.Struct
@@ -13,7 +15,7 @@ namespace WebCompilerToNativeC.Semantic.BaseTypes.Struct
         public StructType(List<StructParams> listOfParams)
         {
             if (listOfParams == null) throw new ArgumentNullException(nameof(listOfParams));
-            listOfParams = this.ListOfParams;
+              this.ListOfParams =listOfParams;
         }
 
         public override bool IsAssignable(BaseType otherType)
@@ -21,20 +23,25 @@ namespace WebCompilerToNativeC.Semantic.BaseTypes.Struct
             throw new NotImplementedException();
         }
 
-        public bool ContainMember(IdNode currenStructParam)
+        public BaseType ContainMember(IdNode currenStructParam)
         {
             foreach (var structParam in ListOfParams)
             {
                 if (structParam.Name == currenStructParam.Value)
-                {
-                    if (structParam.LengOfProperties == currenStructParam.Accesors.Count)
-                    {
-                        currenStructParam.ValidateSemantic();
-                    }
+                { 
+                    var typeOfReturn = structParam.Type.ValidateSemantic();
+                    typeOfReturn.LenghtOfProperties = structParam.LengOfProperties;
+
+
+
+
+                    return structParam.Type.ValidateSemantic();
+                    
                 }
+               
             }
 
-            return false;
+            throw new SemanticException($"La propiedad  {currenStructParam.Value} no se encuentra en el estruct" );
         }
         
 

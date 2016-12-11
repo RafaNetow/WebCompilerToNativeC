@@ -18,7 +18,7 @@ namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
         public DataType.BaseClass.DataType Type;
         public IdVariable Variable;
         public List<PointerNode> ListOfPointers;
-       
+        public string TypeStructOrEnum;
 
         public override void ValidateSemantic()
         {
@@ -29,7 +29,7 @@ namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
                 if (baseType != baseTypeAssignment)
                     throw new SemanticException("La asignacion tiene que ser del mismo tipo");
             }
-            Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value,baseType);
+            Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value,baseType,Variable.Accesors.Count);
         
         }
 

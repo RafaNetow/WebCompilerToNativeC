@@ -80,6 +80,7 @@
     <Compile Include="Tree\BaseClass\UnaryNode\LeftDecrement.cs" />
     <Compile Include="Tree\CallFunctionOrAssignment.cs" />
     <Compile Include="Tree\Sentences\DoWhile.cs" />
+    <Compile Include="Tree\Sentences\Struct\StructDeclaretion.cs" />
     <Compile Include="Tree\Sentences\Struct\structMembers.cs" />
     <Compile Include="Tree\Sentences\WhileNode.cs" />
     <Compile Include="Tree\Sentences\ConstNode.cs" />
@@ -160,6 +161,9 @@
     <None Include="WebCompilerToNativeC.csproj.DotSettings" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Tree\IncludeNode\" />
+    <Folder Include="Tree\PointerNode\" />
+    <Folder Include="Tree\ReturnNode\" />
     <Folder Include="Tree\Sentences\Bucles\" />
     <Folder Include="Tree\Sentences\Const\" />
     <Folder Include="Tree\Sentences\Continue\" />

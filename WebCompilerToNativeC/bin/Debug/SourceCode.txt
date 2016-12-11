@@ -7,17 +7,20 @@
 #include  "patñoh-spec"  
 #include  "path-spec"  
 <%
-int resta (int n1, int n2)
-    {
-        return  n1+ n2;
-    } 
-    int y =2;
- int x =1;
-    x = resta(x,y);
+struct Books {
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+} book;  
+
+ char varChar = 'x';
+ book.title[varChar];
+ varChar = book.title[varChar];
+ 
+ int x[10];
+ x[2] = 4;
   
-
-
-
 %>
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.Semantic.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.DataType.IdNode
 {
@@ -22,7 +23,7 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
            throw new NotImplementedException();
        }
 
-       public override BaseType ValidateSemantic(string variable)
+       public override BaseType ValidateSemantic(BaseType variable)
        {
            throw new NotImplementedException();
        }
