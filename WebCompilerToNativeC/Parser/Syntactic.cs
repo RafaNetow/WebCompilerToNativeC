@@ -847,7 +847,9 @@ namespace WebCompilerToNativeC.Parser
                     throw result.Excpetion;
 
                 ConsumeNextToken();
-                 var simpleDeclaretion = new MultiDeclaration() {Type = generalDeclaretion.Type, Variable = generalDeclaretion.Variable, ListOfPointers  = generalDeclaretion.ListOfPointers,ListOfIdNodes = listIdNode};
+                var declaretionPosition = new Token();
+                declaretionPosition = _currentToken;
+                 var simpleDeclaretion = new MultiDeclaration() {SentencesPosition = declaretionPosition, Type = generalDeclaretion.Type, Variable = generalDeclaretion.Variable, ListOfPointers  = generalDeclaretion.ListOfPointers,ListOfIdNodes = listIdNode};
                 return simpleDeclaretion;
             }
             else if (CompareTokenType(TokenTypes.OpenBracket))
@@ -865,6 +867,9 @@ namespace WebCompilerToNativeC.Parser
                     result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
                     if (!result.Succes)
                         throw result.Excpetion;
+                    var declaretionPosition = new Token();
+                    declaretionPosition = _currentToken;
+                    generalDeclaretion.SentencesPosition = declaretionPosition;
                     return generalDeclaretion;
                 }
                 return null;
@@ -899,6 +904,9 @@ namespace WebCompilerToNativeC.Parser
                 functioNDeclaretion.Type = generalDeclaretion.Type;
                 functioNDeclaretion.ListOfPointers = generalDeclaretion.ListOfPointers;
                 functioNDeclaretion.Variable = generalDeclaretion.Variable;
+                var functionPostion = new Token();
+                functionPostion = _currentToken;
+                functioNDeclaretion.SentencesPosition = functionPostion;
                 return functioNDeclaretion;
             }
 
@@ -1039,6 +1047,9 @@ namespace WebCompilerToNativeC.Parser
                     newDeclaretion.Type = type;
                     newDeclaretion.Variable = new IdVariable() {Value = _currentToken.Lexeme};
                     ConsumeNextToken();
+                    var declaretionPostion = new Token();
+                    declaretionPostion = _currentToken;
+                    newDeclaretion.SentencesPosition = declaretionPostion;
                     return newDeclaretion;
                 }
                 throw result.Excpetion;
@@ -1057,6 +1068,9 @@ namespace WebCompilerToNativeC.Parser
                     newDeclaretion.Variable = new IdVariable() { Value = _currentToken.Lexeme };
                     newDeclaretion.ListOfPointers = listOfPointer;
                     ConsumeNextToken();
+                    var declaretionPostion = new Token();
+                    declaretionPostion = _currentToken;
+                    newDeclaretion.SentencesPosition = declaretionPostion;
                     return newDeclaretion;
                 }
                 else
@@ -1068,6 +1082,9 @@ namespace WebCompilerToNativeC.Parser
                 newDeclaretion.Type = type;
                 newDeclaretion.Variable = new IdVariable() { Value = _currentToken.Lexeme };
                 ConsumeNextToken();
+                var declaretionPostion = new Token();
+                declaretionPostion = _currentToken;
+                newDeclaretion.SentencesPosition = declaretionPostion;
                 return newDeclaretion;
             }
             else
@@ -1125,6 +1142,9 @@ namespace WebCompilerToNativeC.Parser
             if (CompareTokenType(TokenTypes.CloseBracket))
             {
                 ConsumeNextToken();
+                var expressionPostion = new Token();
+                expressionPostion = _currentToken;
+                bidAccesor.NodePosition = expressionPostion;
                 return bidAccesor;
             }
             else
@@ -1139,7 +1159,15 @@ namespace WebCompilerToNativeC.Parser
                 var value = Hanlder.LiteralWithDecreOrIncre[_currentToken.Type];
                 value.Value = _currentToken.Lexeme;
                 ConsumeNextToken();
-                return new ArrayAccesorNode() {Value = value};
+                var expressionPostion = new Token();
+                expressionPostion = _currentToken;
+                var arrayPropertie = new ArrayAccesorNode
+                {
+                    Value = value,
+                    NodePosition = expressionPostion
+                };
+                return arrayPropertie;
+                
             }
 
             if (CompareTokenType(TokenTypes.Id))
@@ -1147,7 +1175,15 @@ namespace WebCompilerToNativeC.Parser
                 var currentVariable = new IdVariable() { Value = _currentToken.Lexeme };
                 ConsumeNextToken();
                 IdProperties(currentVariable);
-                return new ArrayAccesorNode() {Value = currentVariable};
+                var expressionPostion = new Token();
+                expressionPostion = _currentToken;
+                var arrayPropertie = new ArrayAccesorNode
+                {
+                    Value = currentVariable,
+                    NodePosition = expressionPostion
+                };
+                return arrayPropertie;
+
             }
 
             throw new SyntacticException("Do not can initializer an array with the type of identifeir", _currentToken.Row, _currentToken.Column);
@@ -1165,7 +1201,15 @@ namespace WebCompilerToNativeC.Parser
                 var value = Hanlder.LiteralWithDecreOrIncre[_currentToken.Type];
                 value.Value = _currentToken.Lexeme;
                 ConsumeNextToken();
-                return new ArrayAccesorNode() {Value = value};
+                var expressionPostion = new Token();
+                expressionPostion = _currentToken;
+                var arrayPropertie = new ArrayAccesorNode
+                {
+                    Value = value,
+                    NodePosition = expressionPostion
+                };
+                return arrayPropertie;
+              
             }
 
             if (CompareTokenType(TokenTypes.Id))
@@ -1174,8 +1218,16 @@ namespace WebCompilerToNativeC.Parser
                 
                 
                     IdProperties(currentVariable);
-                
-                return new ArrayAccesorNode() { Value = currentVariable };
+
+                var expressionPostion = new Token();
+                expressionPostion = _currentToken;
+                var arrayPropertie = new ArrayAccesorNode
+                {
+                    Value = currentVariable,
+                    NodePosition = expressionPostion
+                };
+                return arrayPropertie;
+              
             }
           
 
@@ -1212,6 +1264,10 @@ namespace WebCompilerToNativeC.Parser
             GetAllAccesorNodes(listOfAccesors);
 
             if (id.Accesors != null) id.Accesors = listOfAccesors;
+            var expressionPostion = new Token();
+            expressionPostion = _currentToken;
+
+            id.NodePosition = expressionPostion;
             return id;
         }
 
@@ -1248,7 +1304,9 @@ namespace WebCompilerToNativeC.Parser
         public ExpressionNode ValueForId(IdVariable currentId)
         {
             if (!Hanlder.AssignationOperator.ContainsKey(_currentToken.Type))
+            {
                 return currentId;
+            }
 
             currentId.TypeOfAssignment = Hanlder.AssignationOperator[_currentToken.Type];
             ConsumeNextToken();
@@ -1308,7 +1366,14 @@ namespace WebCompilerToNativeC.Parser
 
         private ExpressionNode Expression()
         {
-           return  RelationalExpression();
+
+             var expresionPosition = new Token();
+            expresionPosition = _currentToken;
+          var relationNode=  RelationalExpression();
+            relationNode.NodePosition = expresionPosition;
+
+
+            return relationNode;
         
 
         }
@@ -1318,9 +1383,15 @@ namespace WebCompilerToNativeC.Parser
         private ExpressionNode RelationalExpressionPrime(ExpressionNode param)
         {
             if (!Hanlder.RelationalOp.ContainsKey(_currentToken.Type))
+            {
+                var expresionPosition = new Token();
+                expresionPosition = _currentToken;
+               
+                param.NodePosition = expresionPosition;
                 return param;
- 
-         var expRelationOp =    Hanlder.RelationalOp[_currentToken.Type]; 
+            }
+
+            var expRelationOp =    Hanlder.RelationalOp[_currentToken.Type]; 
             RelationalOperators();
         var  expAddOp=   ExpressionAdicion();
 
