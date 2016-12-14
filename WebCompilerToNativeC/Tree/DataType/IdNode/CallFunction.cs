@@ -27,7 +27,7 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
             for (int i = 0; i < ListOfExpression.Count; i++)
             {
                if(ListOfExpression[i].ValidateSemantic() != functionType.ListOfParemterters[i].Type.ValidateSemantic() ) 
-                    throw new SemanticException("El parametro"+functionType.ListOfParemterters[i].Variable.Value+"no es del tipo correspondiente a la funcion");
+                    throw new SemanticException($"Error en la col: {functionType.ListOfParemterters[i].SentencesPosition.Column}row: {functionType.ListOfParemterters[i].SentencesPosition.Row}El parametro"+functionType.ListOfParemterters[i].Variable.Value+"no es del tipo correspondiente a la funcion ");
 
             }
 

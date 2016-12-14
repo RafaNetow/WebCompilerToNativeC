@@ -25,6 +25,7 @@ using WebCompilerToNativeC.Tree.Sentences.Declaretion;
 using WebCompilerToNativeC.Tree.Sentences.Enum;
 using WebCompilerToNativeC.Tree.Sentences.Fors;
 using WebCompilerToNativeC.Tree.Sentences;
+using WebCompilerToNativeC.Tree.Sentences.Declaretion.ArrayWithInialiation;
 using WebCompilerToNativeC.Tree.Sentences.Structs;
 using WebCompilerToNativeC.Tree.UnaryNode;
 
@@ -857,10 +858,15 @@ namespace WebCompilerToNativeC.Parser
                 var listOfAcces = new List<AccesorNode>();
                 IsArrayDeclaration(listOfAcces);
                 generalDeclaretion.Variable.Accesors = listOfAcces;
-                if (CompareTokenType(TokenTypes.Comma))
+               
+                if (CompareTokenType(TokenTypes.Asiggnation))
                 {
-                    ConsumeNextToken();
-                    TypeOfDeclaration(null);
+
+                    var listOfValue = new List<ExpressionNode>();
+                    OptionalInitOfArray(listOfValue);
+
+                    return new ArrayWithInitialization()  {InitValues = listOfValue,Type = generalDeclaretion.Type, Variable = generalDeclaretion.Variable, ListOfPointers = generalDeclaretion.ListOfPointers};
+                  
                 }
                 else
                 {
@@ -1110,8 +1116,8 @@ namespace WebCompilerToNativeC.Parser
             if (CompareTokenType(TokenTypes.OpenBracket))
              listOfAccces.Add( (AccesorNode) BidArray());
 
-          //  if (CompareTokenType(TokenTypes.Asiggnation))
-            //    OptionalInitOfArray(null);
+            //if (CompareTokenType(TokenTypes.Asiggnation))
+            //   OptionalInitOfArray(null);
             
             else
             {
@@ -1588,6 +1594,7 @@ namespace WebCompilerToNativeC.Parser
             ConsumeNextToken();
             if (CompareTokenType(TokenTypes.RParenthesis)) return;
         var exp =     Expression();
+            exp.NodePosition = new Token() {Type = _currentToken.Type,Column = _currentToken.Column, Lexeme = _currentToken.Lexeme, Row = _currentToken.Row};
             listOfExpression.Add(exp);
             if (CompareTokenType(TokenTypes.Comma))
                 ListOfExpressions(listOfExpression);

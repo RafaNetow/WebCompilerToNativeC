@@ -30,13 +30,13 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
            int lengthOfProperties = type.LenghtOfProperties;
            var idType = Value.ValidateSemantic();
            if(!(lengthOfProperties > 0))
-               throw  new SemanticException("This  doesnt support more ArrayProperties");
+               throw  new SemanticException($"Error Col : {NodePosition.Column} Row : {NodePosition.Row} se han puesto mas accresore");
            type.LenghtOfProperties = lengthOfProperties;
            type.LenghtOfProperties--;       
            if (idType.BaseTypeEquivalent(idType, Context.StackOfContext.GetType("int"))) 
                return type;
            else
-               throw new SemanticException("Tiene que ingresar un accesor con un tipo correcto");
+               throw new SemanticException($"Error Col: {NodePosition.Column} Row:{NodePosition.Row} Tiene que ingresar un accesor con un tipo correcto");
        }
    }
 }

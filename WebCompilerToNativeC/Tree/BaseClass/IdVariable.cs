@@ -31,9 +31,9 @@ namespace WebCompilerToNativeC.Tree
 
                 }
                 if (!(baseTypeOfVariable.LenghtOfProperties == 0))
-                    throw new SemanticException("The properties have a more brackets");
+                    throw new SemanticException($"Error Row: {TypeOfAssignment.NodePosition.Row} Column:{ TypeOfAssignment.NodePosition.Column} La propiedad tiene {baseTypeOfVariable.LenghtOfProperties} propiedas de arreglo de mas");
                 if (baseTypeOfVariable != baseTypeAssigment)
-                    throw new SemanticException("el tipo de asignacion no es valida");
+                    throw new SemanticException($"Error Row:{ValueOfAssigment.NodePosition.Row} Column:{ValueOfAssigment.NodePosition.Column} la asignacion es incopatible ");
 
                 return baseTypeAssigment;
             }

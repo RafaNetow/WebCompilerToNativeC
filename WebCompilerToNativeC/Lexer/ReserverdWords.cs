@@ -67,6 +67,7 @@ namespace WebCompilerToNativeC.Lexer
            DataTypes.Add("bool");
            DataTypes.Add("string");
            DataTypes.Add("date");
+           DataTypes.Add("void");
 
 
 

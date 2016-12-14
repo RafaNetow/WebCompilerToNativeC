@@ -63,6 +63,8 @@ namespace WebCompilerToNativeC.Parser
             DataTypesLexeme.Add("int", new IntNode());
             DataTypesLexeme.Add("float", new Float());
             DataTypesLexeme.Add("decimal", new DecimalNode());
+            DataTypesLexeme.Add("void", new VoidNode());
+
 
         }
 
@@ -159,6 +161,24 @@ namespace WebCompilerToNativeC.Parser
        {
             return new  SyntacticException("UnExpected Token"+currentToken.Type.ToString() +" ",currentToken.Row,currentToken.Column);
     }
+    }
+
+    public class VoidNode : DataType
+    {
+        public override BaseType ValidateSemantic()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SetValue(string value)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     internal class MulUnary : UnaryNode

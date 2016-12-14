@@ -516,7 +516,8 @@ namespace WebCompilerToNativeC.Lexer
                         }
                         else
                         {
-                            return MapperToTokenWithLexeme(TokenTypes.OctalLietral, currentLexeme);
+                            
+                            return (currentLexeme.Value.Length == 1) ? MapperToTokenWithLexeme(TokenTypes.NumericalLiteral,currentLexeme) : MapperToTokenWithLexeme(TokenTypes.OctalLietral, currentLexeme);
                         }
 
 

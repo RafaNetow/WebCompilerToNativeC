@@ -20,7 +20,7 @@ namespace WebCompilerToNativeC.Tree.Sentences
 
                 foreach (var sentencesNode in TrueBlock)
                 {
-                     sentencesNode.ValidateSemantic();
+                    sentencesNode.ValidateSemantic();
                 }
                 foreach (var sentencesNode in FalseBlock)
                 {
@@ -30,7 +30,11 @@ namespace WebCompilerToNativeC.Tree.Sentences
 
 
             }
-            throw new SemanticException("La expresion dentro del if debe ser booleana");
+            else
+            {
+                throw new SemanticException($"Error Row:{IfCondition.NodePosition.Row}Col:{IfCondition.NodePosition.Column} La expresion dentro del if debe ser booleana");
+            }
+     
         }
 
        public override string GenerateCode()
