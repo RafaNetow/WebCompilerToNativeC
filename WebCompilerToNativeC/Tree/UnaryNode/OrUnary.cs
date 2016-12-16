@@ -1,4 +1,5 @@
-﻿using WebCompilerToNativeC.Semantic;
+﻿using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 
 namespace WebCompilerToNativeC.Tree
@@ -11,6 +12,11 @@ namespace WebCompilerToNativeC.Tree
        }
 
        public override string GenerateCode()
+       {
+           throw new System.NotImplementedException();
+       }
+
+       public override Value Interpretation()
        {
            throw new System.NotImplementedException();
        }

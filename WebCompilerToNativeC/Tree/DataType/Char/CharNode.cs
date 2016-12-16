@@ -1,4 +1,5 @@
 ﻿using System;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes;
@@ -17,6 +18,11 @@ namespace WebCompilerToNativeC.Tree.DataType.Char
         }
 
         public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Value Interpretation()
         {
             throw new NotImplementedException();
         }

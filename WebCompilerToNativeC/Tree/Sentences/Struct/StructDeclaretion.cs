@@ -22,5 +22,10 @@ namespace WebCompilerToNativeC.Tree.Sentences.Struct
         {
             throw new NotImplementedException();
         }
+
+        public override void Interpretation()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.interpretation.DataTypes;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
@@ -16,6 +18,11 @@ namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
         public override string GenerateCode()
         {
             return $"{IntValue}";
+        }
+
+        public override Value Interpretation()
+        {
+            return new IntValue() {Value =  Convert.ToInt32(Value)};
         }
 
         public override void SetValue(string value)

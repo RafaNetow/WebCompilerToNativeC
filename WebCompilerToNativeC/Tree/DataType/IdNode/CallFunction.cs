@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes.FuncType;
@@ -47,5 +48,10 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
         {
             throw new NotImplementedException();
         }
-}
+
+        public override Value Interpretation()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

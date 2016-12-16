@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.Semantic.BaseClass.BaseTypes;
 using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Semantic.BaseTypes.Struct;
 

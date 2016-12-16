@@ -7,10 +7,15 @@ using WebCompilerToNativeC.Lexer;
 
 namespace WebCompilerToNativeC.Tree
 {
-   public abstract class SentencesNode
+   public abstract class SentencesNode : ICloneable
    {
        public abstract void ValidateSemantic();
        public abstract string GenerateCode();
+       public abstract void Interpretation();
        public Token SentencesPosition;
+       public object Clone()
+       {
+          return this.MemberwiseClone();
+       }
    }
 }

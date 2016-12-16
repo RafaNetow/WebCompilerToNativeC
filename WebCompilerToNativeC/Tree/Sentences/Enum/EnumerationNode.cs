@@ -24,5 +24,10 @@ namespace WebCompilerToNativeC.Tree.Sentences.Enum
        {
            throw new NotImplementedException();
        }
+
+       public override void Interpretation()
+       {
+           throw new NotImplementedException();
+       }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.BaseClass;
@@ -22,5 +23,10 @@ namespace WebCompilerToNativeC.Tree.DataType
        {
            throw new NotImplementedException();
        }
-    }
+
+       public override Value Interpretation()
+       {
+           return Factor.Interpretation();
+       }
+   }
 }

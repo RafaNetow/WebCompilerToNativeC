@@ -8,7 +8,7 @@ using WebCompilerToNativeC.Tree.BaseClass;
 
 namespace WebCompilerToNativeC.Tree.DataType.Struct
 {
-   public class StructDataType :  DateNode
+   public class StructDataType :  DateNode.DateNode
     {
        public override BaseType ValidateSemantic()
        {

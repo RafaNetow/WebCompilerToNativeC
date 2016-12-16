@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.BaseClass;
@@ -38,6 +39,11 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
             var accesors = Accesors.Aggregate("", (current, accesorNode) => current + accesorNode.GenerateCode());
             return this.Value + accesors;
 
+        }
+
+        public override Value Interpretation()
+        {
+            throw new NotImplementedException();
         }
     }
 

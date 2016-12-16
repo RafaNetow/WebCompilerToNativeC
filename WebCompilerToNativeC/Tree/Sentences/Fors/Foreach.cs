@@ -23,5 +23,10 @@ namespace WebCompilerToNativeC.Tree.Sentences.Fors
        {
            throw new System.NotImplementedException();
        }
+
+       public override void Interpretation()
+       {
+           throw new System.NotImplementedException();
+       }
     }
 }

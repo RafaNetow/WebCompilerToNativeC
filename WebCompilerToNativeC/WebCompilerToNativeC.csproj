@@ -45,6 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Hanlders\HanldersFiles.cs" />
+    <Compile Include="interpretation\BaseClass\Value.cs" />
+    <Compile Include="interpretation\DataTypes\BoolValue.cs" />
+    <Compile Include="interpretation\DataTypes\CharValue.cs" />
+    <Compile Include="interpretation\DataTypes\DateValue.cs" />
+    <Compile Include="interpretation\DataTypes\FloatValue.cs" />
+    <Compile Include="interpretation\DataTypes\IntValue.cs" />
+    <Compile Include="interpretation\DataTypes\StringValue.cs" />
     <Compile Include="Lexer\Lexeme.cs" />
     <Compile Include="Lexer\Lexer.cs" />
     <Compile Include="Lexer\LexerException.cs" />
@@ -59,18 +66,18 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Semantic\BaseClass\Context.cs" />
-    <Compile Include="Semantic\BaseTypes\BooleanType.cs" />
-    <Compile Include="Semantic\BaseTypes\CharType.cs" />
-    <Compile Include="Semantic\BaseTypes\ConstType.cs" />
-    <Compile Include="Semantic\BaseTypes\DateType.cs" />
-    <Compile Include="Semantic\BaseTypes\EnumType.cs" />
-    <Compile Include="Semantic\BaseTypes\FloatType.cs" />
-    <Compile Include="Semantic\BaseTypes\FuncType\FunctionType.cs" />
-    <Compile Include="Semantic\BaseTypes\SemanticException.cs" />
-    <Compile Include="Semantic\BaseTypes\StringType.cs" />
-    <Compile Include="Semantic\BaseTypes\Struct\StructParams.cs" />
-    <Compile Include="Semantic\BaseTypes\Struct\StructType.cs" />
-    <Compile Include="Semantic\BaseTypes\IntType.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\BooleanType.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\CharType.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\ConstType.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\DateType.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\EnumType.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\FloatType.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\FuncType\FunctionType.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\SemanticException.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\StringType.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\Struct\StructParams.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\Struct\StructType.cs" />
+    <Compile Include="Semantic\BaseClass\BaseTypes\IntType.cs" />
     <Compile Include="Semantic\BaseClass\TypesTable.cs" />
     <Compile Include="Semantic\BaseClass\BaseType.cs" />
     <Compile Include="Tree\AssignationBinary.cs" />

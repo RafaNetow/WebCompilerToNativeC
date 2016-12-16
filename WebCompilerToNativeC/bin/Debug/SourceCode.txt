@@ -8,50 +8,14 @@
 #include  "path-spec"  
 <%
 
-struct Autor {
-   char nombre;
- 
-} asdasd;  
-
-struct Books {
-    Autor rafael;
-   char  title[50];
-   char  author[50];
-   char  subject[100];
-   int   book_id;
-   
-} book;  
-
-bool isNum = true;
-if(isNum){
- int x= 6;
-}
- 
- 
- int intArray[7]= {4,6,3,2,1,9,2};
- 
- 
- void printline(int count ){
-     int i;
-     for(i = 0; i<count-1;i++){
-        
-     }
- }
-
-struct Estudiantes{
-   Books libro;
-} estudiante;  
 
 
 
-estudiante.libro.title[2];
-estudiante.libro.rafael.nombre = 2 ;
- char varChar = 'x';
- book.title[varChar];
- varChar = book.title[varChar];
- 
- int x[10];
+string j = "hola"+"mundo" ;
 
+int A = 1 +2;
+int b = 3+4;
+int c = 5 + 6;
   
 %>
 

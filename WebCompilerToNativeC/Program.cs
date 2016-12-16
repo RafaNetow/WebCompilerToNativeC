@@ -45,6 +45,11 @@ namespace WebCompilerToNativeC
                 {
                     sentencesNode.ValidateSemantic();
                 }
+
+            foreach (var sentencesNode in treeNode)
+            {
+                sentencesNode.Interpretation();
+            }
             //}
             //catch (Exception e)
             //{

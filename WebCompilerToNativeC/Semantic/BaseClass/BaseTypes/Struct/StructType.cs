@@ -1,6 +1,8 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.interpretation.DataTypes;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
 
@@ -21,6 +23,11 @@ namespace WebCompilerToNativeC.Semantic.BaseTypes.Struct
         public override bool IsAssignable(BaseType otherType)
         {
             throw new NotImplementedException();
+        }
+
+        public override Value GetDefaultValue()
+        {
+           return new BoolValue();  
         }
 
         public BaseType ContainMember(IdNode currenStructParam)

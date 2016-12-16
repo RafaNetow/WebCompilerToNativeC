@@ -17,5 +17,10 @@ namespace WebCompilerToNativeC.Tree
         {
             throw new NotImplementedException();
         }
+
+        public override void Interpretation()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 
@@ -62,6 +63,11 @@ namespace WebCompilerToNativeC.Tree
        {
            return GetCode("/="); 
            
+       }
+
+       public override Value Interpretation()
+       {
+           throw new NotImplementedException();
        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes.Struct;
@@ -11,12 +12,34 @@ namespace WebCompilerToNativeC.Tree
 {
     public class IdVariable : ExpressionNode
     {
+        
         public string Value;
-        public BaseClass.UnaryNode IncrementOrDecrement;
+        public BaseClass.UnaryNode IncrementOrDecrement; 
         public ExpressionNode TypeOfAssignment;
-        public List<AccesorNode> Accesors = new List<AccesorNode>();
+        public List<AccesorNode> Accesors;
         public ExpressionNode ValueOfAssigment;
 
+
+        public IdVariable()
+        {
+            
+        }
+
+
+        public IdVariable(ExpressionNode valueOfAssigment )
+        {
+            this.ValueOfAssigment = valueOfAssigment;
+        }
+        public IdVariable(string value, BaseClass.UnaryNode incrementOrDescrement, ExpressionNode typeOfAssignment,
+            List<AccesorNode> accesors, ExpressionNode valueOfAssigment)
+        {
+            this.Value = value;
+            this.IncrementOrDecrement = incrementOrDescrement;
+            this.TypeOfAssignment = typeOfAssignment;
+            this.Accesors = accesors;
+            this.ValueOfAssigment = valueOfAssigment;
+
+        }
 
         public override BaseType ValidateSemantic()
         {
@@ -60,6 +83,11 @@ namespace WebCompilerToNativeC.Tree
 
             return Value + accesors;
 
+        }
+
+        public override Value Interpretation()
+        {
+            throw new NotImplementedException();
         }
     }
 }

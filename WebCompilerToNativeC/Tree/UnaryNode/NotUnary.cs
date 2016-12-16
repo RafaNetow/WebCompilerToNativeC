@@ -1,4 +1,5 @@
-﻿using WebCompilerToNativeC.Semantic;
+﻿using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes;
 
@@ -15,5 +16,10 @@ namespace WebCompilerToNativeC.Tree
         {
             throw new System.NotImplementedException();
         }
+
+       public override Value Interpretation()
+       {
+           throw new System.NotImplementedException();
+       }
     }
 }

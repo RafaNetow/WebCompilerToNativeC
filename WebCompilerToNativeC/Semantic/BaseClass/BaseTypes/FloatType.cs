@@ -1,4 +1,6 @@
 using System;
+using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.interpretation.DataTypes;
 
 namespace WebCompilerToNativeC.Semantic.BaseClass
 {
@@ -7,6 +9,11 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
         public override bool IsAssignable(BaseType otherType)
         {
             throw new NotImplementedException();
+        }
+
+        public override Value GetDefaultValue()
+        {
+            return new FloatValue() {Value = 0};
         }
     }
 }

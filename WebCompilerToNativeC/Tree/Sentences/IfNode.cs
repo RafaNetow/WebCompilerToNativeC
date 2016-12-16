@@ -52,5 +52,10 @@ namespace WebCompilerToNativeC.Tree.Sentences
 
             return "if (" + IfCondition.GenerateCode() + ")" + "{" + trueBlock + "}" + "else" + "{" + falseBlock + "}";
         }
+
+       public override void Interpretation()
+       {
+        
+       }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
@@ -19,6 +20,11 @@ namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
             return Value.ToString(CultureInfo.InvariantCulture);
 
         }
+
+       public override Value Interpretation()
+       {
+           throw new NotImplementedException();
+       }
 
        public override void SetValue(string value)
        {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.IO.IsolatedStorage;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes;
@@ -22,7 +23,12 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode.Accesors
         {
             throw new NotImplementedException();
         }
-        
+
+        public override Value Interpretation()
+        {
+            throw new NotImplementedException();
+        }
+
         public override BaseType ValidateSemantic(BaseType variable)
         {
            

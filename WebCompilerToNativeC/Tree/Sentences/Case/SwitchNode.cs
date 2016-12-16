@@ -18,5 +18,10 @@ namespace WebCompilerToNativeC.Tree.Sentences.Case
         {
             throw new NotImplementedException();
         }
+
+        public override void Interpretation()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

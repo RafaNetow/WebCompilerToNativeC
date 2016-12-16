@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.interpretation.DataTypes;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
 
@@ -16,6 +18,11 @@ namespace WebCompilerToNativeC.Semantic.BaseTypes
         public override bool IsAssignable(BaseType otherType)
         {
             throw new NotImplementedException();
+        }
+
+        public override Value GetDefaultValue()
+        {
+              return new BoolValue() ;
         }
     }
 }

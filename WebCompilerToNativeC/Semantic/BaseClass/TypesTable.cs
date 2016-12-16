@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Semantic.BaseTypes.Struct;
 using WebCompilerToNativeC.Tree;
@@ -11,12 +12,14 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
     {
         public Dictionary<string, BaseType> _table;
         public Dictionary<string, InforamtionVariable> InformatioNVariable;
+        public Dictionary<string, Value> TableValue; 
         private static TypesTable _instance;
         public TypesTable()
         {
 
             InformatioNVariable = new Dictionary<string, InforamtionVariable>();
             _table = new Dictionary<string, BaseType>();
+           TableValue = new Dictionary<string, Value>();
            // _table.Add("int", new IntType());
            // _table.Add("string", new StringType());
            // _table.Add("float", new FloatType());
@@ -42,9 +45,20 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
             baseType.LenghtOfProperties = propertiesOfVarible;
            
             _table.Add(name, baseType);
+            TableValue.Add(name,baseType.GetDefaultValue());
         }
 
 
+        public void SetVariableValue(string variableName, Value val)
+        {
+            TableValue[variableName] = val;
+        }
+
+        public Value GetVariableValue(string variableName)
+        {
+            return TableValue[variableName];
+        }
+        
         public BaseType GetType(string name)
         {
            foreach(var table in Context.StackOfContext.Stack)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes;
@@ -21,6 +22,11 @@ namespace WebCompilerToNativeC.Tree.DataType.Boolean
         }
 
        public override string GenerateCode()
+       {
+           throw new NotImplementedException();
+       }
+
+       public override Value Interpretation()
        {
            throw new NotImplementedException();
        }

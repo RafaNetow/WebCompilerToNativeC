@@ -33,9 +33,10 @@ namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
             {
                 var baseTypeAssignment = Variable.ValueOfAssigment.ValidateSemantic();
                 if (baseType != baseTypeAssignment)
-                    throw new SemanticException("La asignacion tiene que ser del mismo tipo");
+                    throw new SemanticException($"La asignacion tiene que ser del mismo tipo");
             }
             Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value,baseType,Variable.Accesors.Count);
+           
             Context.StackOfContext.Stack.Peek()
                 .InformatioNVariable.Add(Variable.Value, new InforamtionVariable() {Lenght = Variable.Accesors.Count});
 
@@ -44,6 +45,13 @@ namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
         public override string GenerateCode()
         {
             throw new NotImplementedException();
+        }
+
+        public override void Interpretation()
+        {
+            var value = Variable.ValueOfAssigment.Interpretation();
+
+            Context.StackOfContext.Stack.Peek().SetVariableValue(Variable.Value, Variable.ValueOfAssigment.Interpretation());
         }
     }
 }

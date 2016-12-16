@@ -1,10 +1,9 @@
 ﻿using System;
-using WebCompilerToNativeC.Semantic;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes;
-using WebCompilerToNativeC.Tree.BaseClass;
 
-namespace WebCompilerToNativeC.Tree.DataType
+namespace WebCompilerToNativeC.Tree.DataType.DateNode
 {
     public class DateNode : BaseClass.DataType
     {
@@ -13,10 +12,15 @@ namespace WebCompilerToNativeC.Tree.DataType
 
         public override BaseType ValidateSemantic()
         {
-          return new DateType();
+              return Context.StackOfContext.GetType("date");
         }
 
         public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Value Interpretation()
         {
             throw new NotImplementedException();
         }

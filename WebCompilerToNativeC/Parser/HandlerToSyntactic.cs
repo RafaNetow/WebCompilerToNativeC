@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.interpretation.DataTypes;
 using WebCompilerToNativeC.Lexer;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
@@ -14,6 +16,7 @@ using WebCompilerToNativeC.Tree.DataType;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.Boolean;
 using WebCompilerToNativeC.Tree.DataType.Char;
+using WebCompilerToNativeC.Tree.DataType.DateNode;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
 using WebCompilerToNativeC.Tree.DataType.IdNode.Accesors;
 using WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre;
@@ -64,6 +67,7 @@ namespace WebCompilerToNativeC.Parser
             DataTypesLexeme.Add("float", new Float());
             DataTypesLexeme.Add("decimal", new DecimalNode());
             DataTypesLexeme.Add("void", new VoidNode());
+            DataTypesLexeme.Add("date", new DateNode());
 
 
         }
@@ -127,6 +131,7 @@ namespace WebCompilerToNativeC.Parser
             DataTypes.Add(TokenTypes.HexadecimalLiteral, new HexaNode());
             DataTypes.Add(TokenTypes.FloatLiteral, new Float());         
             DataTypes.Add(TokenTypes.DecimalLiteral, new DecimalNode());
+            DataTypes.Add(TokenTypes.OctalLietral, new OctalNode() );
 
 
 
@@ -163,6 +168,35 @@ namespace WebCompilerToNativeC.Parser
     }
     }
 
+    public class OctalNode : DataType
+    {
+
+        public override BaseType ValidateSemantic()
+        {
+            return Context.StackOfContext.GetType("int");
+        }
+
+
+        public override Value Interpretation()
+        {
+            return new IntValue { Value = Convert.ToInt32(Value,8) };
+        }
+
+       
+
+        public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+
+     
+
+        public override void SetValue(string value)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class VoidNode : DataType
     {
         public override BaseType ValidateSemantic()
@@ -171,6 +205,11 @@ namespace WebCompilerToNativeC.Parser
         }
 
         public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Value Interpretation()
         {
             throw new NotImplementedException();
         }
@@ -192,6 +231,11 @@ namespace WebCompilerToNativeC.Parser
         {
             throw new NotImplementedException();
         }
+
+        public override Value Interpretation()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     internal class XorBinary : UnaryNode
@@ -202,6 +246,11 @@ namespace WebCompilerToNativeC.Parser
         }
 
         public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Value Interpretation()
         {
             throw new NotImplementedException();
         }

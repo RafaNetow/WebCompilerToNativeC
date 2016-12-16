@@ -19,6 +19,7 @@ using WebCompilerToNativeC.Tree.DataType.Boolean;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
 using WebCompilerToNativeC.Tree.DataType.IdNode.Accesors;
 using WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre;
+using WebCompilerToNativeC.Tree.DataType.Struct;
 using WebCompilerToNativeC.Tree.Sentences;
 using WebCompilerToNativeC.Tree.Sentences.Case;
 using WebCompilerToNativeC.Tree.Sentences.Declaretion;
@@ -839,7 +840,10 @@ namespace WebCompilerToNativeC.Parser
             ConsumeNextToken();
             if (Hanlder.AssignationOperator.ContainsKey(_currentToken.Type))
             {
+
                 generalDeclaretion.Variable= (IdVariable) ValueForId(generalDeclaretion.Variable);
+
+                var newVariable = new IdVariable(generalDeclaretion.Variable.Value, generalDeclaretion.Variable.IncrementOrDecrement, generalDeclaretion.Variable.TypeOfAssignment, generalDeclaretion.Variable.Accesors, generalDeclaretion.Variable.ValueOfAssigment);
                 var listIdNode = new List<IdVariable>();
                 MultiDeclaration(listIdNode);
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
@@ -1315,8 +1319,10 @@ namespace WebCompilerToNativeC.Parser
             }
 
             currentId.TypeOfAssignment = Hanlder.AssignationOperator[_currentToken.Type];
+            if(  currentId.TypeOfAssignment is AssignationBinary)
+                 currentId.TypeOfAssignment = new AssignationBinary();
             ConsumeNextToken();
-            currentId.ValueOfAssigment = Expression();
+            currentId.ValueOfAssigment =  Expression();
             return currentId;
         }
 
@@ -1496,10 +1502,18 @@ namespace WebCompilerToNativeC.Parser
                 if (CompareTokenType(TokenTypes.Increment) || CompareTokenType(TokenTypes.Decrement))
                 {
                     if (CompareTokenType(TokenTypes.Increment))
+                    {
                         iVariable.IncrementOrDecrement = new RightIncrement();
+                        ConsumeNextToken();
+                    }
+                     
 
                     else if (CompareTokenType(TokenTypes.Decrement))
+                    {
                         iVariable.IncrementOrDecrement = new LeftIncrement();
+                        ConsumeNextToken();
+                    }
+                       
                 }
                 else
                 {
@@ -1585,6 +1599,7 @@ namespace WebCompilerToNativeC.Parser
                 ConsumeNextToken();
             }
          var factorExpression =    Factor();
+         
             unaryExp.Factor = factorExpression;
             return unaryExp;
         }
