@@ -4,5 +4,9 @@
 
    {
        public  abstract Value Clone();
+        public int? row { get; set; }
+        public int? column { get; set; }
+   
+   
    }
 }

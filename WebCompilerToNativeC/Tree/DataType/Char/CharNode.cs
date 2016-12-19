@@ -1,5 +1,6 @@
 ﻿using System;
 using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.interpretation.DataTypes;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes;
@@ -24,7 +25,8 @@ namespace WebCompilerToNativeC.Tree.DataType.Char
 
         public override Value Interpretation()
         {
-            throw new NotImplementedException();
+
+            return new CharValue() {Value =Value};
         }
 
         public override void SetValue(string value)

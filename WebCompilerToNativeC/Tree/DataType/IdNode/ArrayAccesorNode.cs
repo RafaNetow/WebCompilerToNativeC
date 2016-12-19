@@ -26,7 +26,7 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
 
        public override Value Interpretation()
        {
-           throw new NotImplementedException();
+           return Value.Interpretation();
        }
 
 

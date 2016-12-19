@@ -11,6 +11,11 @@ namespace WebCompilerToNativeC.Tree
 {
     public class AndNode : BinaryOperator
     {
+        public override object GetTypeValue(object right, object left, dynamic value)
+        {
+            throw new NotImplementedException();
+        }
+
         public override BaseType ValidateSemantic()
         {
             throw new NotImplementedException();
@@ -25,5 +30,9 @@ namespace WebCompilerToNativeC.Tree
         {
             throw new NotImplementedException();
         }
+    }
+
+    class AndNodeImpl : AndNode
+    {
     }
 }

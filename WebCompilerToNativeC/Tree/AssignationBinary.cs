@@ -11,6 +11,11 @@ namespace WebCompilerToNativeC.Tree
 {
   public   class AssignationBinary : BinaryOperator
     {
+      public override object GetTypeValue(object right, object left, dynamic value)
+      {
+          throw new NotImplementedException();
+      }
+
       public override BaseType ValidateSemantic()
       {
           throw new NotImplementedException();

@@ -15,14 +15,15 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
     {
         private static Context _context ;
         public Stack<TypesTable> Stack = new Stack<TypesTable>();
+        public Dictionary<Guid,TypesTable> RemembersContext = new Dictionary<Guid, TypesTable>(); 
 
-        public Dictionary<string, BaseType> _table;
+        public Dictionary<string, BaseType> Table;
       
 
         public Context()
         {
             Stack.Push(new TypesTable());
-            _table = new Dictionary<string, BaseType>
+            Table = new Dictionary<string, BaseType>
             {
                 {"int", new IntType()},
                 {"string", new StringType()},
@@ -40,8 +41,8 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
         {
            
             
-                if (_table.ContainsKey(name))
-                    return _table[name];
+                if (Table.ContainsKey(name))
+                    return Table[name];
             
 
             throw new SemanticException($"Type : {name} doesn't exist.");
@@ -50,7 +51,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
         public void RegisterType(string name, BaseType baseType)
         {
 
-            if (StackOfContext._table.ContainsKey(name))
+            if (StackOfContext.Table.ContainsKey(name))
             {
                 throw new SemanticException($"Type :{name} exists.");
             }
@@ -58,7 +59,7 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
                 throw new SemanticException($"  :{name} is a type.");
             
 
-            _table.Add(name, baseType);
+            Table.Add(name, baseType);
         }
 
 

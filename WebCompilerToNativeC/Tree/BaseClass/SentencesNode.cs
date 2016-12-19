@@ -13,7 +13,8 @@ namespace WebCompilerToNativeC.Tree
        public abstract string GenerateCode();
        public abstract void Interpretation();
        public Token SentencesPosition;
-       public object Clone()
+        public Guid CodeGuid = Guid.NewGuid();
+        public object Clone()
        {
           return this.MemberwiseClone();
        }

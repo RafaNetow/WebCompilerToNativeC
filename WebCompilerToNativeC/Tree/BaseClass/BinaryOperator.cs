@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.interpretation.DataTypes;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
+using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Tree.BaseClass;
 using SemanticException = WebCompilerToNativeC.Semantic.BaseTypes.SemanticException;
 
@@ -12,9 +15,12 @@ namespace WebCompilerToNativeC.Tree
 {
     public  abstract class BinaryOperator: ExpressionNode
     {
+
+        public abstract object GetTypeValue(object right, object left, dynamic value);
         public ExpressionNode RightOperand;
         public ExpressionNode LeftOperand;
         public Dictionary<Tuple<BaseType, BaseType>, BaseType> Validation;
+        public Dictionary<Tuple<Value, Value>, Value> ValidationValue;
 
         public string GetCode(string Operator)
         {

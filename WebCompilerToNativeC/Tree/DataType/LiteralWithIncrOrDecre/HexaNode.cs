@@ -1,5 +1,6 @@
 ﻿using System;
 using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.interpretation.DataTypes;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
@@ -22,7 +23,8 @@ namespace WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre
 
        public override Value Interpretation()
        {
-           throw new NotImplementedException();
+          return new IntValue() {Value = Convert.ToInt32(Value, 16)};
+       
        }
 
        public override void SetValue(string value)

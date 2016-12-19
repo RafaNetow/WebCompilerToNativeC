@@ -52,6 +52,7 @@
     <Compile Include="interpretation\DataTypes\FloatValue.cs" />
     <Compile Include="interpretation\DataTypes\IntValue.cs" />
     <Compile Include="interpretation\DataTypes\StringValue.cs" />
+    <Compile Include="interpretation\Interpretation\TypesValidation.cs" />
     <Compile Include="Lexer\Lexeme.cs" />
     <Compile Include="Lexer\Lexer.cs" />
     <Compile Include="Lexer\LexerException.cs" />

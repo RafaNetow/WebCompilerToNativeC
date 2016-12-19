@@ -13,7 +13,7 @@ namespace WebCompilerToNativeC.Semantic.BaseTypes
 
         public override Value GetDefaultValue()
         {
-            return new CharValue() {Value = ' '};
+            return new CharValue() {Value = "0"};
         }
     }
 }

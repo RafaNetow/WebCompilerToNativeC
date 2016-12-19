@@ -33,5 +33,10 @@ namespace WebCompilerToNativeC.Tree
        {
            throw new NotImplementedException();
        }
+
+       public override object GetTypeValue(object right, object left, dynamic value)
+       {
+           throw new NotImplementedException();
+       }
     }
 }

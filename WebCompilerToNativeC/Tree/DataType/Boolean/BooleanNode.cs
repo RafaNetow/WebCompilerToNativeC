@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.interpretation.DataTypes;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes;
@@ -28,7 +29,7 @@ namespace WebCompilerToNativeC.Tree.DataType.Boolean
 
        public override Value Interpretation()
        {
-           throw new NotImplementedException();
+            return new BoolValue() {Value = Convert.ToBoolean(Value)};
        }
 
        public override void SetValue(string value)

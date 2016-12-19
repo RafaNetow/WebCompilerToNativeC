@@ -441,6 +441,16 @@ namespace WebCompilerToNativeC.Parser
                
              
             }
+
+            if (Hanlder.UnariesNode.ContainsKey(_currentToken.Type)) 
+            {
+
+
+                functionOrAssigment.IdToAssignment.IncrementOrDecrement = Hanlder.UnariesNode[_currentToken.Type];
+                ConsumeNextToken();
+            }
+
+            
             if(Hanlder.TypeOfAccesors.ContainsKey(_currentToken.Type))
             ArrowOrDot(listOfAccesors);
 
@@ -843,13 +853,17 @@ namespace WebCompilerToNativeC.Parser
 
                 generalDeclaretion.Variable= (IdVariable) ValueForId(generalDeclaretion.Variable);
 
-                var newVariable = new IdVariable(generalDeclaretion.Variable.Value, generalDeclaretion.Variable.IncrementOrDecrement, generalDeclaretion.Variable.TypeOfAssignment, generalDeclaretion.Variable.Accesors, generalDeclaretion.Variable.ValueOfAssigment);
+               
                 var listIdNode = new List<IdVariable>();
                 MultiDeclaration(listIdNode);
                 result = Hanlder.CheckToken(TokenTypes.Eos, _currentToken);
 
                 if (!result.Succes)
                     throw result.Excpetion;
+
+
+
+
 
                 ConsumeNextToken();
                 var declaretionPosition = new Token();
@@ -862,7 +876,8 @@ namespace WebCompilerToNativeC.Parser
                 var listOfAcces = new List<AccesorNode>();
                 IsArrayDeclaration(listOfAcces);
                 generalDeclaretion.Variable.Accesors = listOfAcces;
-               
+                generalDeclaretion.Variable =  (IdVariable) generalDeclaretion.Variable.Clone();
+
                 if (CompareTokenType(TokenTypes.Asiggnation))
                 {
 
@@ -880,7 +895,7 @@ namespace WebCompilerToNativeC.Parser
                     var declaretionPosition = new Token();
                     declaretionPosition = _currentToken;
                     generalDeclaretion.SentencesPosition = declaretionPosition;
-                    return generalDeclaretion;
+                    return (SentencesNode) generalDeclaretion.Clone();
                 }
                 return null;
               
@@ -1167,7 +1182,10 @@ namespace WebCompilerToNativeC.Parser
             if (Hanlder.LiteralWithDecreOrIncre.ContainsKey(_currentToken.Type))
             {
                 var value = Hanlder.LiteralWithDecreOrIncre[_currentToken.Type];
-                value.Value = _currentToken.Lexeme;
+                Token cloneToken = new Token();
+                cloneToken = _currentToken;
+                value.Value = cloneToken.Lexeme;
+                value = (LiteralWithOptionalIncrementOrDecrement) value.Clone();
                 ConsumeNextToken();
                 var expressionPostion = new Token();
                 expressionPostion = _currentToken;
@@ -1176,7 +1194,7 @@ namespace WebCompilerToNativeC.Parser
                     Value = value,
                     NodePosition = expressionPostion
                 };
-                return arrayPropertie;
+                return (ExpressionNode) arrayPropertie.Clone();
                 
             }
 
@@ -1209,6 +1227,7 @@ namespace WebCompilerToNativeC.Parser
             if (Hanlder.LiteralWithDecreOrIncre.ContainsKey(_currentToken.Type))
             {
                 var value = Hanlder.LiteralWithDecreOrIncre[_currentToken.Type];
+                value = (LiteralWithOptionalIncrementOrDecrement) value.Clone();
                 value.Value = _currentToken.Lexeme;
                 ConsumeNextToken();
                 var expressionPostion = new Token();
@@ -1218,7 +1237,7 @@ namespace WebCompilerToNativeC.Parser
                     Value = value,
                     NodePosition = expressionPostion
                 };
-                return arrayPropertie;
+                return (ExpressionNode) arrayPropertie.Clone();
               
             }
 
@@ -1236,7 +1255,7 @@ namespace WebCompilerToNativeC.Parser
                     Value = currentVariable,
                     NodePosition = expressionPostion
                 };
-                return arrayPropertie;
+                return (ExpressionNode) arrayPropertie.Clone();
               
             }
           
@@ -1319,10 +1338,9 @@ namespace WebCompilerToNativeC.Parser
             }
 
             currentId.TypeOfAssignment = Hanlder.AssignationOperator[_currentToken.Type];
-            if(  currentId.TypeOfAssignment is AssignationBinary)
-                 currentId.TypeOfAssignment = new AssignationBinary();
+            
             ConsumeNextToken();
-            currentId.ValueOfAssigment =  Expression();
+            currentId.ValueOfAssigment =  (ExpressionNode) Expression().Clone();
             return currentId;
         }
 
@@ -1435,6 +1453,13 @@ namespace WebCompilerToNativeC.Parser
         {
             if (!Hanlder.AdditionOp.ContainsKey(_currentToken.Type)) return mulVal;
             var additionOp = Hanlder.AdditionOp[_currentToken.Type];
+
+
+            if (additionOp is AddNode)
+            {
+               var a = new AddNode() {LeftOperand = (ExpressionNode) mulVal.Clone()};
+            }
+            var expressAditionClone = mulVal.Clone();
             additionOp.LeftOperand = mulVal;
             AdditiveOperators();
             additionOp.RightOperand =  ExpressionMul(); // Resolve this problem viendo la gramatica
@@ -1489,7 +1514,8 @@ namespace WebCompilerToNativeC.Parser
                 {
                     OptionalIncrementOrDecrement((LiteralWithOptionalIncrementOrDecrement) currentDataType);
                 }
-                return currentDataType;
+                var clone = currentDataType.Clone();
+                return (ExpressionNode) clone;
             }
 
        
@@ -1520,9 +1546,9 @@ namespace WebCompilerToNativeC.Parser
                   var id =    IdAccesorsOrFunction(iVariable);
                     return id;
                 }
-                
-              
-                 
+
+
+                return (ExpressionNode) iVariable.Clone();
             }
            
             //Verify if expression could begin with LPARENT of if haved to consum that token after

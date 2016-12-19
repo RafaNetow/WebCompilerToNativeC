@@ -10,6 +10,8 @@ using WebCompilerToNativeC.interpretation.DataTypes;
 using WebCompilerToNativeC.Lexer;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
+using WebCompilerToNativeC.Semantic.BaseClass.BaseTypes;
+using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Tree;
 using WebCompilerToNativeC.Tree.BaseClass;
 using WebCompilerToNativeC.Tree.DataType;
@@ -36,6 +38,7 @@ namespace WebCompilerToNativeC.Parser
         public Dictionary<TokenTypes, BinaryOperator> AssignationOperator = new Dictionary<TokenTypes, BinaryOperator>();
         public Dictionary<string, DataType> DataTypesLexeme = new Dictionary<string, DataType>();
         public Dictionary<TokenTypes,AccesorNode>TypeOfAccesors = new Dictionary<TokenTypes, AccesorNode>();
+       
 
         public HandlerToSyntactic()
        {
@@ -104,9 +107,15 @@ namespace WebCompilerToNativeC.Parser
            OperatorsMul.Add(TokenTypes.Div, new DivNode());
            OperatorsMul.Add(TokenTypes.Mul, new MultNode());
            OperatorsMul.Add(TokenTypes.Modulus, new ModulusNode());
-       }
+        //    OperatorsMul.Add(TokenTypes.AndBinary, new AndBinary());
+        }
 
-       private void InitUnariesNode()
+
+
+
+      
+
+        private void InitUnariesNode()
        {
            UnariesNode.Add(TokenTypes.Increment, new LeftIncrement());
            UnariesNode.Add(TokenTypes.Decrement, new LeftDecrement());

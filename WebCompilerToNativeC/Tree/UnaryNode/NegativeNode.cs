@@ -1,5 +1,6 @@
 ﻿using System;
 using WebCompilerToNativeC.interpretation.BaseClass;
+using WebCompilerToNativeC.interpretation.DataTypes;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 
@@ -20,7 +21,8 @@ namespace WebCompilerToNativeC.Tree
 
        public override Value Interpretation()
        {
-           throw new NotImplementedException();
+            
+            return new IntValue() {Value = -1};
        }
     }
 }

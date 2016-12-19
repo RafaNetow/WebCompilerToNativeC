@@ -9,7 +9,7 @@ namespace WebCompilerToNativeC.interpretation.DataTypes
 {
     public class CharValue : Value
     {
-        public char Value;
+        public string Value;
         public override Value Clone()
         {
             return new CharValue() {Value = Value};

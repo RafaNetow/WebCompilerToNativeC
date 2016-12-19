@@ -4,26 +4,121 @@
 <title>Page Title</title>
 </head>
 <body>
-#include  "patñoh-spec"  
-#include  "path-spec"  
-<%
+<div>
+<h1>This is a Heading</h1>
+<p>This is a paragraph.</p>
+
+<%  
 
 
 
 
-string j = "hola"+"mundo" ;
 
-int A = 1 +2;
-int b = 3+4;
-int c = 5 + 6;
+
+
+  /* local variable definition */
+     int array1[5] = {19, 10, 8, 17, 9};
+     
+     
+     int array2[5][2] = {1,2,3,4,5,6,7,8,9,10};
+         array1[2] = 12;
+         array2[0][1] =3;
+         int dos = array2[0][1];
+       int a = 10;
+
+   
+   while( a < 20 ) {
+    
+      a++;
+   }
+   
+   do {
+         a++;
+   }  while(a < 30);
+         
+    
+
+   for( a = 10; a < 11; a++ ){
+         
+   }
+   
+
   
+   
+ 
 %>
 
-
-
-
-<h1>WebC compiler</h1>
-
-
+<div>
 </body>
 </html>
+Fin de la conversación de chat
+   int nc = llc | mc;
+    int lc = jc & kc;
+     int  qc = oc^pc;
+
+      int rc = ~35;
+      int sc = ~(-12);
+         
+float p = 20.5-6.5;
+
+int q = 10-6.5;
+
+bool r = p > q;
+
+bool s = p < q;   
+   
+   
+   
+ int num=212, tc;
+
+    int respuesta, respuesta2;
+
+ 
+      
+
+
+    int jc = 12, kc = 25;
+
+
+
+  
+     int llc = 12, mc = 25;
+  
+
+      int oc = 12, pc = 25;
+     
+
+char ll = "hola";
+
+ int negativo = -1;
+
+int a = 20;
+
+char b = 'h';
+
+bool c = true;
+
+bool d;
+
+float normalizationFactor = 22.4422;
+
+int uno = 0xF;
+int dos = 00001111;
+
+string hola = "hola mundo";
+
+date fecha = #14-04-1991#;
+
+int e, f=12, g = true, h;
+
+int i = 1 + 2;
+
+string j = "hola " + "mundo";
+
+string k = 'j'+'i';
+
+bool l = 0+1;
+
+int m = 6*5;
+
+int o = 10/5;

@@ -12,23 +12,27 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
     {
         public Dictionary<string, BaseType> _table;
         public Dictionary<string, InforamtionVariable> InformatioNVariable;
-        public Dictionary<string, Value> TableValue; 
+        public Dictionary<string, Value> TableValue;
+        public Dictionary<string, List<Value>> ValuesOfArrays;
         private static TypesTable _instance;
         public TypesTable()
         {
 
             InformatioNVariable = new Dictionary<string, InforamtionVariable>();
             _table = new Dictionary<string, BaseType>();
+
            TableValue = new Dictionary<string, Value>();
-           // _table.Add("int", new IntType());
-           // _table.Add("string", new StringType());
-           // _table.Add("float", new FloatType());
-           // _table.Add("char", new CharType());
-           // _table.Add("bool", new BooleanType());
-           //_table.Add("date", new DateType()); 
-           // _table.Add("const", new ConstType());
-           // _table.Add("struct", new StructType(new List<StructParams>()));
-           // _table.Add("enum", new EnumType(null));
+            ValuesOfArrays = new Dictionary<string, List<Value>>();
+
+           // Table.Add("int", new IntType());
+           // Table.Add("string", new StringType());
+           // Table.Add("float", new FloatType());
+           // Table.Add("char", new CharType());
+           // Table.Add("bool", new BooleanType());
+           //Table.Add("date", new DateType()); 
+           // Table.Add("const", new ConstType());
+           // Table.Add("struct", new StructType(new List<StructParams>()));
+           // Table.Add("enum", new EnumType(null));
         }
 
 
@@ -51,12 +55,25 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
 
         public void SetVariableValue(string variableName, Value val)
         {
-            TableValue[variableName] = val;
+             foreach (var stack in Context.StackOfContext.Stack)
+            {
+                if (stack.TableValue.ContainsKey(variableName))
+                {
+                    stack.TableValue[variableName] = val;
+                }
+            }
         }
 
         public Value GetVariableValue(string variableName)
         {
-            return TableValue[variableName];
+            foreach (var stack in Context.StackOfContext.Stack)
+            {
+                if (stack.TableValue.ContainsKey(variableName))
+                {
+                    return stack.TableValue[variableName];
+                }
+            }
+            return null;
         }
         
         public BaseType GetType(string name)
@@ -69,6 +86,70 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
             
             throw new SemanticException($"Type : {name} doesn't exist.");
         }
+
+        public void SetArrayVariableValue(string name, Value value)
+        {
+            foreach (var stack in Context.StackOfContext.Stack)
+            {
+
+
+                List<Value> existing;
+                if (!stack.ValuesOfArrays.TryGetValue(name, out existing))
+                {
+                    existing = new List<Value>();
+                    stack.ValuesOfArrays[name] = existing;
+                }
+                // At this point we know that "existing" refers to the relevant list in the 
+                // dictionary, one way or another.
+                int pos = 0;
+                foreach (var value1 in existing.ToList())
+                {
+                    if (value1.row == value.row && value1.column == value.column)
+                    {
+                        existing[pos] = value;
+                    }
+                    pos++;
+                }
+            }
+        }
+
+        public void SetArrayVariableValue(string name, List<Value> values)
+        {
+            foreach (var stack in Context.StackOfContext.Stack)
+            {
+                if (stack.TableValue.ContainsKey(name))
+                {
+                    stack.ValuesOfArrays[name] = values;
+                }
+            }
+        }
+
+
+        public List<Value> GetArrayVariableValues(string name)
+        {
+            foreach (var stack in Context.StackOfContext.Stack)
+            {
+                if (stack.TableValue.ContainsKey(name))
+                {
+                    return stack.ValuesOfArrays[name];
+                }
+            }
+            return null;
+        }
+
+        public Value GetArrayValue(string name, int? row, int? column)
+        {
+            foreach (var stack in Context.StackOfContext.Stack)
+            {
+                if (stack.TableValue.ContainsKey(name))
+                {
+                    var list = stack.ValuesOfArrays[name];
+                var value =    list.FirstOrDefault(x => x.row == row && x.column == column);
+                    return value;
+                }
+            }
+            return null;
+        } 
 
 
         public bool Contains(string name)

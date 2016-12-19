@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using WebCompilerToNativeC.interpretation.Interpretation;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes.Struct;
@@ -32,13 +34,14 @@ namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
             if (Variable.ValueOfAssigment != null)
             {
                 var baseTypeAssignment = Variable.ValueOfAssigment.ValidateSemantic();
-                if (baseType != baseTypeAssignment)
-                    throw new SemanticException($"La asignacion tiene que ser del mismo tipo");
+              
+                if (!TypesValidation.EquivalenceOfType(baseType, baseTypeAssignment))
+                    throw new SemanticException($"Error Row:{Variable.NodePosition.Row} Column{Variable.NodePosition.Column} Asignacion no valida");
             }
-            Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value,baseType,Variable.Accesors.Count);
+            Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value,baseType,Variable.Accesors?.Count ?? 0);
            
             Context.StackOfContext.Stack.Peek()
-                .InformatioNVariable.Add(Variable.Value, new InforamtionVariable() {Lenght = Variable.Accesors.Count});
+                .InformatioNVariable.Add(Variable.Value, new InforamtionVariable() {Lenght = Variable.Accesors?.Count ?? 0 });
 
         }
 
@@ -49,9 +52,10 @@ namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
 
         public override void Interpretation()
         {
-            var value = Variable.ValueOfAssigment.Interpretation();
+            var baseType = (Type != null) ? Type.ValidateSemantic() : Context.StackOfContext.GetType(TypeStructOrEnum);
+            
 
-            Context.StackOfContext.Stack.Peek().SetVariableValue(Variable.Value, Variable.ValueOfAssigment.Interpretation());
+            Context.StackOfContext.Stack.Peek().SetVariableValue(Variable.Value, (Variable.ValueOfAssigment == null) ? baseType.GetDefaultValue() : Variable.ValueOfAssigment.Interpretation());
         }
     }
 }
