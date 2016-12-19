@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using WebCompilerToNativeC.Semantic.BaseClass.BaseTypes;
 using WebCompilerToNativeC.Semantic.BaseTypes;
 using WebCompilerToNativeC.Semantic.BaseTypes.Struct;
+using WebCompilerToNativeC.Tree.Sentences.Declaretion;
 
 namespace WebCompilerToNativeC.Semantic.BaseClass
 {
@@ -15,7 +16,8 @@ namespace WebCompilerToNativeC.Semantic.BaseClass
     {
         private static Context _context ;
         public Stack<TypesTable> Stack = new Stack<TypesTable>();
-        public Dictionary<Guid,TypesTable> RemembersContext = new Dictionary<Guid, TypesTable>(); 
+        public Dictionary<Guid,TypesTable> RemembersContext = new Dictionary<Guid, TypesTable>();
+        public Dictionary<string, FunctionDeclaretion> FunctionsNodes;
 
         public Dictionary<string, BaseType> Table;
       

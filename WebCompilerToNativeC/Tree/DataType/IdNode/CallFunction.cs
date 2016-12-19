@@ -51,7 +51,9 @@ namespace WebCompilerToNativeC.Tree.DataType.IdNode
 
         public override Value Interpretation()
         {
-            throw new NotImplementedException();
+            var functiondeclaration = Context.StackOfContext.FunctionsNodes[NameOfFunction];
+            return null;
+            ;
         }
     }
 }

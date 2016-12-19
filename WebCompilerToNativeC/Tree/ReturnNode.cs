@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Tree.BaseClass;
@@ -19,7 +20,7 @@ namespace WebCompilerToNativeC.Tree
 
        public override void ValidateSemantic()
        {
-           throw new NotImplementedException();
+           ExpressionToReturn.ValidateSemantic();
        }
 
        public override string GenerateCode()
@@ -31,5 +32,13 @@ namespace WebCompilerToNativeC.Tree
        {
            throw new NotImplementedException();
        }
-   }
+
+
+        public Value GetValueOfReturn()
+        {
+            return ExpressionToReturn?.Interpretation();
+        }
+
+
+    }
 }

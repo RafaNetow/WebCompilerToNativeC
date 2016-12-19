@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebCompilerToNativeC.interpretation.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseClass;
 using WebCompilerToNativeC.Semantic.BaseTypes.FuncType;
 
@@ -44,6 +45,36 @@ namespace WebCompilerToNativeC.Tree.Sentences.Declaretion
             Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value,new FunctionType() {ListOfParemterters = ParameterList,ReturnParam = typeOfReturn}, Variable.Accesors.Count);
             //Context.StackOfContext.Stack.Peek().RegisterType(Variable.Value, baseType);
 
+        }
+
+        public override void Interpretation()
+        {
+            Context.StackOfContext.Stack.Push(Context.StackOfContext.RemembersContext[CodeGuid]);
+
+            Context.StackOfContext.FunctionsNodes.Add(Variable.Value, this);
+
+            //StackContext.Context.PastContexts.Remove(CodeGuid);
+            Context.StackOfContext.Stack.Pop();
+        }
+
+        public Value Execute()
+        {
+            //  StackContext.Context.Stack.Push(StackContext.Context.PastContexts[CodeGuid]);
+            dynamic returnValue = null;
+
+            foreach (var sentence in ListOfEspecialSentences)
+            {
+
+                if (sentence is ReturnNode)
+                {
+                    returnValue = (sentence as ReturnNode).GetValueOfReturn();
+                }
+                sentence.Interpretation();
+            }
+
+            //     StackContext.Context.Stack.Pop();
+
+            return returnValue;
         }
 
     }
