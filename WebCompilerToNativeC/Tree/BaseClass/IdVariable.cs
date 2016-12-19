@@ -122,7 +122,7 @@ namespace WebCompilerToNativeC.Tree
                   
                     dynamic posValue = Accesors.First().Interpretation();
                    
-                    Context.StackOfContext.Stack.Peek().GetArrayValue(Value, posValue.Value, null);
+                 return    Context.StackOfContext.Stack.Peek().GetArrayValue(Value, posValue.Value, null);
 
 
                 }
@@ -132,7 +132,7 @@ namespace WebCompilerToNativeC.Tree
                     dynamic posRow = Accesors.First().Interpretation();
                     dynamic posColum = Accesors.Last().Interpretation();
                   
-                    Context.StackOfContext.Stack.Peek().GetArrayValue(Value, posRow.Value, posColum.Value);
+                 return   Context.StackOfContext.Stack.Peek().GetArrayValue(Value, posRow.Value, posColum.Value);
                
 
 

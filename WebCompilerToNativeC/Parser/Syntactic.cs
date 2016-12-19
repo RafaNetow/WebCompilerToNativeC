@@ -1295,7 +1295,7 @@ namespace WebCompilerToNativeC.Parser
             if (id.Accesors != null) id.Accesors = listOfAccesors;
             var expressionPostion = new Token();
             expressionPostion = _currentToken;
-
+            id.Accesors = listOfAccesors;
             id.NodePosition = expressionPostion;
             return id;
         }
