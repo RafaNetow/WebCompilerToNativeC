@@ -17,8 +17,9 @@ namespace WebCompilerToNativeC.Hanlders
 
        public HanldersFiles()
        {
-           this._defaulPath = "SourceCode.txt";
-       }
+           this._defaulPath = System.Web.Hosting.HostingEnvironment.MapPath("~/bin/SourceCode.c");
+         //   this._defaulPath = "SourceCode.txt";
+        }
         public string getCode()
         {
             string file = "";

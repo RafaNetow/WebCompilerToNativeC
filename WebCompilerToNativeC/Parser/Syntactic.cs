@@ -1,41 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Collections.Generic;
 using WebCompilerToNativeC.Lexer;
 using WebCompilerToNativeC.Tree;
-using WebCompilerToNativeC.Tree.BaseClass;
 using WebCompilerToNativeC.Tree.DataType;
 using WebCompilerToNativeC.Tree.DataType.BaseClass;
-using WebCompilerToNativeC.Tree.DataType.Boolean;
 using WebCompilerToNativeC.Tree.DataType.IdNode;
 using WebCompilerToNativeC.Tree.DataType.IdNode.Accesors;
 using WebCompilerToNativeC.Tree.DataType.LiteralWithIncrOrDecre;
-using WebCompilerToNativeC.Tree.DataType.Struct;
 using WebCompilerToNativeC.Tree.Sentences;
 using WebCompilerToNativeC.Tree.Sentences.Case;
 using WebCompilerToNativeC.Tree.Sentences.Declaretion;
 using WebCompilerToNativeC.Tree.Sentences.Enum;
 using WebCompilerToNativeC.Tree.Sentences.Fors;
-using WebCompilerToNativeC.Tree.Sentences;
 using WebCompilerToNativeC.Tree.Sentences.Declaretion.ArrayWithInialiation;
 using WebCompilerToNativeC.Tree.Sentences.Structs;
-using WebCompilerToNativeC.Tree.UnaryNode;
 
 namespace WebCompilerToNativeC.Parser
 {
     public class Syntactic
     {
         private Lexer.Lexer _lexer;
-        private Token _currentToken;
+        public Token _currentToken;
         public ReserverdWords RWords = new ReserverdWords();
        public HandlerToSyntactic  Hanlder = new HandlerToSyntactic();
         //To verify when dnt get the token expected

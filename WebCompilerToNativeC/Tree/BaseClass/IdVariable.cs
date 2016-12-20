@@ -111,8 +111,13 @@ namespace WebCompilerToNativeC.Tree
 
         public override Value Interpretation()
         {
+            int lengthAccesors = 0;
+            if (Context.StackOfContext.Stack.Peek().InformatioNVariable.ContainsKey(Value))
+                lengthAccesors = Context.StackOfContext.Stack.Peek().InformatioNVariable[Value].Lenght;
+
+
             if (TypeOfAssignment == null && ValueOfAssigment == null &&
-                Context.StackOfContext.Stack.Peek().InformatioNVariable[Value].Lenght > 0)
+              lengthAccesors > 0)
             {
 
 
@@ -185,16 +190,16 @@ namespace WebCompilerToNativeC.Tree
 
             if (ValueOfAssigment != null)
             {
+              
 
-                var arrayAccesors = Context.StackOfContext.Stack.Peek().InformatioNVariable[Value];
-                if (arrayAccesors.Lenght == 0)
+                if (lengthAccesors == 0)
                 {
                     Context.StackOfContext.Stack.Peek().SetVariableValue(Value, ValueOfAssigment.Interpretation());
 
                 }
                 else
                 {
-                    if (arrayAccesors.Lenght == 1)
+                    if (lengthAccesors == 1)
                     {
                         dynamic valueToAssigment = ValueOfAssigment.Interpretation();
                         dynamic posValue = Accesors.First().Interpretation();
@@ -203,7 +208,7 @@ namespace WebCompilerToNativeC.Tree
 
 
                     }
-                    if (arrayAccesors.Lenght == 2)
+                    if (lengthAccesors == 2)
                     {
                         dynamic valueToAssigment = ValueOfAssigment.Interpretation();
                         dynamic posRow = Accesors.First().Interpretation();
